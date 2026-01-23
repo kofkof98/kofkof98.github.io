@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國營英文家教 - Day 03 學習與測驗</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f3f4f6; }
+        .tab-active { color: #6366f1; border-bottom: 3px solid #6366f1; background-color: #f5f3ff; }
+        .card { transition: transform 0.2s ease; }
+        .card:hover { transform: scale(1.01); }
+        .quiz-option { border: 2px solid #e5e7eb; transition: all 0.2s; cursor: pointer; }
+        .correct { background-color: #def7ec !important; border-color: #31c48d !important; color: #03543f !important; }
+        .wrong { background-color: #fde8e8 !important; border-color: #f98080 !important; color: #9b1c1c !important; }
+        b { font-weight: 700; color: #111827; }
+        .explanation-box { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <header class="bg-indigo-600 text-white py-12 px-6 text-center shadow-2xl">
+        <h1 class="text-3xl font-bold tracking-tight">國營英文高效準備：Day 03</h1>
+        <p class="mt-4 opacity-90 text-lg">字彙 A/C 混編、易混淆字組、關鍵動詞搭配</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-8 px-4">
+        
+        <!-- Tab Navigation -->
+        <nav class="flex bg-white rounded-2xl shadow-lg overflow-hidden mb-8 sticky top-4 z-30 border border-gray-200">
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn flex-1 py-4 font-bold text-gray-500 tab-active">單字字彙</button>
+            <button onclick="switchTab('similar')" id="tab-similar" class="tab-btn flex-1 py-4 font-bold text-gray-500">相似詞比較</button>
+            <button onclick="switchTab('collocation')" id="tab-collocation" class="tab-btn flex-1 py-4 font-bold text-gray-500">搭配詞介紹</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 py-4 font-bold text-gray-500">隨堂測驗</button>
+        </nav>
+
+        <!-- Vocabulary Section -->
+        <section id="content-vocab" class="tab-content space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center mb-4"><i class="fa-solid fa-star mr-3 text-yellow-500"></i>核心字彙與例句 (A/C 系列)</h2>
+            
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">1. <b>accurate</b> (adj.) 準確的；精確的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The scientists hope to become more <b>accurate</b> in predicting landslides. (科學家們希望能更準確地預測土石流。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">2. <b>accelerate</b> (vt./vi.) 加快；加速</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">We can <b>accelerate</b> our car to let the speed increase. (我們可以加速車子，讓速度增加。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">3. <b>acquaintance</b> (n.) 點頭之交的朋友</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">He is just an <b>acquaintance</b>, which means that I am not familiar with him. (他只是點頭之交的朋友，意思就是我跟他沒很熟。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">4. <b>acknowledge</b> (vt.) 承認；認可</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The communist party would rather send the people into jail than <b>acknowledge</b> the existence of the problems. (共產黨寧可將人送進監獄，而不承認問題的存在。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">5. <b>adaptable</b> (adj.) 適應性強的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The cockroaches are <b>adaptable</b>. They can adapt to different environments. (蟑螂的適應性很強，它們可以適應不同的環境。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">6. <b>addiction</b> (n.) 沉溺；沉癮</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">If your kids have <b>Internet addiction</b>, you have to find ways to deal with this problem. (如果你的小孩有網路沉癮，你需要找方法解決。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">7. <b>adequate</b> (adj.) 足夠的；適當的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">We don't have <b>adequate</b> time to do our work, so we have to burn the midnight oil. (我們沒有足夠時間完成工作，所以我們需要熬夜。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">8. <b>calculate</b> (vt.) 計算</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">He <b>calculated</b> that it would take him ten years to save up for an apartment. (他算了一下要賺十年的錢才夠買一間公寓。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">9. <b>campaign</b> (n.) 活動；(競選) 運動</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>election campaign</b> will be held this Friday night. (選舉活動將會辦在這週五晚上。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">10. <b>capability</b> (n.) 能力</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The exam is <b>beyond the capability</b> of those students. (這考試超出那些學生的能力。)</p>
+            </div>
+        </section>
+
+        <!-- Similar Words Section -->
+        <section id="content-similar" class="tab-content hidden space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-copy mr-3 text-emerald-500"></i>英文相似字比較 (p. 73-74)</h2>
+            <div class="bg-white rounded-2xl shadow-md p-8 border border-gray-100 space-y-6">
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-700">1. <b>assume / resume / presume / consume</b></p>
+                    <p class="text-gray-600 mt-2"><b>assume</b> (假定)；<b>resume</b> (恢復/履歷)；<b>presume</b> (推測)；<b>consume</b> (消耗)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-700">2. <b>assure / ensure / insure / reassure</b></p>
+                    <p class="text-gray-600 mt-2"><b>assure</b> (向某人保證)；<b>ensure</b> (確保某事發生)；<b>insure</b> (投保)；<b>reassure</b> (使安心)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-700">3. <b>attain / obtain / abstain / retain / maintain</b></p>
+                    <p class="text-gray-600 mt-2"><b>attain</b> (達到)；<b>obtain</b> (獲得)；<b>abstain</b> (避免/放棄)；<b>retain</b> (保留)；<b>maintain</b> (維持)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-700">4. <b>award / reward</b></p>
+                    <p class="text-gray-600 mt-2"><b>award</b> (正式授予的獎項)；<b>reward</b> (行為的回報/獎賞)。</p>
+                </div>
+                <div>
+                    <p class="text-lg font-bold text-emerald-700">5. <b>abundant / redundant</b></p>
+                    <p class="text-gray-600 mt-2"><b>abundant</b> (充足的)；<b>redundant</b> (多餘的/被裁員的)。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collocation Section -->
+        <section id="content-collocation" class="tab-content hidden space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-link mr-3 text-orange-500"></i>動詞搭配詞介紹 (p. 62-63)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">1. <b>by all means</b></p>
+                    <p class="text-sm text-gray-500 mt-2">好的；當然。Would you lend me some pencils? <b>By all means</b>!</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">2. <b>by no means</b></p>
+                    <p class="text-sm text-gray-500 mt-2">絕不；一點也不。That is <b>by no means</b> a small accomplishment.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">3. <b>block out</b></p>
+                    <p class="text-sm text-gray-500 mt-2">阻擋 (光線等)。That tall building <b>blocks out</b> the sun.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">4. <b>come up with</b></p>
+                    <p class="text-sm text-gray-500 mt-2">想出 (主意)。My colleague <b>came up with</b> a great idea.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">5. <b>consist of</b></p>
+                    <p class="text-sm text-gray-500 mt-2">由...組成。The team <b>consists of</b> six members.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">6. <b>cope with</b></p>
+                    <p class="text-sm text-gray-500 mt-2">處理；應付。You have to show your great attitude when <b>coping with</b> problems.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">7. <b>call for</b></p>
+                    <p class="text-sm text-gray-500 mt-2">要求；需要。Don't <b>call for</b> someone's help. Try it yourself.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">8. <b>call up</b></p>
+                    <p class="text-sm text-gray-500 mt-2">打電話。I <b>called up</b> my bosom friends to invite them.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">9. <b>cry wolf</b></p>
+                    <p class="text-sm text-gray-500 mt-2">發假警報 (狼來了)。If you <b>cry wolf</b> too many times, people won't believe you.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-400">
+                    <p class="font-bold text-orange-800">10. <b>call off</b></p>
+                    <p class="text-sm text-gray-500 mt-2">取消。My boss <b>called off</b> the meeting.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="content-quiz" class="tab-content hidden">
+            <div id="quiz-card" class="bg-white rounded-3xl shadow-xl p-8 border border-indigo-50">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Day 03 實力測驗</h2>
+                    <span id="quiz-progress" class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full font-bold">1 / 10</span>
+                </div>
+
+                <div id="question-container">
+                    <p id="question-text" class="text-xl text-gray-700 mb-8 leading-relaxed font-medium"></p>
+                    <div id="options-list" class="space-y-4">
+                        <!-- Options via JS -->
+                    </div>
+                </div>
+
+                <!-- Explanation Area -->
+                <div id="explanation-container" class="mt-8 p-6 bg-indigo-50 rounded-2xl border-2 border-indigo-200 hidden explanation-box">
+                    <h4 class="font-bold text-indigo-900 mb-3 flex items-center">
+                        <i class="fa-solid fa-comment-dots mr-2"></i> 教練解析：
+                    </h4>
+                    <p id="explanation-text" class="text-indigo-800 leading-relaxed"></p>
+                    <button onclick="nextQuestion()" class="mt-6 w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition flex items-center justify-center">
+                        我理解了，下一題 <i class="fa-solid fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+
+                <div id="result-screen" class="hidden text-center py-12">
+                    <div class="text-7xl mb-6">🔥</div>
+                    <h3 class="text-3xl font-extrabold text-gray-800 mb-2">本日訓練完成！</h3>
+                    <p id="final-score" class="text-xl text-gray-600 mb-8"></p>
+                    <button onclick="restartQuiz()" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition">重新測驗</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('tab-' + tabId).classList.add('tab-active');
+            if (tabId === 'quiz') restartQuiz();
+        }
+
+        const quizData = [
+            {
+                q: "The scientist used advanced instruments to get a(n) _________ result for the experiment.",
+                o: ["adaptable", "accurate", "abundant", "addicted"],
+                a: 1,
+                e: "正確答案是 <b>accurate</b> (準確的)。教材 p.11 中特別提到科學家用此字來形容預測或實驗結果的精密性。"
+            },
+            {
+                q: "We should _________ our efforts to finish the project before the deadline.",
+                o: ["accelerate", "acknowledge", "abstain", "attain"],
+                a: 0,
+                e: "正確答案是 <b>accelerate</b> (加速/加快)。當需要趕在期限前完成工作時，會使用加速進度這個動作。"
+            },
+            {
+                q: "The team _________ six highly skilled engineers from different departments.",
+                o: ["consists of", "calls off", "blocks out", "cries wolf"],
+                a: 0,
+                e: "正確答案是 <b>consists of</b> (由...組成)。這是非常高頻的搭配詞，注意後面接組成的成員。"
+            },
+            {
+                q: "The candidate's _________ was held in the city center last night.",
+                o: ["calculation", "campaign", "capability", "acquaintance"],
+                a: 1,
+                e: "正確答案是 <b>campaign</b> (競選/活動)。election campaign 是教材 p.28 的重點搭配。"
+            },
+            {
+                q: "Success is _________ a small matter of luck; it requires hard work.",
+                o: ["by all means", "by no means", "consist of", "cope with"],
+                a: 1,
+                e: "正確答案是 <b>by no means</b> (絕不)。此句意為「成功絕非只是運氣」，教材 p.63 強調其否定語氣。"
+            },
+            {
+                q: "He didn't have _________ sleep last night, so he feels tired now.",
+                o: ["adequate", "adaptable", "additional", "accurate"],
+                a: 0,
+                e: "正確答案是 <b>adequate</b> (足夠的)。教材 p.13 常用於形容時間、睡眠或資源是否充足。"
+            },
+            {
+                q: "The manager had to _________ the meeting because of the heavy rain.",
+                o: ["call up", "call off", "come up with", "cope with"],
+                a: 1,
+                e: "正確答案是 <b>call off</b> (取消)。這是國營考試最愛考的片語之一，等同於 cancel。"
+            },
+            {
+                q: "Please _________ your manager if you have any questions about the plan.",
+                o: ["call up", "block out", "consist of", "cry wolf"],
+                a: 0,
+                e: "正確答案是 <b>call up</b> (打電話)。教材 p.63 用於描述聯絡、邀請的情境。"
+            },
+            {
+                q: "It took him a long time to _________ the loss of his beloved dog.",
+                o: ["attain", "cope with", "calculate", "accelerate"],
+                a: 1,
+                e: "正確答案是 <b>cope with</b> (處理/應付)。教材 p.63 中提到，處理問題或情緒時，這個詞非常實用。"
+            },
+            {
+                q: "We need to _________ that our products meet the safety standards.",
+                o: ["assure", "ensure", "insure", "reassure"],
+                a: 1,
+                e: "正確答案是 <b>ensure</b> (確保某事發生)。教材 p.74 辨析：assure 對人保證；ensure 確保事情。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const data = quizData[currentIdx];
+            document.getElementById('quiz-progress').innerText = `${currentIdx + 1} / ${quizData.length}`;
+            document.getElementById('question-text').innerText = data.q;
+            const list = document.getElementById('options-list');
+            list.innerHTML = '';
+            answered = false;
+            data.o.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option bg-white p-5 rounded-2xl font-bold flex items-center shadow-sm';
+                div.innerHTML = `<span class="mr-4 text-indigo-300">${String.fromCharCode(65 + i)}</span> ${opt}`;
+                div.onclick = () => selectOption(i, div);
+                list.appendChild(div);
+            });
+        }
+
+        function selectOption(idx, element) {
+            if (answered) return;
+            answered = true;
+            const data = quizData[currentIdx];
+            const options = document.querySelectorAll('.quiz-option');
+            if (idx === data.a) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                options[data.a].classList.add('correct');
+            }
+            document.getElementById('explanation-text').innerHTML = data.e;
+            document.getElementById('explanation-container').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                document.getElementById('explanation-container').classList.add('hidden');
+                showQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `本次訓練得分：${score * 10} 分 (${score} / ${quizData.length})`;
+        }
+    </script>
+</body>
+</html>
