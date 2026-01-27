@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國營英文家教 - Day 06 學習與測驗 (KK音標版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f3f4f6; }
+        .kk { font-family: 'Roboto', sans-serif; color: #6366f1; font-weight: 500; }
+        .tab-active { color: #4f46e5; border-bottom: 3px solid #4f46e5; background-color: #f5f3ff; }
+        .card { transition: all 0.3s ease; }
+        .quiz-option { border: 2px solid #e2e8f0; transition: all 0.2s; cursor: pointer; }
+        .correct { background-color: #def7ec !important; border-color: #31c48d !important; color: #03543f !important; }
+        .wrong { background-color: #fde8e8 !important; border-color: #f98080 !important; color: #9b1c1c !important; }
+        b { font-weight: 700; color: #1e293b; }
+        .explanation-box { animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white py-12 px-6 text-center shadow-2xl">
+        <h1 class="text-3xl font-extrabold tracking-tight">國營英文高效準備：Day 06</h1>
+        <p class="mt-4 opacity-90 text-lg italic">J-L 系列單字、KK音標辨析、關鍵 Look 片語</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-8 px-4">
+        
+        <!-- Tab Navigation -->
+        <nav class="flex bg-white rounded-2xl shadow-lg overflow-hidden mb-8 sticky top-4 z-30 border border-gray-200">
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn flex-1 py-4 font-bold text-gray-500 tab-active">單字字彙</button>
+            <button onclick="switchTab('similar')" id="tab-similar" class="tab-btn flex-1 py-4 font-bold text-gray-500">相似詞比較</button>
+            <button onclick="switchTab('collocation')" id="tab-collocation" class="tab-btn flex-1 py-4 font-bold text-gray-500">搭配詞介紹</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 py-4 font-bold text-gray-500">隨堂測驗</button>
+        </nav>
+
+        <!-- Vocabulary Section -->
+        <section id="content-vocab" class="tab-content space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center mb-4">核心字彙與 KK 音標 (J-L 系列)</h2>
+            
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">1. <b>jealous</b> (adj.) <span class="kk">[ˈdʒɛləs]</span> 嫉妒的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">He is <b>jealous of my wealth</b>. (他嫉妒我的財富。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">2. <b>journalist</b> (n.) <span class="kk">[ˈdʒɝnəlɪst]</span> 新聞記者</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">A <b>journalist</b> is a person who reports the news in the newspapers. (新聞記者是在報紙中報導新聞的人。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">3. <b>justice</b> (n.) <span class="kk">[ˈdʒʌstɪs]</span> 正義；公正</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">There is <b>no justice</b> for the minority in this world. (這個世界對少數族群而言是沒有正義的。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">4. <b>juvenile</b> (adj.) <span class="kk">[ˈdʒuvən!]</span> 青少年的；幼年的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>juvenile delinquency</b> should be taken seriously. (青少年犯罪的問題應被認真看待。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">5. <b>keen</b> (adj.) <span class="kk">[kin]</span> 熱衷的；敏銳的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">You have to be <b>keen on learning English</b>. (你得對學英文充滿熱忱。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">6. <b>label</b> (n./v.) <span class="kk">[ˈleb!]</span> 標籤；貼標籤</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">Please <b>label your luggage</b> so it won't be lost. (請在你的行李貼上標籤，這樣才不會遺失。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">7. <b>latitude</b> (n.) <span class="kk">[ˈlætətjud]</span> 緯度</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>latitude of Taiwan</b> is around 23 degrees North. (台灣的緯度約在北緯 23 度。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">8. <b>lease</b> (n./v.) <span class="kk">[lis]</span> 租約；租借</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">We have to <b>sign the lease</b> if we want to live in this apartment. (若我們要住在這間公寓，我們需要簽租約。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">9. <b>legislation</b> (n.) <span class="kk">[ˌlɛdʒɪsˈleʃən]</span> 法律；立法</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>new legislation</b> will take effect next month. (新的法律將會在下個月生效。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-600">
+                <p class="text-lg">10. <b>lethal</b> (adj.) <span class="kk">[ˈliθəl]</span> 致命的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>lethal weapon</b> can kill people easily. (致命的武器可以輕易殺人。)</p>
+            </div>
+        </section>
+
+        <!-- Similar Words Section -->
+        <section id="content-similar" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fa-solid fa-swatchbook mr-3 text-emerald-600"></i>相似字比較 (p. 77-78)</h2>
+            <div class="bg-white rounded-2xl shadow-md p-8 border border-gray-100 space-y-6">
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">1. <b>complement / compliment</b></p>
+                    <p class="text-gray-600 mt-2"><b>complement</b> (n./v.) 補充物/補足；<b>compliment</b> (n./v.) 稱讚/讚美。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">2. <b>confidant / confident</b></p>
+                    <p class="text-gray-600 mt-2"><b>confidant</b> (知己)；<b>confident</b> (有信心的)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">3. <b>council / counsel</b></p>
+                    <p class="text-gray-600 mt-2"><b>council</b> (議會/理事會)；<b>counsel</b> (忠告/律師/諮商)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">4. <b>dairy / diary</b></p>
+                    <p class="text-gray-600 mt-2"><b>dairy</b> (乳製品)；<b>diary</b> (日記)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">5. <b>deceased / diseased</b></p>
+                    <p class="text-gray-600 mt-2"><b>deceased</b> (已故的)；<b>diseased</b> (患病的)。</p>
+                </div>
+                <div>
+                    <p class="text-lg font-bold text-emerald-800">6. <b>eligible / illegible</b></p>
+                    <p class="text-gray-600 mt-2"><b>eligible</b> (有資格的)；<b>illegible</b> (字跡模糊難辨的)。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collocation Section -->
+        <section id="content-collocation" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fa-solid fa-link mr-3 text-orange-600"></i>動詞搭配詞與句型 (p. 68-69)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">1. <b>look down on</b></p>
+                    <p class="text-sm text-gray-500 mt-2">輕視。Rich people should not <b>look down on the poor</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">2. <b>look forward to</b></p>
+                    <p class="text-sm text-gray-500 mt-2">期待。I <b>look forward to hearing from you</b> soon. (注意 to 是介系詞，後接 V-ing)</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">3. <b>look up to</b></p>
+                    <p class="text-sm text-gray-500 mt-2">尊敬。Many kids <b>look up to basketball players</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">4. <b>make ends meet</b></p>
+                    <p class="text-sm text-gray-500 mt-2">收支平衡。The family struggled to <b>make ends meet</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">5. <b>not only... but also</b></p>
+                    <p class="text-sm text-gray-500 mt-2">不僅...而且。He is <b>not only smart but also diligent</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">6. <b>on account of</b></p>
+                    <p class="text-sm text-gray-500 mt-2">由於 (同 because of)。We delayed the game <b>on account of the rain</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">7. <b>on behalf of</b></p>
+                    <p class="text-sm text-gray-500 mt-2">代表。I am writing <b>on behalf of my company</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">8. <b>pass away</b></p>
+                    <p class="text-sm text-gray-500 mt-2">去世 (婉轉用語)。My grandfather <b>passed away</b> peacefully.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="content-quiz" class="tab-content hidden">
+            <div id="quiz-card" class="bg-white rounded-3xl shadow-xl p-8 border border-indigo-50">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Day 06 實力檢測</h2>
+                    <span id="quiz-progress" class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full font-bold">1 / 10</span>
+                </div>
+
+                <div id="question-container">
+                    <p id="question-text" class="text-xl text-gray-700 mb-8 leading-relaxed font-medium"></p>
+                    <div id="options-list" class="space-y-4">
+                        <!-- Options via JS -->
+                    </div>
+                </div>
+
+                <div id="explanation-container" class="mt-8 p-6 bg-slate-50 rounded-2xl border-2 border-indigo-100 hidden explanation-box">
+                    <h4 class="font-bold text-indigo-900 mb-2 flex items-center">
+                        <i class="fa-solid fa-lightbulb mr-2"></i> 專業教練詳解：
+                    </h4>
+                    <p id="explanation-text" class="text-indigo-800 leading-relaxed"></p>
+                    <button id="next-btn" onclick="nextQuestion()" class="mt-6 w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">
+                        理解了，下一題 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+
+                <div id="result-screen" class="hidden text-center py-12">
+                    <div class="text-7xl mb-6">🎓</div>
+                    <h3 class="text-3xl font-extrabold text-gray-800 mb-2">本日練習達成！</h3>
+                    <p id="final-score" class="text-xl text-gray-600 mb-8"></p>
+                    <button onclick="restartQuiz()" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition">重新測驗</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('tab-' + tabId).classList.add('tab-active');
+            if (tabId === 'quiz') restartQuiz();
+        }
+
+        const quizData = [
+            {
+                q: "The new ________ regarding environmental protection will take effect next week.",
+                o: ["legislation", "latitude", "lease", "label"],
+                a: 0,
+                e: "正確答案是 <b>legislation</b> (法律/立法)。教材 p.44 提到法律生效的情境，對應 take effect 這個關鍵片語。"
+            },
+            {
+                q: "I am really looking forward to ________ from you soon.",
+                o: ["hear", "heard", "hearing", "hears"],
+                a: 2,
+                e: "正確答案是 <b>hearing</b>。這是國營必考陷阱！教材 p.68 提醒 look forward to 中的 to 是介系詞，後面必須接動名詞 (V-ing)。"
+            },
+            {
+                q: "The teacher ________ the student for his excellent performance on the project.",
+                o: ["complemented", "complimented", "confided", "counseled"],
+                a: 1,
+                e: "正確答案是 <b>complimented</b> (讚美)。教材 p.77 辨析：compliment 是讚美，complement 是補充/配套。"
+            },
+            {
+                q: "Snake venom can be ________ to humans if not treated immediately.",
+                o: ["keen", "juvenile", "lethal", "jealous"],
+                a: 2,
+                e: "正確答案是 <b>lethal</b> (致命的)。教材 p.44 舉例 lethal weapon (致命武器)，此處形容毒液的危險性。"
+            },
+            {
+                q: "The meeting was cancelled ________ the heavy snowstorm.",
+                o: ["on behalf of", "on account of", "look down on", "pass away"],
+                a: 1,
+                e: "正確答案是 <b>on account of</b> (由於)。教材 p.69 說明其意義等同於 because of。注意不要選成 on behalf of (代表)。"
+            },
+            {
+                q: "You must ________ your name clearly on your books to avoid confusion.",
+                o: ["label", "lease", "justice", "latitude"],
+                a: 0,
+                e: "正確答案是 <b>label</b> (貼標籤)。教材 p.44 提到 label your luggage 以防遺失，此處用法相同。"
+            },
+            {
+                q: "Only the people who satisfy the requirements are ________ for the scholarship.",
+                o: ["illegible", "eligible", "diseased", "deceased"],
+                a: 1,
+                e: "正確答案是 <b>eligible</b> (有資格的)。教材 p.78 辨析：eligible 是有資格，illegible 是字跡難辨。"
+            },
+            {
+                q: "As a ________, she has to verify the facts before writing any news stories.",
+                o: ["journalist", "justice", "juvenile", "confidant"],
+                a: 0,
+                e: "正確答案是 <b>journalist</b> (新聞記者)。教材 p.43 定義記者為報導新聞的人。"
+            },
+            {
+                q: "With the rising cost of living, many families find it hard to ________.",
+                o: ["look forward to", "pass away", "make ends meet", "not only"],
+                a: 2,
+                e: "正確答案是 <b>make ends meet</b> (使收支平衡)。教材 p.68 描述經濟困難時常用的實用片語。"
+            },
+            {
+                q: "He is so ________ that he always doubts his friends' successes.",
+                o: ["keen", "jealous", "justice", "lethal"],
+                a: 1,
+                e: "正確答案是 <b>jealous</b> (嫉妒的)。教材 p.43 舉例嫉妒他人的財富，符合句意。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const data = quizData[currentIdx];
+            document.getElementById('quiz-progress').innerText = `${currentIdx + 1} / ${quizData.length}`;
+            document.getElementById('question-text').innerText = data.q;
+            const list = document.getElementById('options-list');
+            list.innerHTML = '';
+            answered = false;
+            data.o.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option bg-white p-5 rounded-2xl font-bold flex items-center shadow-sm';
+                div.innerHTML = `<span class="mr-4 text-indigo-300">${String.fromCharCode(65 + i)}</span> ${opt}`;
+                div.onclick = () => selectOption(i, div);
+                list.appendChild(div);
+            });
+        }
+
+        function selectOption(idx, element) {
+            if (answered) return;
+            answered = true;
+            const data = quizData[currentIdx];
+            const options = document.querySelectorAll('.quiz-option');
+            if (idx === data.a) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                options[data.a].classList.add('correct');
+            }
+            document.getElementById('explanation-text').innerHTML = data.e;
+            document.getElementById('explanation-container').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                document.getElementById('explanation-container').classList.add('hidden');
+                showQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `本次測驗得分：${score * 10} 分 (${score} / ${quizData.length})`;
+        }
+    </script>
+</body>
+</html>

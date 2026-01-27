@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國營英文家教 - Day 05 學習與測驗</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .tab-active { color: #4f46e5; border-bottom: 3px solid #4f46e5; background-color: #f5f3ff; }
+        .card { transition: all 0.3s ease; }
+        .quiz-option { border: 2px solid #e2e8f0; transition: all 0.2s; cursor: pointer; }
+        .correct { background-color: #def7ec !important; border-color: #31c48d !important; color: #03543f !important; }
+        .wrong { background-color: #fde8e8 !important; border-color: #f98080 !important; color: #9b1c1c !important; }
+        b { font-weight: 700; color: #1e293b; }
+        .explanation-box { animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <!-- Header -->
+    <header class="bg-indigo-900 text-white py-12 px-6 text-center shadow-2xl">
+        <h1 class="text-3xl font-extrabold tracking-tight">國營英文高效準備：Day 05</h1>
+        <p class="mt-4 opacity-90 text-lg italic">字彙 F-I 系列、相似詞深度辨析、核心片語與成語</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-8 px-4">
+        
+        <!-- Tab Navigation -->
+        <nav class="flex bg-white rounded-2xl shadow-lg overflow-hidden mb-8 sticky top-4 z-30 border border-gray-200">
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn flex-1 py-4 font-bold text-gray-500 tab-active">單字字彙</button>
+            <button onclick="switchTab('similar')" id="tab-similar" class="tab-btn flex-1 py-4 font-bold text-gray-500">相似詞比較</button>
+            <button onclick="switchTab('collocation')" id="tab-collocation" class="tab-btn flex-1 py-4 font-bold text-gray-500">搭配詞介紹</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 py-4 font-bold text-gray-500">隨堂測驗</button>
+        </nav>
+
+        <!-- Vocabulary Section -->
+        <section id="content-vocab" class="tab-content space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center mb-4"><i class="fa-solid fa-feather-pointed mr-3 text-indigo-500"></i>核心字彙與例句 (F-I 系列)</h2>
+            
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">1. <b>fragment</b> (n.) 碎片；斷片</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">When the building collapsed, there were many <b>fragments of glass</b> on the road. (當大樓倒塌時，路面上有許多玻璃碎片。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">2. <b>frosty</b> (adj.) 嚴寒的；霜凍的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>frosty air stung my neck</b>. (冰冷的空氣刺痛了我的脖子。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">3. <b>frugal</b> (adj.) 節儉的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">Tom likes to live a <b>frugal lifestyle</b>. (Tom 喜歡節儉的生活方式。)</p>
+                <p class="mt-2 text-sm text-indigo-500 font-medium">💡 家教小訣竅：教材諧音記憶法「俘虜狗」，節儉到去抓流浪狗來換錢。</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">4. <b>fuel</b> (n.) 燃料</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The gasoline is a <b>fuel for the car</b> to move. (汽油是汽車行駛的燃料。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">5. <b>furlough</b> (v./n.) 休假；暫時解雇</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">During the pandemic, many companies <b>furloughed their employees</b>. (疫情期間，許多企業暫時解雇他們的員工。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">6. <b>furniture</b> (n.) 傢俱 (不可數名詞)</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">There are <b>several expensive pieces of furniture</b> in the house. (房子裡有幾件昂貴的傢俱。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">7. <b>gender</b> (n.) 性別</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">Nowadays, <b>gender equality</b> is an issue that people really care about. (當今，性別平等是個大家真的關心的議題。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">8. <b>generation</b> (n.) 世代</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">It's easy to have a <b>generation gap</b> when talking to your parents. (和自己的父母交談容易有代溝。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">9. <b>global</b> (adj.) 全球的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">Due to <b>global warming</b>, people are concerned that the house would be in the sea afterwards. (由於全球暖化，人們擔心房子在未來會淹沒在海裡。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-700">
+                <p class="text-lg">10. <b>hazardous</b> (adj.) 危險的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The haunted house is a <b>hazardous place</b> that people are scared of. (鬼屋是個人們害怕的危險場所。)</p>
+            </div>
+        </section>
+
+        <!-- Similar Words Section -->
+        <section id="content-similar" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fa-solid fa-vials mr-3 text-emerald-600"></i>相似字比較 (p. 76-77)</h2>
+            <div class="bg-white rounded-2xl shadow-md p-8 border border-gray-100 space-y-6">
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">1. <b>campaign / champion / champagne</b></p>
+                    <p class="text-gray-600 mt-2"><b>campaign</b> (活動/競選)；champion (冠軍)；champagne (香檳)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">2. <b>chore / chord / cord</b></p>
+                    <p class="text-gray-600 mt-2"><b>chore</b> (家務/雜事)；chord (和弦/弦)；cord (細繩)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">3. <b>cite / site / sight</b></p>
+                    <p class="text-gray-600 mt-2"><b>cite</b> (引用)；site (場所/網站)；sight (視覺/景色)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">4. <b>clash / crash / crush</b></p>
+                    <p class="text-gray-600 mt-2"><b>clash</b> (撞擊/衝突)；<b>crash</b> (碰撞/墜落)；<b>crush</b> (壓壞/一見鍾情)。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-emerald-800">5. <b>collar / cellar / color</b></p>
+                    <p class="text-gray-600 mt-2"><b>collar</b> (領子)；cellar (地窖)；color (顏色)。</p>
+                </div>
+                <div>
+                    <p class="text-lg font-bold text-emerald-800">6. <b>commerce / commence</b></p>
+                    <p class="text-gray-600 mt-2"><b>commerce</b> (商業)；<b>commence</b> (開始)。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collocation Section -->
+        <section id="content-collocation" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fa-solid fa-puzzle-piece mr-3 text-orange-600"></i>重要搭配詞與成語 (p. 66-67)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">1. <b>hear from</b></p>
+                    <p class="text-sm text-gray-500 mt-2">接到...的消息。I haven't <b>heard from</b> Kevin for a long time.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">2. <b>handwriting on the wall</b></p>
+                    <p class="text-sm text-gray-500 mt-2">不祥之兆。Seeing a crow is a <b>handwriting on the wall</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">3. <b>hand in</b></p>
+                    <p class="text-sm text-gray-500 mt-2">交出。老師要求學生三天內 <b>hand in the homeworks</b>。</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">4. <b>hold on to</b></p>
+                    <p class="text-sm text-gray-500 mt-2">保留；抓住機會。He <b>holds on to every chance</b> to become famous.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">5. <b>kill the goose that lays the golden eggs</b></p>
+                    <p class="text-sm text-gray-500 mt-2">殺雞取卵。如果你 <b>kill the goose</b>，你就會有麻煩。</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">6. <b>lay off</b></p>
+                    <p class="text-sm text-gray-500 mt-2">解雇。Many workers were <b>laid off</b> because of the economic depression.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">7. <b>let on</b></p>
+                    <p class="text-sm text-gray-500 mt-2">透露；洩漏。Please don't <b>let on to anyone</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">8. <b>look into</b></p>
+                    <p class="text-sm text-gray-500 mt-2">調查；凝視。The police will <b>look into the case</b>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="content-quiz" class="tab-content hidden">
+            <div id="quiz-card" class="bg-white rounded-3xl shadow-xl p-8 border border-indigo-50">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Day 05 實力檢測</h2>
+                    <span id="quiz-progress" class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full font-bold">1 / 10</span>
+                </div>
+
+                <div id="question-container">
+                    <p id="question-text" class="text-xl text-gray-700 mb-8 leading-relaxed font-medium"></p>
+                    <div id="options-list" class="space-y-4">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+
+                <div id="explanation-container" class="mt-8 p-6 bg-slate-50 rounded-2xl border-2 border-indigo-100 hidden explanation-box">
+                    <h4 class="font-bold text-indigo-900 mb-2 flex items-center">
+                        <i class="fa-solid fa-magnifying-glass mr-2"></i> 專業教練詳解：
+                    </h4>
+                    <p id="explanation-text" class="text-indigo-800 leading-relaxed"></p>
+                    <button onclick="nextQuestion()" class="mt-6 w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">
+                        理解了，換下一題 <i class="fa-solid fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+
+                <div id="result-screen" class="hidden text-center py-12">
+                    <div class="text-7xl mb-6">🚀</div>
+                    <h3 class="text-3xl font-extrabold text-gray-800 mb-2">本日目標達成！</h3>
+                    <p id="final-score" class="text-xl text-gray-600 mb-8"></p>
+                    <button onclick="restartQuiz()" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition">重新測驗</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('tab-' + tabId).classList.add('tab-active');
+            if (tabId === 'quiz') restartQuiz();
+        }
+
+        const quizData = [
+            {
+                q: "He lives a very ________ lifestyle to save more money for his future.",
+                o: ["global", "hazardous", "frugal", "frosty"],
+                a: 2,
+                e: "正確答案是 <b>frugal</b> (節儉的)。教材 p.39 特別提到 Tom 喜歡這種生活方式。記住教練教的「俘虜狗」諧音喔！"
+            },
+            {
+                q: "The company had to ________ hundreds of workers due to the economic depression.",
+                o: ["hand in", "lay off", "look into", "let on"],
+                a: 1,
+                e: "正確答案是 <b>lay off</b> (解雇)。教材 p.67 提到中國工人在經濟蕭條時期常遭遇此狀況。這在國營考試中是高頻詞彙。"
+            },
+            {
+                q: "Please ________ your assignments by the end of this Friday.",
+                o: ["hold on to", "hear from", "hand in", "lay off"],
+                a: 2,
+                e: "正確答案是 <b>hand in</b> (交出)。這是一個非常生活化且常考的校園/職場片語，意同於 submit。"
+            },
+            {
+                q: "There were many glass ________ scattered on the ground after the explosion.",
+                o: ["fragments", "generations", "genders", "furloughs"],
+                a: 0,
+                e: "正確答案是 <b>fragments</b> (碎片)。教材 p.38 舉例大樓倒塌時路上會有碎玻璃，這是描述物體破碎狀態的正確名詞。"
+            },
+            {
+                q: "Don't ________ the secret to anyone; it's strictly confidential.",
+                o: ["look into", "hand in", "let on", "lay off"],
+                a: 2,
+                e: "正確答案是 <b>let on</b> (透露)。教材 p.67 指出這代表洩漏機密 (confidential secret) 的行為。"
+            },
+            {
+                q: "Nowadays, people are increasingly concerned about ________ warming.",
+                o: ["hazardous", "frosty", "frugal", "global"],
+                a: 3,
+                e: "正確答案是 <b>global</b> (全球的)。教材 p.40 強調 global warming (全球暖化) 是大眾關心的議題。"
+            },
+            {
+                q: "The police decided to ________ the causes of the car accident.",
+                o: ["look into", "let on", "hand in", "hear from"],
+                a: 0,
+                e: "正確答案是 <b>look into</b> (調查)。教材 p.67 提到警察調查大樓窗戶或案件時會使用這個動詞片語。"
+            },
+            {
+                q: "The political ________ was very intense before the presidential election.",
+                o: ["champion", "champagne", "campaign", "commence"],
+                a: 2,
+                e: "正確答案是 <b>campaign</b> (活動/競選)。教材 p.76 相似字辨析：champion 是冠軍，campaign 才是競選活動。"
+            },
+            {
+                q: "He accidentally ________ his expensive watch when he dropped it on the floor.",
+                o: ["clashed", "crashed", "crushed", "commenced"],
+                a: 2,
+                e: "正確答案是 <b>crushed</b> (壓壞)。教材 p.76 指出 crush 有壓壞的意思；而 crash 通常指碰撞或墜毀。"
+            },
+            {
+                q: "Working for short-term profit while ignoring long-term goals is like ________.",
+                o: ["handwriting on the wall", "killing the goose that lays the golden eggs", "furloughing employees", "holding on to chances"],
+                a: 1,
+                e: "正確答案是 <b>killing the goose that lays the golden eggs</b> (殺雞取卵)。這是一個教材 p.67 收錄的經典成語，比喻眼光短淺。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const data = quizData[currentIdx];
+            document.getElementById('quiz-progress').innerText = `${currentIdx + 1} / ${quizData.length}`;
+            document.getElementById('question-text').innerText = data.q;
+            const list = document.getElementById('options-list');
+            list.innerHTML = '';
+            answered = false;
+            data.o.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option bg-white p-5 rounded-2xl font-bold flex items-center shadow-sm';
+                div.innerHTML = `<span class="mr-4 text-indigo-300">${String.fromCharCode(65 + i)}</span> ${opt}`;
+                div.onclick = () => selectOption(i, div);
+                list.appendChild(div);
+            });
+        }
+
+        function selectOption(idx, element) {
+            if (answered) return;
+            answered = true;
+            const data = quizData[currentIdx];
+            const options = document.querySelectorAll('.quiz-option');
+            if (idx === data.a) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                options[data.a].classList.add('correct');
+            }
+            document.getElementById('explanation-text').innerHTML = data.e;
+            document.getElementById('explanation-container').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                document.getElementById('explanation-container').classList.add('hidden');
+                showQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `本次訓練得分：${score * 10} 分 (${score} / ${quizData.length})`;
+        }
+    </script>
+</body>
+</html>
