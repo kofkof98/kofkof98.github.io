@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國營英文家教 - Day 07 學習與測驗 (KK音標版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .kk { font-family: 'Roboto', sans-serif; color: #4f46e5; font-weight: 500; }
+        .tab-active { color: #4338ca; border-bottom: 3px solid #4338ca; background-color: #eef2ff; }
+        .card { transition: all 0.3s ease; }
+        .quiz-option { border: 2px solid #e2e8f0; transition: all 0.2s; cursor: pointer; }
+        .correct { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; }
+        .wrong { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        b { font-weight: 700; color: #0f172a; }
+        .explanation-box { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white py-12 px-6 text-center shadow-lg">
+        <h1 class="text-3xl font-extrabold tracking-tight">國營英文高效準備：Day 07</h1>
+        <p class="mt-4 opacity-90 text-lg italic">M-O 系列單字、易混淆 E-F 字組、關鍵 Put 系列片語</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-8 px-4">
+        
+        <!-- Tab Navigation -->
+        <nav class="flex bg-white rounded-2xl shadow-md overflow-hidden mb-8 sticky top-4 z-30 border border-gray-100">
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn flex-1 py-4 font-bold text-gray-500 tab-active">單字字彙</button>
+            <button onclick="switchTab('similar')" id="tab-similar" class="tab-btn flex-1 py-4 font-bold text-gray-500">相似詞比較</button>
+            <button onclick="switchTab('collocation')" id="tab-collocation" class="tab-btn flex-1 py-4 font-bold text-gray-500">搭配詞介紹</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 py-4 font-bold text-gray-500">隨堂測驗</button>
+        </nav>
+
+        <!-- Vocabulary Section -->
+        <section id="content-vocab" class="tab-content space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center mb-4">核心字彙與 KK 音標 (M-O 系列)</h2>
+            
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">1. <b>magnificent</b> (adj.) <span class="kk">[mæɡˈnɪfəsnt]</span> 壯麗的；宏偉的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>magnificent waterfall</b> is a tourist attraction. (這座壯麗的瀑布是個觀光勝地。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">2. <b>maintenance</b> (n.) <span class="kk">[ˈmentənəns]</span> 維修；保養</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>maintenance of the machine</b> is very expensive. (這台機器的維修費用非常昂貴。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">3. <b>majority</b> (n.) <span class="kk">[məˈdʒɔrətɪ]</span> 大多數</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>majority of students</b> in this class are diligent. (這班的大多數學生都很勤奮。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">4. <b>manage</b> (v.) <span class="kk">[ˈmænɪdʒ]</span> 管理；經營；設法達成</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">He <b>managed to finish the work</b> on time despite the difficulties. (儘管有困難，他還是設法準時完成了工作。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">5. <b>marginal</b> (adj.) <span class="kk">[ˈmɑrdʒən!]</span> 邊緣的；微小的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">There has been only a <b>marginal improvement</b> in her English skills. (她的英文能力只有微小的進步。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">6. <b>mature</b> (adj.) <span class="kk">[məˈtjur]</span> 成熟的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">He is a <b>mature person</b> who thinks before he speaks. (他是個說話前會思考的成熟之人。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">7. <b>maximum</b> (n./adj.) <span class="kk">[ˈmæksəməm]</span> 最大值；最高的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>maximum speed limit</b> on this highway is 110 km/h. (這條高速公路的最高限速是 110 公里。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">8. <b>measure</b> (v./n.) <span class="kk">[ˈmɛʒɚ]</span> 測量；措施</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">We have to <b>take effective measures</b> to stop the spread of the virus. (我們必須採取有效措施來停止病毒傳播。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">9. <b>mention</b> (v.) <span class="kk">[ˈmɛnʃən]</span> 提到；提及</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">Don't <b>mention the accident</b> to her; she's still very upset. (別向她提到那次意外，她依然很難過。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">10. <b>monitor</b> (v./n.) <span class="kk">[ˈmɑnətɚ]</span> 監控；監視器</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The security cameras are used to <b>monitor the building</b>. (監視攝影機是用來監控這棟大樓的。)</p>
+            </div>
+        </section>
+
+        <!-- Similar Words Section -->
+        <section id="content-similar" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">相似字比較 (p. 78-79)</h2>
+            <div class="bg-white rounded-2xl shadow-md p-8 border border-gray-100 space-y-6">
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">1. <b>emigrate / immigrate</b></p>
+                    <p class="text-gray-600 mt-2"><b>emigrate</b> 是從本國「移往他國」；<b>immigrate</b> 是從外國「移入本國」。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">2. <b>eminent / imminent</b></p>
+                    <p class="text-gray-600 mt-2"><b>eminent</b> 是「著名的、卓越的」；<b>imminent</b> 是「即將發生的、迫近的」。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">3. <b>envelop / envelope</b></p>
+                    <p class="text-gray-600 mt-2"><b>envelop</b> (v.) 包圍、包裝；<b>envelope</b> (n.) 信封。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">4. <b>equable / equitable</b></p>
+                    <p class="text-gray-600 mt-2"><b>equable</b> 是形容天氣溫和或脾氣平穩；<b>equitable</b> 是形容公平合理的。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">5. <b>exalt / exult</b></p>
+                    <p class="text-gray-600 mt-2"><b>exalt</b> 是「讚揚、提升（地位）」；<b>exult</b> 是「欣喜、狂喜」。</p>
+                </div>
+                <div>
+                    <p class="text-lg font-bold text-indigo-700">6. <b>facial / facile</b></p>
+                    <p class="text-gray-600 mt-2"><b>facial</b> 是「臉部的」；<b>facile</b> 是「輕率的、容易得到的（帶貶義）」。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collocation Section -->
+        <section id="content-collocation" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">重要搭配詞與片語 (p. 70-71)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">1. <b>put off</b></p>
+                    <p class="text-sm text-gray-500 mt-2">推遲。Never <b>put off until tomorrow</b> what you can do today.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">2. <b>put up with</b></p>
+                    <p class="text-sm text-gray-500 mt-2">容忍。I can't <b>put up with your laziness</b> anymore.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">3. <b>prior to</b></p>
+                    <p class="text-sm text-gray-500 mt-2">在...之前。<b>Prior to the meeting</b>, we have to prepare the data.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">4. <b>provide someone with something</b></p>
+                    <p class="text-sm text-gray-500 mt-2">提供某人某物。The school <b>provides students with free lunch</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">5. <b>regardless of</b></p>
+                    <p class="text-sm text-gray-500 mt-2">不管、不顧。<b>Regardless of the weather</b>, the match will be held.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">6. <b>run out of</b></p>
+                    <p class="text-sm text-gray-500 mt-2">用光。The car <b>ran out of gas</b> in the middle of the road.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">7. <b>stand for</b></p>
+                    <p class="text-sm text-gray-500 mt-2">代表。What does <b>CPC stand for</b>? (中油代表什麼？)</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">8. <b>show off</b></p>
+                    <p class="text-sm text-gray-500 mt-2">炫耀。He likes to <b>show off his new car</b>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="content-quiz" class="tab-content hidden">
+            <div id="quiz-card" class="bg-white rounded-3xl shadow-xl p-8 border border-indigo-50">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Day 07 實力檢測</h2>
+                    <span id="quiz-progress" class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full font-bold">1 / 10</span>
+                </div>
+
+                <div id="question-container">
+                    <p id="question-text" class="text-xl text-gray-700 mb-8 leading-relaxed font-medium"></p>
+                    <div id="options-list" class="space-y-4">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+
+                <div id="explanation-container" class="mt-8 p-6 bg-slate-50 rounded-2xl border-2 border-indigo-100 hidden explanation-box">
+                    <h4 class="font-bold text-indigo-900 mb-2 flex items-center">
+                        <i class="fa-solid fa-graduation-cap mr-2"></i> 教練詳解：
+                    </h4>
+                    <p id="explanation-text" class="text-indigo-800 leading-relaxed"></p>
+                    <button onclick="nextQuestion()" class="mt-6 w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">
+                        點擊下一題 <i class="fa-solid fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+
+                <div id="result-screen" class="hidden text-center py-12">
+                    <div class="text-7xl mb-6">🏆</div>
+                    <h3 class="text-3xl font-extrabold text-gray-800 mb-2">本日練習達成！</h3>
+                    <p id="final-score" class="text-xl text-gray-600 mb-8"></p>
+                    <button onclick="restartQuiz()" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition">重新測驗</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('tab-' + tabId).classList.add('tab-active');
+            if (tabId === 'quiz') restartQuiz();
+        }
+
+        const quizData = [
+            {
+                q: "The company needs to ________ regular checks on all power station equipment.",
+                o: ["monitor", "magnificent", "marginal", "mention"],
+                a: 0,
+                e: "正確答案是 <b>monitor</b> (監控)。教材 p.47 提到監控大樓或設備的安全性，常與 regular checks (定期檢查) 連用。"
+            },
+            {
+                q: "The government decided to ________ the meeting due to the typhoon.",
+                o: ["put up with", "put off", "run out of", "show off"],
+                a: 1,
+                e: "正確答案是 <b>put off</b> (延期)。教材 p.70 舉例 put off until tomorrow，這是 postpone 的同義詞，國營考試常客。"
+            },
+            {
+                q: "A storm is ________; everyone should head to the shelter immediately.",
+                o: ["eminent", "imminent", "equitable", "facile"],
+                a: 1,
+                e: "正確答案是 <b>imminent</b> (即將發生的)。教材 p.78 辨析：eminent 是卓越的，imminent 才是迫近的（通常指不好的事）。"
+            },
+            {
+                q: "We must take ________ to prevent the machines from rusting.",
+                o: ["maintenance", "measures", "majorities", "maximums"],
+                a: 1,
+                e: "正確答案是 <b>measures</b> (措施)。教材 p.46 舉例 take effective measures (採取有效措施)，這是固定的動名詞搭配。"
+            },
+            {
+                q: "I cannot ________ his rude behavior any longer.",
+                o: ["stand for", "show off", "put up with", "run out of"],
+                a: 2,
+                e: "正確答案是 <b>put up with</b> (容忍)。教材 p.70 指出這等於 tolerate。國營考試中常考其三字連用的結構。"
+            },
+            {
+                q: "The cost of ________ for the solar panels is lower than expected.",
+                o: ["maintenance", "legislation", "latitude", "majority"],
+                a: 0,
+                e: "正確答案是 <b>maintenance</b> (維修/保養)。教材 p.45 中強調機器設備需要保養費用。"
+            },
+            {
+                q: "They are looking for a ________ person to lead the new department.",
+                o: ["facile", "mature", "magnificent", "marginal"],
+                a: 1,
+                e: "正確答案是 <b>mature</b> (成熟的)。教材 p.46 形容一個說話前會深思熟慮的人為 mature person。"
+            },
+            {
+                q: "The charity ________ the poor families ________ food and clothing.",
+                o: ["provides...with", "puts...off", "runs...out of", "stands...for"],
+                a: 0,
+                e: "正確答案是 <b>provide someone with something</b>。教材 p.71 重點搭配詞，考查介系詞 with 的用法。"
+            },
+            {
+                q: "The ________ number of people who can fit in the elevator is eight.",
+                o: ["marginal", "mature", "maximum", "eminent"],
+                a: 2,
+                e: "正確答案是 <b>maximum</b> (最大的)。教材 p.46 提到最高限額或最大數值。"
+            },
+            {
+                q: "The new tax law will affect everyone, ________ their income levels.",
+                o: ["regardless of", "prior to", "on account of", "on behalf of"],
+                a: 0,
+                e: "正確答案是 <b>regardless of</b> (不管)。教材 p.71 舉例無論天氣如何，這裡指無論收入多寡，意思相同。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const data = quizData[currentIdx];
+            document.getElementById('quiz-progress').innerText = `${currentIdx + 1} / ${quizData.length}`;
+            document.getElementById('question-text').innerText = data.q;
+            const list = document.getElementById('options-list');
+            list.innerHTML = '';
+            answered = false;
+            data.o.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option bg-white p-5 rounded-2xl font-bold flex items-center shadow-sm';
+                div.innerHTML = `<span class="mr-4 text-indigo-300">${String.fromCharCode(65 + i)}</span> ${opt}`;
+                div.onclick = () => selectOption(i, div);
+                list.appendChild(div);
+            });
+        }
+
+        function selectOption(idx, element) {
+            if (answered) return;
+            answered = true;
+            const data = quizData[currentIdx];
+            const options = document.querySelectorAll('.quiz-option');
+            if (idx === data.a) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                options[data.a].classList.add('correct');
+            }
+            document.getElementById('explanation-text').innerHTML = data.e;
+            document.getElementById('explanation-container').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                document.getElementById('explanation-container').classList.add('hidden');
+                showQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `本次訓練得分：${score * 10} 分 (${score} / ${quizData.length})`;
+        }
+    </script>
+</body>
+</html>
