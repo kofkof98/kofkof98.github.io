@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國營英文家教 - Day 08 學習與測驗 (KK音標版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .kk { font-family: 'Roboto', sans-serif; color: #4f46e5; font-weight: 500; }
+        .tab-active { color: #4338ca; border-bottom: 3px solid #4338ca; background-color: #eef2ff; }
+        .card { transition: all 0.3s ease; }
+        .quiz-option { border: 2px solid #e2e8f0; transition: all 0.2s; cursor: pointer; }
+        .correct { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; }
+        .wrong { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        b { font-weight: 700; color: #0f172a; }
+        .explanation-box { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white py-12 px-6 text-center shadow-lg">
+        <h1 class="text-3xl font-extrabold tracking-tight">國營英文高效準備：Day 08</h1>
+        <p class="mt-4 opacity-90 text-lg italic">P-Q 系列單字、拼寫發音辨析、Take/Turn 系列片語</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-8 px-4">
+        
+        <!-- Tab Navigation -->
+        <nav class="flex bg-white rounded-2xl shadow-md overflow-hidden mb-8 sticky top-4 z-30 border border-gray-100">
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn flex-1 py-4 font-bold text-gray-500 tab-active">單字字彙</button>
+            <button onclick="switchTab('similar')" id="tab-similar" class="tab-btn flex-1 py-4 font-bold text-gray-500">相似詞比較</button>
+            <button onclick="switchTab('collocation')" id="tab-collocation" class="tab-btn flex-1 py-4 font-bold text-gray-500">搭配詞介紹</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 py-4 font-bold text-gray-500">隨堂測驗</button>
+        </nav>
+
+        <!-- Vocabulary Section -->
+        <section id="content-vocab" class="tab-content space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center mb-4">核心字彙與 KK 音標 (P-Q 系列)</h2>
+            
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">1. <b>passion</b> (n.) <span class="kk">[ˈpæʃən]</span> 熱情</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">He has <b>a passion for music</b>. (他對音樂充滿熱情。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">2. <b>pension</b> (n.) <span class="kk">[ˈpɛnʃən]</span> 津貼；退休金</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">He lives on a <b>government pension</b>. (他靠政府退休金生活。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">3. <b>permanent</b> (adj.) <span class="kk">[ˈpɝmənənt]</span> 永恆的；固定的；永久的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The <b>permanent tooth</b> will grow after the milk tooth falls out. (乳牙掉落後，恆久齒會長出來。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">4. <b>pessimistic</b> (adj.) <span class="kk">[ˌpɛsəˈmɪstɪk]</span> 悲觀的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">You should not <b>be pessimistic about your future</b>. (你不應該對你的未來感到悲觀。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">5. <b>pleasant</b> (adj.) <span class="kk">[ˈplɛzənt]</span> 令人愉快的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">We had a <b>pleasant conversation</b> last night. (我們昨晚有一場愉快的交談。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">6. <b>polish</b> (v.) <span class="kk">[ˈpɑlɪʃ]</span> 擦亮；磨光</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">Please <b>polish your shoes</b> before the meeting. (會議前請把你的鞋子擦亮。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">7. <b>poverty</b> (n.) <span class="kk">[ˈpɑvɚtɪ]</span> 貧窮</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">There are many people <b>living in extreme poverty</b> in this area. (這個地區有很多人生活在極度貧窮中。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">8. <b>precious</b> (adj.) <span class="kk">[ˈprɛʃəs]</span> 珍貴的</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">Time is the <b>most precious thing</b> in the world. (時間是世界上最珍貴的東西。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">9. <b>prohibit</b> (v.) <span class="kk">[proˈhɪbɪt]</span> 禁止</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">The law <b>prohibits smoking</b> in public places. (法律禁止在公共場所吸菸。)</p>
+            </div>
+
+            <div class="card bg-white p-6 rounded-2xl shadow-sm border-l-8 border-indigo-500">
+                <p class="text-lg">10. <b>qualify</b> (v.) <span class="kk">[ˈkwɑləˌfaɪ]</span> 使具備資格</p>
+                <p class="mt-3 text-gray-600 border-l-4 border-gray-100 pl-4 italic">You have to pass the exam to <b>qualify for the job</b>. (你必須通過考試才能取得這份工作的資格。)</p>
+            </div>
+        </section>
+
+        <!-- Similar Words Section -->
+        <section id="content-similar" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">相似字比較 (p. 80-81)</h2>
+            <div class="bg-white rounded-2xl shadow-md p-8 border border-gray-100 space-y-6">
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">1. <b>fair / fare / fear</b></p>
+                    <p class="text-gray-600 mt-2"><b>fair</b> 是「公平的、博覽會」；<b>fare</b> 是「車費、伙食」；<b>fear</b> 是「恐懼」。注意 fare 常見於交通工具的計費方式。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">2. <b>farther / further</b></p>
+                    <p class="text-gray-600 mt-2"><b>farther</b> 通常指空間上的「更遠」；<b>further</b> 除了距離，更常用於表示「程度、時間上的進一步」。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">3. <b>flaunt / flout</b></p>
+                    <p class="text-gray-600 mt-2"><b>flaunt</b> 是「炫耀、誇耀」；<b>flout</b> 是「輕視、嘲笑、違抗」。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">4. <b>gamble / gambol</b></p>
+                    <p class="text-gray-600 mt-2"><b>gamble</b> 是「賭博、投機」；<b>gambol</b> 是「跳躍、嬉戲」。</p>
+                </div>
+                <div class="pb-4 border-b">
+                    <p class="text-lg font-bold text-indigo-700">5. <b>gate / gait</b></p>
+                    <p class="text-gray-600 mt-2"><b>gate</b> 是「大門、登機門」；<b>gait</b> 是「步態、步法」。</p>
+                </div>
+                <div>
+                    <p class="text-lg font-bold text-indigo-700">6. <b>history / story</b></p>
+                    <p class="text-gray-600 mt-2"><b>history</b> 是指真實發生的「歷史」；<b>story</b> 是指「故事」，可能是虛構的。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collocation Section -->
+        <section id="content-collocation" class="tab-content hidden space-y-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">重要搭配詞與片語 (p. 71-72)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">1. <b>take advantage of</b></p>
+                    <p class="text-sm text-gray-500 mt-2">利用；占便宜。You should <b>take advantage of this opportunity</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">2. <b>take care of</b></p>
+                    <p class="text-sm text-gray-500 mt-2">照顧；處理。Please <b>take care of your younger sister</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">3. <b>take place</b></p>
+                    <p class="text-sm text-gray-500 mt-2">發生；舉行。The Olympic Games <b>take place every four years</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">4. <b>take part in</b></p>
+                    <p class="text-sm text-gray-500 mt-2">參加 (同 participate in)。Did you <b>take part in the activity</b>?</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">5. <b>talk someone into</b></p>
+                    <p class="text-sm text-gray-500 mt-2">說服某人做...。He <b>talked me into buying</b> the car.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">6. <b>think over</b></p>
+                    <p class="text-sm text-gray-500 mt-2">仔細考慮。I need time to <b>think over your suggestion</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">7. <b>turn down</b></p>
+                    <p class="text-sm text-gray-500 mt-2">拒絕；調低音量。She <b>turned down his invitation</b>.</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-t-4 border-orange-500">
+                    <p class="font-bold text-orange-900">8. <b>ups and downs</b></p>
+                    <p class="text-sm text-gray-500 mt-2">盛衰；浮沉。Every business has its <b>ups and downs</b>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="content-quiz" class="tab-content hidden">
+            <div id="quiz-card" class="bg-white rounded-3xl shadow-xl p-8 border border-indigo-50">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Day 08 實力檢測</h2>
+                    <span id="quiz-progress" class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full font-bold">1 / 10</span>
+                </div>
+
+                <div id="question-container">
+                    <p id="question-text" class="text-xl text-gray-700 mb-8 leading-relaxed font-medium"></p>
+                    <div id="options-list" class="space-y-4">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+
+                <div id="explanation-container" class="mt-8 p-6 bg-slate-50 rounded-2xl border-2 border-indigo-100 hidden explanation-box">
+                    <h4 class="font-bold text-indigo-900 mb-2 flex items-center">
+                        <i class="fa-solid fa-graduation-cap mr-2"></i> 教練詳解：
+                    </h4>
+                    <p id="explanation-text" class="text-indigo-800 leading-relaxed"></p>
+                    <button onclick="nextQuestion()" class="mt-6 w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">
+                        點擊下一題 <i class="fa-solid fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+
+                <div id="result-screen" class="hidden text-center py-12">
+                    <div class="text-7xl mb-6">🎯</div>
+                    <h3 class="text-3xl font-extrabold text-gray-800 mb-2">本日練習達成！</h3>
+                    <p id="final-score" class="text-xl text-gray-600 mb-8"></p>
+                    <button onclick="restartQuiz()" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition">重新測驗</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('tab-' + tabId).classList.add('tab-active');
+            if (tabId === 'quiz') restartQuiz();
+        }
+
+        const quizData = [
+            {
+                q: "He has to work hard because he solely lives on a government ________.",
+                o: ["passion", "pension", "poverty", "polish"],
+                a: 1,
+                e: "正確答案是 <b>pension</b> (退休金)。教材 p.50 提到靠政府退休金生活的情境，國營考試常考這類福利相關詞彙。"
+            },
+            {
+                q: "Don't be so ________; things will get better in the long run.",
+                o: ["permanent", "pessimistic", "pleasant", "precious"],
+                a: 1,
+                e: "正確答案是 <b>pessimistic</b> (悲觀的)。教材 p.51 舉例不要對未來感到悲觀，注意其拼寫。"
+            },
+            {
+                q: "The city council decided to ________ smoking in all public parks.",
+                o: ["prohibit", "qualify", "polish", "manage"],
+                a: 0,
+                e: "正確答案是 <b>prohibit</b> (禁止)。教材 p.53 提到法律禁止吸菸的例句，常用於法規說明。"
+            },
+            {
+                q: "We should ________ the discount to save some money during the shopping season.",
+                o: ["take part in", "take place", "take advantage of", "talk someone into"],
+                a: 2,
+                e: "正確答案是 <b>take advantage of</b> (利用)。教材 p.71 提到利用機會或優惠，這是極高頻的慣用語。"
+            },
+            {
+                q: "The artist wanted a ________ studio where he could keep all his paintings.",
+                o: ["permanent", "pleasant", "precious", "pessimistic"],
+                a: 0,
+                e: "正確答案是 <b>permanent</b> (固定的/永久的)。教材 p.51 舉例恆久齒與乳齒的對照，此處指長期的工作室。"
+            },
+            {
+                q: "We need to discuss this plan ________ before we make a final decision.",
+                o: ["farther", "further", "flaunt", "flout"],
+                a: 1,
+                e: "正確答案是 <b>further</b> (進一步地)。教材 p.80 辨析：farther 是物理距離，further 則是抽象的程度進展。"
+            },
+            {
+                q: "Applicants must have a degree in Engineering to ________ for this position.",
+                o: ["manage", "qualify", "polish", "mention"],
+                a: 1,
+                e: "正確答案是 <b>qualify</b> (具備資格)。教材 p.53 舉例通過考試取得工作資格，注意其後常接介系詞 for。"
+            },
+            {
+                q: "I am sorry, but I have to ________ your request for a salary increase.",
+                o: ["turn off", "turn down", "think over", "take care of"],
+                a: 1,
+                e: "正確答案是 <b>turn down</b> (拒絕)。教材 p.72 指出 turn down 等同於 refuse，常用於拒絕邀請或要求。"
+            },
+            {
+                q: "Diamonds are very ________ because they are rare and beautiful.",
+                o: ["precious", "permanent", "pleasant", "pessimistic"],
+                a: 0,
+                e: "正確答案是 <b>precious</b> (珍貴的)。教材 p.52 強調時間或物質的珍貴性。"
+            },
+            {
+                q: "Like most startups, the company has had its ________ in its first year.",
+                o: ["ups and downs", "fair and fare", "history and story", "gates and gaits"],
+                a: 0,
+                e: "正確答案是 <b>ups and downs</b> (浮沉/盛衰)。教材 p.72 提到事業的起伏，是非常地道的商用英文片語。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const data = quizData[currentIdx];
+            document.getElementById('quiz-progress').innerText = `${currentIdx + 1} / ${quizData.length}`;
+            document.getElementById('question-text').innerText = data.q;
+            const list = document.getElementById('options-list');
+            list.innerHTML = '';
+            answered = false;
+            data.o.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option bg-white p-5 rounded-2xl font-bold flex items-center shadow-sm';
+                div.innerHTML = `<span class="mr-4 text-indigo-300">${String.fromCharCode(65 + i)}</span> ${opt}`;
+                div.onclick = () => selectOption(i, div);
+                list.appendChild(div);
+            });
+        }
+
+        function selectOption(idx, element) {
+            if (answered) return;
+            answered = true;
+            const data = quizData[currentIdx];
+            const options = document.querySelectorAll('.quiz-option');
+            if (idx === data.a) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                options[data.a].classList.add('correct');
+            }
+            document.getElementById('explanation-text').innerHTML = data.e;
+            document.getElementById('explanation-container').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                document.getElementById('explanation-container').classList.add('hidden');
+                showQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `本次訓練得分：${score * 10} 分 (${score} / ${quizData.length})`;
+        }
+    </script>
+</body>
+</html>
