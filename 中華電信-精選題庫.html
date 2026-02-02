@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中華電信-精選題庫</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, sans-serif; }
+        .option-btn:hover { transform: translateY(-1px); }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+    <nav class="bg-blue-700 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold cursor-pointer" onclick="app.goHome()">中華電信-精選題庫</h1>
+            <button onclick="app.clearData()" class="text-sm bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition">
+                清除紀錄
+            </button>
+        </div>
+    </nav>
+
+    <div id="app" class="container mx-auto p-4 max-w-3xl">
+        </div>
+
+    <script>
+        // --- 1. 資料庫 (從附件內容提取) ---
+        const rawData = [
+            // --- AI、機械學習、深度學習 ---
+            { category: "AI、機械學習、深度學習", q: "AI最初的概念是什麼?", options: ["計算機科學", "資訊科學", "機器智慧", "人工智慧"], a: "D", exp: "AI 最初的概念即為人工智慧，是指讓機器模仿人類智慧和思考方式的技術和方法。" },
+            { category: "AI、機械學習、深度學習", q: "機器學習是一種什麼樣的技術?", options: ["一種人工智慧技術", "一種大數據技術", "一種軟體開發技術", "一種硬體設計技術"], a: "A", exp: "機器學習是人工智慧的一個分支，是通過讓機器自主學習來實現人工智慧的技術。" },
+            { category: "AI、機械學習、深度學習", q: "深度學習是一種什麼樣的技術?", options: ["一種人工智慧技術", "一種大數據技術", "一種軟體開發技術", "一種硬體設計技術"], a: "A", exp: "深度學習是人工智慧的一個分支，是基於神經網路的機器學習方法。" },
+            { category: "AI、機械學習、深度學習", q: "機器學習的類型包括哪些?", options: ["半監督學習、非監督學習和強化學習", "監督學習、半監督學習和強化學習", "監督學習、非監督學習和強化學習", "監督學習、非監督學習、半監督學習和強化學習"], a: "D", exp: "機器學習的類型分別為監督學習、非監督學習、半監督學習和強化學習。" },
+            { category: "AI、機械學習、深度學習", q: "非監督學習中的目標是什麼?", options: ["預測輸出值", "識別類別標籤", "發現數據中的模式和結構", "給出正確的答案"], a: "C", exp: "非監督學習的目標是從數據中發現模式和結構。" },
+            { category: "AI、機械學習、深度學習", q: "強化學習中的“環境”指的是什麼?", options: ["數據集", "模型參數", "學習目標", "與智慧體交互的外部世界"], a: "D", exp: "強化學習中的“環境”指與智慧體進行交互的外部世界。" },
+            { category: "AI、機械學習、深度學習", q: "人工神經網路中的“神經元”指的是什麼?", options: ["網路層次結構", "網路設計參數", "神經元之間的連接", "神經元的計算單元"], a: "D", exp: "“神經元”是神經網路中的計算單元，能夠對輸入進行計算。" },
+            { category: "AI、機械學習、深度學習", q: "梯度下降是什麼?", options: ["一種神經網路的構建方法", "一種機器學習算法", "一種深度學習框架", "一種通訊網路的框架"], a: "B", exp: "梯度下降是一種優化算法，用於調整機器學習模型的參數。" },
+            { category: "AI、機械學習、深度學習", q: "下列何者不是人工智慧的分支?", options: ["機器學習", "深度學習", "大數據", "自然語言處理"], a: "C", exp: "大數據並不是人工智慧的分支，但它是人工智慧技術發展的重要支撐。" },
+            { category: "AI、機械學習、深度學習", q: "下列哪種學習方式是無監督學習?", options: ["分類", "回歸", "強化學習", "以上皆非"], a: "A", exp: "分類是一種無監督學習方式(依題目解析邏輯)。*註：通常分類是監督學習，但依題目解析分類不需事先標記數據類型分類。" },
+            { category: "AI、機械學習、深度學習", q: "深度學習中，什麼是卷積神經網路?", options: ["一種神經網路架構", "一種優化算法", "一種遺傳算法", "一種激勵函數"], a: "A", exp: "卷積神經網路(CNN)是一種深度學習的神經網路架構。" },
+
+            // --- WI-FI6 ---
+            { category: "WI-FI6", q: "以下哪種頻段不是Wi-Fi6支援的頻段?", options: ["2.4 GHz", "5 GHz", "2.4及5GHz", "60 GHz"], a: "D", exp: "Wi-Fi 6支援2.4GHz、5GHz和6GHz，但不支援60GHz。" },
+            { category: "WI-FI6", q: "Wi-Fi 6中的OFDMA是什麼意思?", options: ["單載波頻分多址", "正交分頻多路徑傳輸", "正交分頻多址", "正交分頻多工"], a: "C", exp: "OFDMA是正交分頻多址，用於提高頻譜效率。" },
+            { category: "WI-FI6", q: "Wi-Fi 6中的MU-MIMO是什麼意思?", options: ["多載波頻分多址", "多點存取", "多用戶多輸入多輸出", "多點分發服務"], a: "C", exp: "MU-MIMO是多用戶多輸入多輸出。" },
+            { category: "WI-FI6", q: "以下哪種技術不是Wi-Fi6中用於提高速率和容量的技術?", options: ["1024-QAM", "BSS Coloring", "Beamforming", "MIMO"], a: "B", exp: "BSS Coloring是用於減少干擾和提高效率，不是直接提高速率。" },
+            { category: "WI-FI6", q: "以下哪種技術不是Wi-Fi6中用於提高安全性的技術?", options: ["WPA3", "OWE", "enhanced open", "WPA2"], a: "D", exp: "WPA2是舊的標準，Wi-Fi 6主要推動WPA3。" },
+            { category: "WI-FI6", q: "Wi-Fi 6中的TPC是什麼意思?", options: ["發射功率控制", "通道選擇", "動態頻道選擇", "頻寬控制"], a: "A", exp: "TPC是Transmit Power Control (發射功率控制)。" },
+            { category: "WI-FI6", q: "Wi-Fi 6中的TWT是什麼意思?", options: ["通訊等待時間", "目標喚醒時間", "傳輸等待時間", "無線傳輸時間"], a: "B", exp: "TWT是Target Wake Time (目標喚醒時間)，用於省電。" },
+            { category: "WI-FI6", q: "Wi-Fi 6中的AX是什麼意思?", options: ["802.11Ax 標準", "高速無線存取技術", "無線網路加速器", "5G技術"], a: "A", exp: "AX是802.11ax標準的簡稱。" },
+            { category: "WI-FI6", q: "Wi-Fi 6中的空時區塊編碼(STBC)是什麼意思?", options: ["多載波頻分多址", "多用戶通信技術", "多點存取", "空時區塊編碼"], a: "D", exp: "STBC是Space Time Block Coding，用於提高傳輸速率和可靠性。" },
+            { category: "WI-FI6", q: "Wi-Fi 6中的AP是什麼意思?", options: ["無線網路加速器", "無線存取點", "路由器", "調變解調器"], a: "B", exp: "AP是Access Point (無線存取點)。" },
+
+            // --- 5G ---
+            { category: "5G", q: "以下哪種頻譜不屬於5G使用的頻段?", options: ["2.4 GHz", "28 GHz", "39 GHz", "60 GHz"], a: "A", exp: "2.4 GHz是4G及以下使用的頻段。" },
+            { category: "5G", q: "以下哪種技術不是5G中重要的技術之一?", options: ["MIMO", "OFDM", "CDMA", "massive MIMO"], a: "C", exp: "CDMA是3G時代的技術。" },
+            { category: "5G", q: "以下哪種技術不是5G中用於增加頻譜效率的技術?", options: ["beamforming", "carrier aggregation", "MU-MIMO", "CDMA"], a: "D", exp: "CDMA不是用於增加頻譜效率的技術。" },
+            { category: "5G", q: "以下哪種技術不是5G中用於提高傳輸速率的技術?", options: ["Massive MIMO", "Small Cell", "Carrier aggregation", "Beamforming"], a: "B", exp: "Small Cell用於提高覆蓋面積，不直接用於提高單個連接速率。" },
+            { category: "5G", q: "以下哪種技術不是5G中用於降低延遲的技術?", options: ["Edge Computing", "URLLC", "MEC", "Massive MIMO"], a: "D", exp: "Massive MIMO用於提高頻譜效率，非降低延遲。" },
+            { category: "5G", q: "以下哪種頻譜對於室內覆蓋更加重要?", options: ["28 GHz", "39 GHz", "60 GHz", "2.4 GHz"], a: "D", exp: "2.4 GHz穿透力較強。" },
+            { category: "5G", q: "以下哪種技術是5G中用於實現多重存取的技術?", options: ["FDMA", "CDMA", "TDMA", "SDMA"], a: "D", exp: "SDMA (空間分割多址)是5G中用於實現多重存取的一種技術。" },
+            { category: "5G", q: "5G NR通訊系統中，下列哪個技術使其能夠在頻譜效率和傳輸速率方面比4G LTE更優秀?", options: ["Massive MIMO", "Beamforming", "Network slicing", "Virtualized RAN"], a: "A", exp: "Massive MIMO利用大量天線提高效率。" },
+            { category: "5G", q: "5G NR通訊系統中，下列哪個特性使其能夠更好地支援大量設備和大量數據的傳輸?", options: ["mmWave", "Dual connectivity", "Network slicing", "Massive MIMO"], a: "C", exp: "Network slicing (網路切片)能分割虛擬網路以支援不同需求。" },
+            { category: "5G", q: "5G NR使用的MIMO天線技術比4G LTE更高效的原因是什麼?", options: ["更多天線", "更高頻率信號", "更高效算法", "以上都是"], a: "D", exp: "包含Massive MIMO、高頻信號及高效算法。" },
+
+            // --- 大數據 ---
+            { category: "大數據", q: "大數據最主要的特點是什麼?", options: ["資料量大", "資料種類多樣", "資料處理速度快", "資料分析準確度高"], a: "A", exp: "資料量大是其最主要的特徵。" },
+            { category: "大數據", q: "下列哪個不是大數據的主要技術?", options: ["Hadoop", "Spark", "Machine Learning", "HTML"], a: "D", exp: "HTML是網頁設計語言，非大數據技術。" },
+            { category: "大數據", q: "大數據是指什麼?", options: ["數量極大的資料", "數學概念", "特定軟體", "網路安全技術"], a: "A", exp: "數量巨大、多樣化、複雜度高的資料集合。" },
+            { category: "大數據", q: "大數據的4大特點包括哪些?", options: ["巨量性、時效性、多樣性、真實性", "安全性、保密性、完整性、真實性", "速度、容量、價格、效能", "以上皆非"], a: "A", exp: "4V: Volume, Velocity, Variety, Veracity。" },
+
+            // --- 元宇宙 ---
+            { category: "元宇宙", q: "元宇宙的應用最廣泛的是哪一個領域?", options: ["遊戲", "金融", "醫療", "工業製造"], a: "A", exp: "元宇宙最早且最廣泛應用於遊戲。" },
+            { category: "元宇宙", q: "元宇宙中的NPC是什麼意思?", options: ["新世代卡牌遊戲", "無人機飛控器", "非玩家角色", "虛擬實境裝置"], a: "C", exp: "Non-Player Character，非玩家角色。" },
+            { category: "元宇宙", q: "哪種技術將虛擬元素與現實世界相結合，並讓用戶可以看到和互動虛擬物體與現實環境的結合?", options: ["AR", "VR", "MR", "AI"], a: "C", exp: "MR (混合實境) 強調虛擬物體和現實物體之間的互動和融合。" },
+
+            // --- 區塊鏈 ---
+            { category: "區塊鏈", q: "區塊鏈是什麼?", options: ["數位貨幣", "去中心化的資料庫", "加密技術", "網際網路協議"], a: "B", exp: "區塊鏈是一種去中心化、公開、安全的資料庫。" },
+            { category: "區塊鏈", q: "區塊鏈的主要應用場景是什麼?", options: ["金融交易", "物聯網", "社交媒體", "雲端計算"], a: "A", exp: "最初應用於比特幣，廣泛用於金融。" },
+            { category: "區塊鏈", q: "以下哪個不是區塊鏈的基礎原理?", options: ["非對稱加密", "共識機制", "去中心化", "交易手續費"], a: "D", exp: "交易手續費是經濟機制，非基礎技術原理。" },
+            { category: "區塊鏈", q: "在區塊鏈中，交易在被添加到區塊之前需要先經過什麼過程?", options: ["Hashing", "Digital signature", "Mining", "Verification"], a: "D", exp: "需要經過驗證(Verification)確保合法性。" },
+            { category: "區塊鏈", q: "區塊鏈的主要特點是?", options: ["雲端計算", "物聯網", "資料安全和信任", "機器學習"], a: "C", exp: "建立去中心化不可竄改的資料庫，提供信任。" },
+            { category: "區塊鏈", q: "在區塊鏈技術中，以下哪個過程是不需要使用加密算法的?", options: ["挖礦", "簽名", "證明", "共識"], a: "D", exp: "共識機制主要透過協作確認一致性，機制本身不一定全是加密算法。" },
+
+            // --- 雲端計算 ---
+            { category: "雲端計算", q: "雲端計算的優點是什麼?", options: ["提高資源利用率並節省成本", "提高數據安全性", "提高設備運行速度", "降低延遲"], a: "A", exp: "按需使用資源，節省硬體成本。" },
+            { category: "雲端計算", q: "下列哪種技術被用於在雲端環境中部署和管理軟體應用程序?", options: ["虛擬化技術", "資源管理技術", "數據加密技術", "軟體開發技術"], a: "A", exp: "虛擬化技術是雲端計算的核心。" },
+            { category: "雲端計算", q: "雲端計算的服務模式主要有哪些?", options: ["IAAS, SAAS, PAAS", "DAAS, CAAS, StAAS", "CAAS, NAAS, SAAS", "MAAS, AAAS, MnSAAS"], a: "A", exp: "IaaS (基礎設施), PaaS (平台), SaaS (軟體)。" },
+            { category: "雲端計算", q: "下列何者不是雲端計算的部署模式?", options: ["公有雲", "私有雲", "混合雲", "個人雲"], a: "D", exp: "個人雲不是公認的標準部署模式。" },
+            { category: "雲端計算", q: "雲端計算的核心是什麼?", options: ["人工智慧", "大數據", "伺服器虛擬化", "區塊鏈"], a: "C", exp: "伺服器虛擬化技術將物理資源整合。" },
+            { category: "雲端計算", q: "哪種雲計算模型能提供商管理服務和提供應用程序?", options: ["IAAS", "PAAS", "SAAS", "沒有這種模型"], a: "C", exp: "SaaS (軟體即服務) 由提供商管理軟體。" },
+
+            // --- 邊緣計算 ---
+            { category: "邊緣計算", q: "何謂邊緣計算?", options: ["集中在中央伺服器", "分散到邊緣設備", "量子計算模型", "人工智慧模型"], a: "B", exp: "將計算過程分散到許多邊緣設備上。" },
+            { category: "邊緣計算", q: "邊緣計算的主要優勢是什麼?", options: ["提高運算速度效率", "降低成本能源", "提高資料安全性", "以上皆是"], a: "D", exp: "縮短傳輸距離，提高效率與安全性。" },
+            { category: "邊緣計算", q: "在邊緣計算中，何種技術可用於減少數據傳輸量?", options: ["機器學習", "模型壓縮", "人工智慧", "資料清理"], a: "B", exp: "模型壓縮可縮小模型以在邊緣設備運行。" },
+
+            // --- 物聯網 IOT ---
+            { category: "物聯網 IOT", q: "以下何者是物聯網中的重要元件?", options: ["感測器", "通訊協定", "伺服器", "以上皆是"], a: "D", exp: "物聯網系統需要感測器、通訊協定與伺服器。" },
+            { category: "物聯網 IOT", q: "物聯網中的邊緣計算是指什麼?", options: ["網路核心處理", "終端裝置處理", "感測器處理", "雲端處理"], a: "B", exp: "在終端裝置處理資料，減少傳輸負擔。" },
+            { category: "物聯網 IOT", q: "物聯網是指將許多智慧裝置透過什麼連接?", options: ["藍牙", "無線網路", "有線網路", "電源線"], a: "B", exp: "透過無線網路形成互聯。" },
+            { category: "物聯網 IOT", q: "物聯網中的MQTT是什麼?", options: ["資料傳輸協定", "數據庫系統", "網路安全協定", "機器學習算法"], a: "A", exp: "MQTT是輕量級資料傳輸協定。" },
+            { category: "物聯網 IOT", q: "物聯網中的RFID是什麼?", options: ["無線傳輸協定", "網路通信協定", "物理傳輸介面", "數據加密技術"], a: "A", exp: "RFID是一種無線傳輸協定。" },
+            { category: "物聯網 IOT", q: "以下哪個是物聯網的核心技術?", options: ["人工智慧", "區塊鏈", "5G", "傳感器"], a: "D", exp: "傳感器負責收集數據，是基礎。" },
+            { category: "物聯網 IOT", q: "在物聯網中，以下哪種通訊協議不適合於低功耗裝置?", options: ["ZigBee", "BLE", "Wi-Fi", "Lorawan"], a: "C", exp: "Wi-Fi功耗較高。" },
+
+            // --- 通訊系統與電腦網路 ---
+            { category: "通訊系統與電腦網路", q: "通信系統中，將訊息轉換成信號的過程稱為什麼?", options: ["調變", "解調", "編碼", "解碼"], a: "A", exp: "調變是轉換成信號，解調是還原。" },
+            { category: "通訊系統與電腦網路", q: "通信系統中，信號在傳輸過程中會經歷什麼?", options: ["衰減", "干擾", "延遲", "以上皆是"], a: "D", exp: "信號會受到衰減、干擾和延遲影響。" },
+            { category: "通訊系統與電腦網路", q: "在調變過程中，如果載波頻率和調變信號頻率相同，會發生什麼現象?", options: ["AM調變", "FM調變", "PM調變", "不會發生調變"], a: "D", exp: "載波頻率需與信號不同才能調變。" },
+            { category: "通訊系統與電腦網路", q: "哪一種通訊系統是透過光纖來傳輸資料?", options: ["ADSL", "FTTH", "HFC", "DSL"], a: "B", exp: "FTTH (Fiber To The Home)。" },
+            { category: "通訊系統與電腦網路", q: "哪種數位調變方式可以在有限的頻寬內傳輸更多的資料?", options: ["BPSK", "QPSK", "16QAM", "64QAM"], a: "D", exp: "64QAM位元數更多，效率更高。" },
+            { category: "通訊系統與電腦網路", q: "以下哪一種通訊系統可以提供最高的傳輸速度?", options: ["GPRS", "EDGE", "HSPA+", "5G"], a: "D", exp: "5G速度最快。" },
+            { category: "通訊系統與電腦網路", q: "在通訊系統中，什麼是「半雙工」?", options: ["雙向同時通訊", "頻帶多訊號", "隨時通訊", "單向輪流通訊"], a: "D", exp: "同一時間只能有一方發送資料 (單向輪流)。" },
+            { category: "通訊系統與電腦網路", q: "OSI七層架構的第一層是?", options: ["實體層", "資料鏈接層", "網路層", "傳輸層"], a: "A", exp: "第一層是實體層 (Physical Layer)。" },
+            { category: "通訊系統與電腦網路", q: "SDN 架構中的三層分別是哪些?", options: ["設計層、控制層、管理層", "控制層、基礎架構層、應用服務層", "虛擬層、實體層、網路層", "安全層、連接層、分析層"], a: "B", exp: "控制層、基礎架構層、應用服務層。" },
+            { category: "通訊系統與電腦網路", q: "SDN 的數據轉發由誰負責?", options: ["控制器", "交換機", "路由器", "防火牆"], a: "B", exp: "交換機負責轉發，控制器負責邏輯。" },
+
+            // --- 計算機概論 ---
+            { category: "計算機概論", q: "以下何者不是計算機的組成部分?", options: ["CPU", "主機板", "記憶體", "電源供應器"], a: "D", exp: "電源供應器提供電力，非運算組成核心。" },
+            { category: "計算機概論", q: "計算機中的主記憶體是哪一種?", options: ["硬碟", "光碟", "快閃記憶體", "DRAM"], a: "D", exp: "DRAM是主記憶體。" },
+            { category: "計算機概論", q: "計算機的速度通常以何種單位表示?", options: ["GHz", "MB", "GB", "TB"], a: "A", exp: "GHz (頻率)。" },
+            { category: "計算機概論", q: "下列何者不是計算機的輸入設備?", options: ["鍵盤", "滑鼠", "螢幕", "麥克風"], a: "C", exp: "螢幕是輸出設備。" },
+            { category: "計算機概論", q: "計算機的二進位制是由哪兩個數字組成的?", options: ["0和1", "1和2", "0和2", "以上皆非"], a: "A", exp: "0和1。" },
+            { category: "計算機概論", q: "計算機的運算核心是什麼?", options: ["CPU", "主機板", "顯示卡", "記憶體"], a: "A", exp: "CPU (中央處理器)。" },
+            { category: "計算機概論", q: "下列哪種記憶體讀取速度最快?", options: ["ROM", "RAM", "Cache", "外部硬碟"], a: "C", exp: "Cache (快取記憶體) 最快。" },
+            { category: "計算機概論", q: "下列哪種文件格式通常用於儲存圖片?", options: ["PDF", "JPEG", "MP3", "TXT"], a: "B", exp: "JPEG是圖片格式。" },
+            { category: "計算機概論", q: "資訊安全的三個目標不包括?", options: ["機密性", "完整性", "可用性", "可靠性"], a: "D", exp: "CIA Triad: Confidentiality, Integrity, Availability。" }
+        ];
+
+        // --- 2. 應用程式邏輯 ---
+        const app = {
+            data: rawData,
+            categories: [],
+            currentCategory: null,
+            currentQuestionIndex: 0,
+            userProgress: {}, // { "category_index": status } status: 'correct'|'wrong'
+
+            init: function() {
+                // 提取分類
+                this.categories = [...new Set(this.data.map(item => item.category))];
+                // 讀取本地儲存
+                const saved = localStorage.getItem('telecom_exam_progress');
+                if (saved) {
+                    this.userProgress = JSON.parse(saved);
+                }
+                this.goHome();
+            },
+
+            saveProgress: function() {
+                localStorage.setItem('telecom_exam_progress', JSON.stringify(this.userProgress));
+            },
+
+            clearData: function() {
+                if(confirm("確定要清除所有作答紀錄嗎？")) {
+                    localStorage.removeItem('telecom_exam_progress');
+                    this.userProgress = {};
+                    this.goHome();
+                }
+            },
+
+            // --- 畫面渲染: 主選單 ---
+            goHome: function() {
+                const appDiv = document.getElementById('app');
+                let html = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 fade-in">`;
+                
+                this.categories.forEach(cat => {
+                    // 計算進度
+                    const catQuestions = this.data.filter(q => q.category === cat);
+                    const total = catQuestions.length;
+                    
+                    // 計算該分類已作答數
+                    let answered = 0;
+                    catQuestions.forEach(q => {
+                        const qKey = this.getQuestionKey(q);
+                        if (this.userProgress[qKey]) answered++;
+                    });
+                    
+                    const percent = Math.round((answered / total) * 100);
+
+                    html += `
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition cursor-pointer border-l-4 border-blue-500" onclick="app.startQuiz('${cat}')">
+                            <h2 class="text-lg font-bold mb-2 text-gray-800">${cat}</h2>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>進度: ${answered}/${total}</span>
+                                <span>${percent}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${percent}%"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                appDiv.innerHTML = html;
+            },
+
+            // --- 畫面渲染: 測驗介面 ---
+            startQuiz: function(category) {
+                this.currentCategory = category;
+                // 找出該分類所有題目
+                const catQuestions = this.data.filter(q => q.category === category);
+                
+                // 尋找第一題未作答的題目索引 (方便使用者繼續)
+                let firstUnanswered = 0;
+                for(let i=0; i<catQuestions.length; i++) {
+                    const key = this.getQuestionKey(catQuestions[i]);
+                    if (!this.userProgress[key]) {
+                        firstUnanswered = i;
+                        break;
+                    }
+                }
+                this.currentQuestionIndex = firstUnanswered;
+                this.renderQuestion();
+            },
+
+            renderQuestion: function() {
+                const catQuestions = this.data.filter(q => q.category === this.currentCategory);
+                
+                // 如果已經做完最後一題
+                if (this.currentQuestionIndex >= catQuestions.length) {
+                    this.showSummary(catQuestions.length);
+                    return;
+                }
+
+                const q = catQuestions[this.currentQuestionIndex];
+                const qKey = this.getQuestionKey(q);
+                const status = this.userProgress[qKey]; // undefined, 'correct', 'wrong'
+
+                const appDiv = document.getElementById('app');
+                
+                let optionsHtml = '';
+                const labels = ['A', 'B', 'C', 'D'];
+                q.options.forEach((opt, idx) => {
+                    let btnClass = "w-full text-left p-3 mb-2 rounded border border-gray-300 bg-white hover:bg-blue-50 transition option-btn";
+                    let disabled = "";
+                    
+                    // 如果已作答，顯示對錯樣式
+                    if (status) {
+                        disabled = "disabled";
+                        if (labels[idx] === q.a) {
+                            btnClass = "w-full text-left p-3 mb-2 rounded border border-green-500 bg-green-100 font-bold";
+                        } else if (status === 'wrong' && labels[idx] !== q.a) {
+                            // 這裡不特別標示選錯的項目，只標示正確答案，或者若有記錄使用者具體選了什麼可以標示。
+                            // 簡單起見，顯示正確答案即可。
+                        }
+                    }
+
+                    optionsHtml += `
+                        <button onclick="app.answer('${labels[idx]}')" ${disabled} class="${btnClass}">
+                            <span class="font-bold mr-2">${labels[idx]}.</span> ${opt}
+                        </button>
+                    `;
+                });
+
+                // 解析區塊 (已作答才顯示)
+                let feedbackHtml = '';
+                if (status) {
+                    const feedbackColor = status === 'correct' ? 'text-green-600' : 'text-red-600';
+                    const feedbackText = status === 'correct' ? '答對了！' : '答錯了！';
+                    feedbackHtml = `
+                        <div class="mt-4 p-4 bg-gray-50 rounded border-l-4 ${status === 'correct' ? 'border-green-500' : 'border-red-500'} fade-in">
+                            <p class="font-bold ${feedbackColor} mb-1">${feedbackText} 正確答案：${q.a}</p>
+                            <p class="text-gray-700 text-sm"><strong>解析：</strong>${q.exp}</p>
+                            <button onclick="app.nextQuestion()" class="mt-3 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-full md:w-auto">下一題</button>
+                        </div>
+                    `;
+                }
+
+                // 導航按鈕 (未作答時顯示跳過，已作答隱藏跳過)
+                let navButtons = '';
+                if (!status) {
+                    navButtons = `
+                        <div class="flex justify-between mt-4">
+                            <button onclick="app.goHome()" class="text-gray-500 hover:text-gray-700">返回選單</button>
+                            <button onclick="app.skipQuestion()" class="text-orange-500 hover:text-orange-700 font-bold">跳過此題 >></button>
+                        </div>
+                    `;
+                } else {
+                     navButtons = `
+                        <div class="flex justify-start mt-4">
+                            <button onclick="app.goHome()" class="text-gray-500 hover:text-gray-700">返回選單</button>
+                        </div>
+                    `;
+                }
+
+                appDiv.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <span class="text-sm font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded">${q.category}</span>
+                            <span class="text-gray-500 text-sm">第 ${this.currentQuestionIndex + 1} / ${catQuestions.length} 題</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-6 text-gray-800 leading-relaxed">${q.q}</h3>
+                        <div class="mb-4">
+                            ${optionsHtml}
+                        </div>
+                        ${feedbackHtml}
+                        ${navButtons}
+                    </div>
+                `;
+            },
+
+            answer: function(userChoice) {
+                const catQuestions = this.data.filter(q => q.category === this.currentCategory);
+                const q = catQuestions[this.currentQuestionIndex];
+                const isCorrect = userChoice === q.a;
+                
+                const qKey = this.getQuestionKey(q);
+                this.userProgress[qKey] = isCorrect ? 'correct' : 'wrong';
+                this.saveProgress();
+                this.renderQuestion();
+            },
+
+            skipQuestion: function() {
+                this.currentQuestionIndex++;
+                this.renderQuestion();
+            },
+
+            nextQuestion: function() {
+                this.currentQuestionIndex++;
+                this.renderQuestion();
+            },
+
+            showSummary: function(total) {
+                const appDiv = document.getElementById('app');
+                appDiv.innerHTML = `
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center fade-in">
+                        <h2 class="text-2xl font-bold text-green-600 mb-4">恭喜完成分類練習！</h2>
+                        <p class="text-gray-600 mb-6">您已經瀏覽完 "${this.currentCategory}" 的所有題目。</p>
+                        <button onclick="app.goHome()" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-bold">返回主選單</button>
+                    </div>
+                `;
+            },
+
+            // 輔助功能：產生題目的唯一鍵值 (因為題目沒有ID，用題目內容做Hash Key)
+            getQuestionKey: function(q) {
+                // 簡單去除非文字符號做key
+                return q.category + "_" + q.q.replace(/[^\w\u4e00-\u9fa5]/g, '').substring(0, 10);
+            }
+        };
+
+        // 啟動 App
+        app.init();
+
+    </script>
+</body>
+</html>
