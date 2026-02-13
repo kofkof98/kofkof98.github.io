@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 04 - 國營英文衝刺</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 30px;
+        }
+        .nav-header a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .section-title {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+        .word-card {
+            background: var(--card);
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .word-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .word-def {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        .example {
+            background-color: #f1f8ff;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 15px;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background-color: #f2f2f2;
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .options button:hover {
+            background: #e9ecef;
+        }
+        .options button.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .options button.wrong {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .btn-complete {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success);
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        .btn-complete:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-header">
+        <a href="index.html">← 回首頁</a>
+        <span>Day 04 / 30</span>
+    </div>
+
+    <h1>Day 04 學習內容</h1>
+    <p>範圍：教科書單字 p.14-15 / 相似字 p.75-76 / 搭配詞 p.61-63</p>
+
+    <!-- Part 1: Vocabulary -->
+    <h2 class="section-title">1. 單字字彙 (Vocabulary)</h2>
+    
+    <div class="word-card">
+        <div class="word-title">affect</div>
+        <div class="word-def">vt. 影響；感動；感染</div>
+        <div class="example">I think Roy is sincere and quite without affectation, which <strong>affects</strong> me a lot. 我覺得 Roy 很真誠且毫不做作，這影響我很大。<br><small>(補: affectation n. 做作；裝模作樣)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">afterwards</div>
+        <div class="word-def">adv. 之後；後來</div>
+        <div class="example"><strong>Afterwards</strong>, he became the husband of the good-looking woman. 後來，他成為一位漂亮女人的老公。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">affordable</div>
+        <div class="word-def">adj. 負擔得起的</div>
+        <div class="example">Nowadays, most of the computers are sold at <strong>affordable</strong> prices, which enables people to buy more computers. 當今，大部分電腦以可負擔的價格出售，這使得人們買更多台電腦。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">agenda</div>
+        <div class="word-def">n. [C] 議事日程；(會議的)議程</div>
+        <div class="example">There were several important items on the <strong>agenda</strong>. 會議議程中有幾項重要的議題。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">agent</div>
+        <div class="word-def">n. [C] 代理人；代理商；仲介</div>
+        <div class="example">You can get a plane ticket via a travel <strong>agent</strong>. 你可以透過旅行社購買一張飛機票。<br><small>(via = by means of 藉由)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">agriculture</div>
+        <div class="word-def">n. 農業</div>
+        <div class="example">Yunlin is an <strong>agricultural</strong> county of Taiwan. 雲林是台灣的農業縣。<br><small>(補: agricultural adj. 農業的)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">aggressive</div>
+        <div class="word-def">adj. 好鬥的；侵略的</div>
+        <div class="example">Every war is <strong>aggressive</strong>, we have to avoid the war from happening. 每場戰爭都是侵略性的，我們要避免戰爭發生。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">agreement</div>
+        <div class="word-def">n. 同意；協定</div>
+        <div class="example">We hope that Ukraine and Russia can reach an <strong>agreement</strong> to stop the war. 我們希望烏克蘭與俄羅斯能達成協議來停止戰爭。<br><small>(reach an agreement 達成協議)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">allergic</div>
+        <div class="word-def">adj. 對...過敏的；對...厭惡的</div>
+        <div class="example">The man is <strong>allergic to</strong> pollen. 這男人對花粉過敏。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">allocate</div>
+        <div class="word-def">vt. 分配；分派</div>
+        <div class="example">The CEO <strong>allocates</strong> necessary resources for the production of the products. 執行長分配必要的資源給產品生產。</div>
+    </div>
+
+    <!-- Part 2: Confusing Words -->
+    <h2 class="section-title">2. 相似字比較 (Confusing Words)</h2>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>bride</strong></td>
+                <td>n. 新娘</td>
+                <td>bridegroom (新郎)</td>
+            </tr>
+            <tr>
+                <td><strong>bribe</strong></td>
+                <td>n./v. 賄賂</td>
+                <td>用錢(bribe)收買人心</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>brown</strong></td>
+                <td>adj. 褐色</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>brow</strong></td>
+                <td>n. 眼眉</td>
+                <td>eyebrow</td>
+            </tr>
+            <tr>
+                <td><strong>blow</strong></td>
+                <td>v. 吹；n. 打擊</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>bullet</strong></td>
+                <td>n. 子彈</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>bulletin</strong></td>
+                <td>n. 公告</td>
+                <td>bulletin board (佈告欄)</td>
+            </tr>
+            <tr>
+                <td><strong>ballot</strong></td>
+                <td>n. 選票</td>
+                <td>cast a ballot (投票)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>crow</strong></td>
+                <td>n. 烏鴉</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>crown</strong></td>
+                <td>n. 王冠</td>
+                <td>The Crown (王權)</td>
+            </tr>
+            <tr>
+                <td><strong>credo</strong></td>
+                <td>n. 信條</td>
+                <td></td>
+            </tr>
+             <tr>
+                <td><strong>credence</strong></td>
+                <td>n. 信任</td>
+                <td>give credence to (相信...)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>clown</strong></td>
+                <td>n. 小丑</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>cow</strong></td>
+                <td>n. 牛</td>
+                <td>cowboy (牛仔)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>capitol</strong></td>
+                <td>n. 國會大廈</td>
+                <td>The Capitol (美國國會大廈)</td>
+            </tr>
+            <tr>
+                <td><strong>capital</strong></td>
+                <td>n. 首都；資本</td>
+                <td>capital city (首都)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>claim</strong></td>
+                <td>v./n. 宣稱；索賠；認領</td>
+                <td>claim a life (奪命)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>clan</strong></td>
+                <td>n. 家族；宗族</td>
+                <td>Clash of Clans (部落衝突)</td>
+            </tr>
+            <tr>
+                <td><strong>clam</strong></td>
+                <td>n. 蛤蜊</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>chunk</strong></td>
+                <td>n. 大塊；厚片</td>
+                <td>a chunk of meat</td>
+            </tr>
+            <tr>
+                <td><strong>church</strong></td>
+                <td>n. 教堂</td>
+                <td>go to church</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>casual</strong></td>
+                <td>adj. 隨意的；休閒的</td>
+                <td>casual clothes (便服)</td>
+            </tr>
+            <tr>
+                <td><strong>causal</strong></td>
+                <td>adj. 因果關係的</td>
+                <td>cause (原因) + al</td>
+            </tr>
+            <tr>
+                <td><strong>casualty</strong></td>
+                <td>n. 傷亡人數</td>
+                <td>accident casualty</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Part 3: Collocations -->
+    <h2 class="section-title">3. 搭配詞 (Collocations) - 範圍 p.61-63</h2>
+    <p>請特別注意粗體字的介系詞或動詞搭配。</p>
+
+    <div class="word-card">
+        <div class="word-title">31. bring up</div>
+        <div class="word-def">提出；養育</div>
+        <div class="example">The student <strong>brought up</strong> a problem about English collocation. 學生提出了一個關於英文搭配詞的問題。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">32. blow hot and cold</div>
+        <div class="word-def">前後矛盾；態度搖擺不定</div>
+        <div class="example">He's been <strong>blowing hot and cold</strong> about the trip to Japan. He changed the schedule every day. 他對日本之行一直前後矛盾。他每天都在改變行程。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">33. build on sand</div>
+        <div class="word-def">根基不穩 (建在沙子上)</div>
+        <div class="example">Your English proficiency is <strong>building on sand</strong>. Please practice more in daily life. 你的英語水平根基不穩。請在日常生活中多加練習。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">34. beat the air</div>
+        <div class="word-def">白費力氣 (打空氣)</div>
+        <div class="example">The movie is going to end in ten minutes. Don't <strong>beat the air</strong> to arrive there. 電影還有十分鐘就結束。不要白費力氣前往那裡。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">35. be based on</div>
+        <div class="word-def">以...為基礎；根據...改編</div>
+        <div class="example">The opera <strong>is based on</strong> a novel. 這歌劇是根據小說改編的。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">36. by all means</div>
+        <div class="word-def">好的；當然；務必</div>
+        <div class="example">Would you lend me some pencils? <strong>By all means</strong>! 你能借我一些鉛筆嗎？當然！</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">37. by no means</div>
+        <div class="word-def">絕不；一點也不</div>
+        <div class="example">Roy earns millions of dollars in a year. That is <strong>by no means</strong> a small accomplishment. Roy 一年賺了數百萬元。這絕不是一個小成就。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">38. block out</div>
+        <div class="word-def">阻擋；遮蔽</div>
+        <div class="example">That tall building outside the window <strong>blocks out</strong> the sun. 窗外那座高樓遮擋了陽光。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">39. come up with</div>
+        <div class="word-def">想出 (點子、計畫)</div>
+        <div class="example">My colleague <strong>came up with</strong> a great idea to solve the problems of our products. 我的同事想出了一個好主意來解決我們產品的問題。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">40. come into being</div>
+        <div class="word-def">產生；誕生</div>
+        <div class="example">No one knows how the products <strong>came into being</strong>. 沒有人知道這些產品是如何產生的。</div>
+    </div>
+
+    <!-- Part 4: Quiz -->
+    <div class="quiz-container">
+        <h2>Day 04 隨堂測驗 (共 10 題)</h2>
+        <p>測驗看看你是否掌握了今天的內容！</p>
+        
+        <div id="quiz-box">
+            <!-- Questions will be injected by JS -->
+        </div>
+        
+        <button id="finishBtn" class="btn-complete" disabled>完成今日學習 (請先完成測驗)</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "The manager asked the team to _____ a new marketing strategy.",
+            options: ["come up with", "come into being", "block out", "beat the air"],
+            correct: 0,
+            explanation: "come up with 意為「想出(點子、策略)」。"
+        },
+        {
+            q: "Smoking will _____ your health negatively.",
+            options: ["affect", "effect", "effort", "afford"],
+            correct: 0,
+            explanation: "affect 為動詞「影響」；effect 為名詞。"
+        },
+        {
+            q: "There is a connection between smoking and lung cancer. It is a _____ relationship.",
+            options: ["causal", "casual", "casualty", "capital"],
+            correct: 0,
+            explanation: "causal 意為「因果關係的」；casual 為「休閒的」。"
+        },
+        {
+            q: "The politician was accused of taking a _____.",
+            options: ["bride", "bribe", "brick", "bridge"],
+            correct: 1,
+            explanation: "bribe 意為「賄賂」；bride 為「新娘」。"
+        },
+        {
+            q: "We need to set an _____ for the meeting tomorrow.",
+            options: ["agent", "agenda", "agency", "agreement"],
+            correct: 1,
+            explanation: "agenda 意為「議程」。"
+        },
+        {
+            q: "The war resulted in heavy _____.",
+            options: ["casualties", "casuals", "causals", "capitals"],
+            correct: 0,
+            explanation: "casualty (複數 casualties) 意為「傷亡人數」。"
+        },
+        {
+            q: "He is _____ to peanuts.",
+            options: ["allergic", "aggressive", "affordable", "agricultural"],
+            correct: 0,
+            explanation: "allergic to 意為「對...過敏」。"
+        },
+        {
+            q: "Trying to convince him is like _____; he won't listen.",
+            options: ["beating the air", "building on sand", "coming into being", "blocking out"],
+            correct: 0,
+            explanation: "beat the air 意為「白費力氣」。"
+        },
+        {
+            q: "This movie is _____ a true story.",
+            options: ["based on", "brought up", "blown hot and cold", "come up with"],
+            correct: 0,
+            explanation: "be based on 意為「以...為基礎/根據」。"
+        },
+        {
+            q: "The government decided to _____ more funds to education.",
+            options: ["allocate", "allergic", "agree", "affect"],
+            correct: 0,
+            explanation: "allocate 意為「分配、撥款」。"
+        }
+    ];
+
+    const quizBox = document.getElementById('quiz-box');
+    const finishBtn = document.getElementById('finishBtn');
+    let answeredCount = 0;
+
+    questions.forEach((item, index) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'question';
+        
+        let html = `<p><strong>Q${index + 1}:</strong> ${item.q}</p><div class="options">`;
+        item.options.forEach((opt, optIndex) => {
+            html += `<button onclick="checkAnswer(this, ${index}, ${optIndex})">${opt}</button>`;
+        });
+        html += `</div><div class="feedback" id="feedback-${index}"></div>`;
+        
+        qDiv.innerHTML = html;
+        quizBox.appendChild(qDiv);
+    });
+
+    function checkAnswer(btn, qIndex, optIndex) {
+        const parent = btn.parentElement;
+        const feedback = document.getElementById(`feedback-${qIndex}`);
+        const qData = questions[qIndex];
+
+        const buttons = parent.getElementsByTagName('button');
+        for(let b of buttons) {
+            b.disabled = true;
+        }
+
+        if (optIndex === qData.correct) {
+            btn.classList.add('correct');
+            feedback.innerHTML = `<span style="color:green">Correct!</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#d4edda';
+        } else {
+            btn.classList.add('wrong');
+            buttons[qData.correct].classList.add('correct');
+            feedback.innerHTML = `<span style="color:red">Wrong.</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#f8d7da';
+        }
+
+        answeredCount++;
+        if (answeredCount === questions.length) {
+            finishBtn.disabled = false;
+            finishBtn.innerText = "完成今日學習 (紀錄進度)";
+        }
+    }
+
+    finishBtn.addEventListener('click', () => {
+        localStorage.setItem('day04_completed', 'true');
+        alert('恭喜完成 Day 04！進度已儲存。');
+        window.location.href = 'index.html';
+    });
+</script>
+
+</body>
+</html>

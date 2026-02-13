@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國營考試英文 30 天衝刺計畫</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        p {
+            color: #7f8c8d;
+        }
+        .progress-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #dfe6e9;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: var(--secondary-color);
+            width: 0%; /* JS will update this */
+            transition: width 0.5s ease;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .day-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px 10px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            border: 2px solid transparent;
+        }
+        .day-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--secondary-color);
+        }
+        .day-card.completed {
+            background-color: #2ecc71;
+            color: white;
+            border-color: #27ae60;
+        }
+        .day-card.locked {
+            background-color: #ecf0f1;
+            color: #bdc3c7;
+            pointer-events: none;
+        }
+        .stats {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        footer {
+            margin-top: 50px;
+            font-size: 0.8em;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>國營考試英文 30 天衝刺</h1>
+        <p>基於「四版英文教科書0318」的個人化學習進度</p>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div style="margin-bottom: 20px;">
+        總進度: <span id="progressText">0%</span>
+    </div>
+
+    <div class="grid-container" id="daysGrid">
+        <!-- JS will populate days -->
+    </div>
+
+    <div class="stats">
+        <p>已完成天數: <span id="daysCount">0</span> / 30</p>
+    </div>
+
+    <footer>
+        &copy; 2024 國營考試英文家教 | Designed for Self-Study
+    </footer>
+
+    <script>
+        const totalDays = 30;
+        const grid = document.getElementById('daysGrid');
+        
+        // 模擬已完成的狀態 (實際應用時可以使用 localStorage 儲存)
+        // 使用者可以在各個 day 的頁面中點擊 "完成學習"，將狀態存入 localStorage
+        
+        function init() {
+            let completedCount = 0;
+            
+            for (let i = 1; i <= totalDays; i++) {
+                const dayLink = document.createElement('a');
+                // 注意：這裡假設你的檔案命名為 day01.html, day02.html...
+                const dayNum = i.toString().padStart(2, '0');
+                dayLink.href = `day${dayNum}.html`;
+                dayLink.className = 'day-card';
+                dayLink.innerText = `Day ${i}`;
+                
+                // 檢查 LocalStorage 狀態
+                const isDone = localStorage.getItem(`day${dayNum}_completed`) === 'true';
+                if (isDone) {
+                    dayLink.classList.add('completed');
+                    dayLink.innerText += ' ✓';
+                    completedCount++;
+                }
+
+                grid.appendChild(dayLink);
+            }
+
+            // Update Progress
+            const percentage = Math.round((completedCount / totalDays) * 100);
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressText').innerText = `${percentage}%`;
+            document.getElementById('daysCount').innerText = completedCount;
+        }
+
+        init();
+    </script>
+</body>
+</html>

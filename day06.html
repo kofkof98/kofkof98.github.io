@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 06 - 國營英文衝刺</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 30px;
+        }
+        .nav-header a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .section-title {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+        .word-card {
+            background: var(--card);
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .word-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .word-def {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        .example {
+            background-color: #f1f8ff;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 15px;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background-color: #f2f2f2;
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .options button:hover {
+            background: #e9ecef;
+        }
+        .options button.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .options button.wrong {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .btn-complete {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success);
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        .btn-complete:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-header">
+        <a href="index.html">← 回首頁</a>
+        <span>Day 06 / 30</span>
+    </div>
+
+    <h1>Day 06 學習內容</h1>
+    <p>範圍：教科書單字 p.19-20 (指定字彙) / 相似字 p.77 / 搭配詞 p.64</p>
+
+    <!-- Part 1: Vocabulary -->
+    <h2 class="section-title">1. 單字字彙 (Vocabulary)</h2>
+    
+    <div class="word-card">
+        <div class="word-title">antique</div>
+        <div class="word-def">n. 古董；古物 / adj. 古董的</div>
+        <div class="example">My grandfather loves collecting <strong>antiques</strong>. 我祖父喜歡收集古董。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">anonymous</div>
+        <div class="word-def">adj. 匿名的；來源不明的</div>
+        <div class="example">The donor wishes to remain <strong>anonymous</strong>. 捐贈者希望保持匿名。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">apartment</div>
+        <div class="word-def">n. 公寓</div>
+        <div class="example">They live in a luxury <strong>apartment</strong> in downtown Taipei. 他們住在台北市中心的一間豪華公寓裡。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">appliance</div>
+        <div class="word-def">n. 家用電器</div>
+        <div class="example">Modern household <strong>appliances</strong> have made housework much easier. 現代家用電器讓家事變得容易許多。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">apparently</div>
+        <div class="word-def">adv. 顯然地；據說</div>
+        <div class="example"><strong>Apparently</strong>, he decided to leave the company for personal reasons. 顯然地，他因為個人因素決定離開公司。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">approve</div>
+        <div class="word-def">v. 贊成；批准</div>
+        <div class="example">The committee <strong>approved</strong> the budget for the new project. 委員會批准了新專案的預算。<br><small>(approve of 贊成)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">approach</div>
+        <div class="word-def">v. 接近；著手處理 / n. 方法</div>
+        <div class="example">The winter is <strong>approaching</strong>. 冬天即將來臨。<br>We need a new <strong>approach</strong> to solving this problem. 我們需要一個解決這個問題的新方法。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">applaud</div>
+        <div class="word-def">v. 鼓掌；讚許</div>
+        <div class="example">The audience <strong>applauded</strong> loudly after the performance. 表演結束後，觀眾大聲鼓掌。</div>
+    </div>
+    
+    <div class="word-card">
+        <div class="word-title">artist</div>
+        <div class="word-def">n. 藝術家</div>
+        <div class="example">She is a talented <strong>artist</strong> who specializes in oil painting. 她是一位擅長油畫的天才藝術家。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">appearance</div>
+        <div class="word-def">n. 外表；出現</div>
+        <div class="example">Don't judge a person by their <strong>appearance</strong>. 不要以貌取人。</div>
+    </div>
+
+    <!-- Part 2: Confusing Words -->
+    <h2 class="section-title">2. 相似字比較 (Confusing Words)</h2>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>commence</strong></td>
+                <td>v. 開始</td>
+                <td>formal word for "begin"</td>
+            </tr>
+            <tr>
+                <td><strong>commerce</strong></td>
+                <td>n. 商業；貿易</td>
+                <td>e-commerce (電子商務)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>compliment</strong></td>
+                <td>v./n. 讚美</td>
+                <td>"i" 像人，人喜歡被讚美</td>
+            </tr>
+            <tr>
+                <td><strong>complement</strong></td>
+                <td>v./n. 補充；補足物</td>
+                <td>"e" = complete (完成)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>comprehensive</strong></td>
+                <td>adj. 廣泛的；詳盡的</td>
+                <td>reading comprehension (閱讀測驗/理解)</td>
+            </tr>
+            <tr>
+                <td><strong>comprehensible</strong></td>
+                <td>adj. 可理解的</td>
+                <td>able to understand</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>comprise</strong></td>
+                <td>v. 包含；由...組成</td>
+                <td>= consist of</td>
+            </tr>
+            <tr>
+                <td><strong>compromise</strong></td>
+                <td>v./n. 妥協；讓步</td>
+                <td>promise (承諾) 一起退讓</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>concede</strong></td>
+                <td>v. (勉強)承認；讓步</td>
+                <td>concession (n. 讓步)</td>
+            </tr>
+            <tr>
+                <td><strong>conceit</strong></td>
+                <td>n. 自大；自負</td>
+                <td>conceited (adj. 自大的)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>condemn</strong></td>
+                <td>v. 譴責；判刑</td>
+                <td>condemn sb. to death (判死刑)</td>
+            </tr>
+            <tr>
+                <td><strong>condense</strong></td>
+                <td>v. 濃縮；縮短</td>
+                <td>condensed milk (煉乳)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>confidential</strong></td>
+                <td>adj. 機密的</td>
+                <td>confidential documents</td>
+            </tr>
+            <tr>
+                <td><strong>confident</strong></td>
+                <td>adj. 有信心的</td>
+                <td>self-confident</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>conscience</strong></td>
+                <td>n. 良心</td>
+                <td>science (科學) 前加 con</td>
+            </tr>
+            <tr>
+                <td><strong>conscious</strong></td>
+                <td>adj. 有意識的；神智清醒的</td>
+                <td>be conscious of (意識到)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>considerable</strong></td>
+                <td>adj. 相當大的；可觀的</td>
+                <td>able to consider -> 值得考慮的 -> 重要的/大量的</td>
+            </tr>
+            <tr>
+                <td><strong>considerate</strong></td>
+                <td>adj. 體貼的</td>
+                <td>替人著想的</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>consul</strong></td>
+                <td>n. 領事</td>
+                <td>consulate (領事館)</td>
+            </tr>
+            <tr>
+                <td><strong>council</strong></td>
+                <td>n. 議會；委員會</td>
+                <td>city council (市議會)</td>
+            </tr>
+             <tr>
+                <td><strong>counsel</strong></td>
+                <td>n. 建議；法律顧問 / v. 建議</td>
+                <td>counseling (諮商)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Part 3: Collocations -->
+    <h2 class="section-title">3. 搭配詞 (Collocations) - 範圍 p.64</h2>
+    <p>請特別注意粗體字的介系詞或動詞搭配。</p>
+
+    <div class="word-card">
+        <div class="word-title">51. contrary to</div>
+        <div class="word-def">與...相反</div>
+        <div class="example"><strong>Contrary to</strong> popular belief, camels do not store water in their humps. 與普遍的看法相反，駱駝不把水儲存在駝峰裡。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">52. count on</div>
+        <div class="word-def">依靠；指望 (= rely on / depend on)</div>
+        <div class="example">You can always <strong>count on</strong> me when you are in trouble. 當你有麻煩時，你可以隨時依靠我。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">53. cut down</div>
+        <div class="word-def">削減；砍倒</div>
+        <div class="example">The doctor told him to <strong>cut down</strong> on smoking and drinking. 醫生告訴他要減少抽煙和喝酒。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">54. deal with</div>
+        <div class="word-def">處理；應付；涉及</div>
+        <div class="example">This book <strong>deals with</strong> the history of the Roman Empire. 這本書涉及羅馬帝國的歷史。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">55. depend on</div>
+        <div class="word-def">依賴；視...而定</div>
+        <div class="example">Our picnic <strong>depends on</strong> the weather. 我們的野餐視天氣而定。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">56. deprive of</div>
+        <div class="word-def">剝奪 (deprive sb. of sth.)</div>
+        <div class="example">The new law <strong>deprives</strong> citizens <strong>of</strong> their right to protest. 新法律剝奪了公民抗議的權利。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">57. die of</div>
+        <div class="word-def">死於 (疾病、飢渴等內因)</div>
+        <div class="example">Many people <strong>died of</strong> hunger during the war. 戰爭期間許多人死於飢餓。<br><small>(補: die from 死於意外、受傷等外因)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">58. die out</div>
+        <div class="word-def">滅絕；逐漸消失</div>
+        <div class="example">Dinosaurs <strong>died out</strong> millions of years ago. 恐龍在數百萬年前就滅絕了。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">59. do without</div>
+        <div class="word-def">沒有...也行；將就；省去</div>
+        <div class="example">There is no milk left, so we'll have to <strong>do without</strong> (it). 牛奶沒了，所以我們只能將就著不加了。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">60. drive at</div>
+        <div class="word-def">意指；用意何在 (通常用於進行式)</div>
+        <div class="example">I don't understand what you are <strong>driving at</strong>. 我不懂你的用意何在 (你想表達什麼)。</div>
+    </div>
+
+    <!-- Part 4: Quiz -->
+    <div class="quiz-container">
+        <h2>Day 06 隨堂測驗 (共 10 題)</h2>
+        <p>測驗看看你是否掌握了今天的內容！</p>
+        
+        <div id="quiz-box">
+            <!-- Questions will be injected by JS -->
+        </div>
+        
+        <button id="finishBtn" class="btn-complete" disabled>完成今日學習 (請先完成測驗)</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "The vase is a valuable _____ from the Ming Dynasty.",
+            options: ["antique", "anonymous", "appliance", "artist"],
+            correct: 0,
+            explanation: "antique 意為「古董」。"
+        },
+        {
+            q: "He is a very _____ person; he always brings gifts when visiting.",
+            options: ["considerable", "considerate", "conscious", "confident"],
+            correct: 1,
+            explanation: "considerate 意為「體貼的」；considerable 是相當大的。"
+        },
+        {
+            q: "Please keep this information _____; do not tell anyone.",
+            options: ["confident", "confidential", "conscience", "conscious"],
+            correct: 1,
+            explanation: "confidential 意為「機密的」。"
+        },
+        {
+            q: "The new law _____ citizens of their basic rights.",
+            options: ["deprives", "dies", "deals", "depends"],
+            correct: 0,
+            explanation: "deprive sb. of sth. 意為「剝奪某人的某物」。"
+        },
+        {
+            q: "The author wrote the book under a pseudonym to remain _____.",
+            options: ["anonymous", "apparent", "anxious", "antique"],
+            correct: 0,
+            explanation: "anonymous 意為「匿名的」。"
+        },
+        {
+            q: "I can't figure out what the speaker is _____.",
+            options: ["driving at", "dying out", "cutting down", "counting on"],
+            correct: 0,
+            explanation: "drive at 意為「意指、想表達什麼」。"
+        },
+        {
+            q: "He felt a pang of _____ after lying to his mother.",
+            options: ["conscience", "conscious", "commerce", "council"],
+            correct: 0,
+            explanation: "conscience 意為「良心」。"
+        },
+        {
+            q: "We need to _____ expenses to save money.",
+            options: ["cut down", "die out", "count on", "deal with"],
+            correct: 0,
+            explanation: "cut down (on) 意為「削減、減少」。"
+        },
+        {
+            q: "The committee _____ the plan after a long discussion.",
+            options: ["approved", "approached", "applauded", "appeared"],
+            correct: 0,
+            explanation: "approve 意為「批准、贊成」。"
+        },
+        {
+            q: "The scarf perfectly _____ her dress.",
+            options: ["compliments", "complements", "commences", "condenses"],
+            correct: 1,
+            explanation: "complement 意為「補充、與...相配」；compliment 是讚美。"
+        }
+    ];
+
+    const quizBox = document.getElementById('quiz-box');
+    const finishBtn = document.getElementById('finishBtn');
+    let answeredCount = 0;
+
+    questions.forEach((item, index) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'question';
+        
+        let html = `<p><strong>Q${index + 1}:</strong> ${item.q}</p><div class="options">`;
+        item.options.forEach((opt, optIndex) => {
+            html += `<button onclick="checkAnswer(this, ${index}, ${optIndex})">${opt}</button>`;
+        });
+        html += `</div><div class="feedback" id="feedback-${index}"></div>`;
+        
+        qDiv.innerHTML = html;
+        quizBox.appendChild(qDiv);
+    });
+
+    function checkAnswer(btn, qIndex, optIndex) {
+        const parent = btn.parentElement;
+        const feedback = document.getElementById(`feedback-${qIndex}`);
+        const qData = questions[qIndex];
+
+        const buttons = parent.getElementsByTagName('button');
+        for(let b of buttons) {
+            b.disabled = true;
+        }
+
+        if (optIndex === qData.correct) {
+            btn.classList.add('correct');
+            feedback.innerHTML = `<span style="color:green">Correct!</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#d4edda';
+        } else {
+            btn.classList.add('wrong');
+            buttons[qData.correct].classList.add('correct');
+            feedback.innerHTML = `<span style="color:red">Wrong.</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#f8d7da';
+        }
+
+        answeredCount++;
+        if (answeredCount === questions.length) {
+            finishBtn.disabled = false;
+            finishBtn.innerText = "完成今日學習 (紀錄進度)";
+        }
+    }
+
+    finishBtn.addEventListener('click', () => {
+        localStorage.setItem('day06_completed', 'true');
+        alert('恭喜完成 Day 06！進度已儲存。');
+        window.location.href = 'index.html';
+    });
+</script>
+
+</body>
+</html>

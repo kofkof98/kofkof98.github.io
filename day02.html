@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 02 - 國營英文衝刺</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 30px;
+        }
+        .nav-header a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .section-title {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+        .word-card {
+            background: var(--card);
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .word-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .word-def {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        .example {
+            background-color: #f1f8ff;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 15px;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background-color: #f2f2f2;
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .options button:hover {
+            background: #e9ecef;
+        }
+        .options button.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .options button.wrong {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .btn-complete {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success);
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        .btn-complete:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-header">
+        <a href="index.html">← 回首頁</a>
+        <span>Day 02 / 30</span>
+    </div>
+
+    <h1>Day 02 學習內容</h1>
+    <p>範圍：教科書單字 p.11-12 / 相似字 p.73-74 / 搭配詞 p.59-60</p>
+
+    <!-- Part 1: Vocabulary -->
+    <h2 class="section-title">1. 單字字彙 (Vocabulary)</h2>
+    
+    <div class="word-card">
+        <div class="word-title">accustom</div>
+        <div class="word-def">vt. 使習慣；使適應</div>
+        <div class="example">As a freshman in the college, I have to <strong>accustom myself to</strong> the surroundings. 作為大學新鮮人，我需要適應新的週遭事物。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">accomplishment</div>
+        <div class="word-def">n. [C]成就；任務 / [U]完成之事</div>
+        <div class="example">The team celebrated the successful <strong>accomplishment</strong> of their task. 小組慶祝成功完成他們的工作任務。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">accompany</div>
+        <div class="word-def">vt. 陪伴；陪同</div>
+        <div class="example">My kid got COVID-19, he was so weak that he needed someone to <strong>accompany</strong> him to see a doctor. 我的小孩確診新冠病毒，他虛弱到需要有人陪他去看醫生。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">accurate</div>
+        <div class="word-def">adj. 準確的；精確的；正確的</div>
+        <div class="example">The scientists hope to become more <strong>accurate</strong> in predicting landslides. 科學家們希望能更準確地預測土石流。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">accelerate</div>
+        <div class="word-def">vt./vi. 加快；加速</div>
+        <div class="example">We can <strong>accelerate</strong> our car to let the speed increase. 我們可以加速車子，讓速度增加。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">achievement</div>
+        <div class="word-def">n. [U]達成；成就</div>
+        <div class="example">Winning the Nobel Prize is the greatest <strong>achievement</strong> that many scholars crave for. 得到諾貝爾獎是許多學者都渴望得到的成就。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">acquaintance</div>
+        <div class="word-def">n. 點頭之交的朋友</div>
+        <div class="example">He is just an <strong>acquaintance</strong>, which means that I am not familiar with him. 他只是點頭之交的朋友，意思就是我跟他沒很熟。<br><small>(familiar with sb. 熟悉某人)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">acumen</div>
+        <div class="word-def">n. [U] 敏銳；聰明</div>
+        <div class="example">Due to CEO's commercial <strong>acumen</strong>, the company made a great profit. 由於公司執行長的商業敏銳度，公司賺了大錢。<br><small>(due to / owing to 由於)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">acknowledge</div>
+        <div class="word-def">vt. 承認；認可</div>
+        <div class="example">The communist party would rather send the people who discover the problems into jail than <strong>acknowledge</strong> the existence of the problems. 共產黨寧可將發現問題的人送進監獄，而不承認問題的存在。<br><small>(rather A than B 寧可A而不B)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">adaptable</div>
+        <div class="word-def">adj. 適應性強的</div>
+        <div class="example">The cockroaches are <strong>adaptable</strong>. They can adapt to different environments. 蟑螂的適應性很強，他們可以適應不同的環境。<br><small>(adapt vt. 適應於)</small></div>
+    </div>
+
+    <!-- Part 2: Confusing Words -->
+    <h2 class="section-title">2. 相似字比較 (Confusing Words)</h2>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>amend</strong></td>
+                <td>v. 修正；修訂</td>
+                <td>amend the law (修法)</td>
+            </tr>
+            <tr>
+                <td><strong>emend</strong></td>
+                <td>v. 校正</td>
+                <td>校對文章、書籍錯誤</td>
+            </tr>
+            <tr>
+                <td><strong>recommend</strong></td>
+                <td>v. 推薦</td>
+                <td>re (一再) + commend (稱讚)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>angel</strong></td>
+                <td>n. 天使</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>angle</strong></td>
+                <td>n. 角度</td>
+                <td>from a different angle (從不同角度)</td>
+            </tr>
+            <tr>
+                <td><strong>rectangle</strong></td>
+                <td>n. 長方形</td>
+                <td>rect (直) + angle (角)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>ardor</strong></td>
+                <td>n. 熱情</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>adore</strong></td>
+                <td>v. 愛慕；崇拜</td>
+                <td></td>
+            </tr>
+             <tr>
+                <td><strong>adorn</strong></td>
+                <td>v. 裝飾；裝扮</td>
+                <td>adornment (n. 裝飾品)</td>
+            </tr>
+             <tr>
+                <td><strong>odor</strong></td>
+                <td>n. 氣味；臭味</td>
+                <td>body odor (體味)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>attitude</strong></td>
+                <td>n. 態度</td>
+                <td>attitude toward/about (對...的態度)</td>
+            </tr>
+            <tr>
+                <td><strong>altitude</strong></td>
+                <td>n. 海拔；高度</td>
+                <td>high altitude (高海拔)</td>
+            </tr>
+            <tr>
+                <td><strong>latitude</strong></td>
+                <td>n. 緯度</td>
+                <td></td>
+            </tr>
+             <tr>
+                <td><strong>longitude</strong></td>
+                <td>n. 經度</td>
+                <td>long (長) -> 經度線都很長</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>assent</strong></td>
+                <td>n./v. 同意</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>ascent</strong></td>
+                <td>n. 上升</td>
+                <td>scent (氣味) 前加 a -> 上升? (注意拼寫差異)</td>
+            </tr>
+            <tr>
+                <td><strong>ascend</strong></td>
+                <td>v. 上升</td>
+                <td>ascend the throne (登基)</td>
+            </tr>
+             <tr>
+                <td><strong>descend</strong></td>
+                <td>v. 下降</td>
+                <td>descendant (n. 後代)</td>
+            </tr>
+             <tr>
+                <td><strong>accent</strong></td>
+                <td>n. 口音</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    
+     <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>assume</strong></td>
+                <td>v. 假定；承擔</td>
+                <td>assume responsibility (承擔責任)</td>
+            </tr>
+            <tr>
+                <td><strong>resume</strong></td>
+                <td>v. 恢復；n. 履歷表</td>
+                <td>發音不同: v.[rɪˋzjum] / n.[ˋrɛzjʊ͵me]</td>
+            </tr>
+             <tr>
+                <td><strong>presume</strong></td>
+                <td>v. 假定；推測；擅自</td>
+                <td>pre (預先) + sume (拿)</td>
+            </tr>
+            <tr>
+                <td><strong>consume</strong></td>
+                <td>v. 消耗；消費</td>
+                <td>consumer (消費者)</td>
+            </tr>
+        </table>
+    </div>
+
+     <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>assure</strong></td>
+                <td>v. 向...保證</td>
+                <td>消除某人的憂慮</td>
+            </tr>
+            <tr>
+                <td><strong>ensure</strong></td>
+                <td>v. 確保</td>
+                <td>確保某事會發生</td>
+            </tr>
+            <tr>
+                <td><strong>insure</strong></td>
+                <td>v. 投保</td>
+                <td>insurance (保險)</td>
+            </tr>
+             <tr>
+                <td><strong>reassure</strong></td>
+                <td>v. 使安心</td>
+                <td>re (再) + assure (保證)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>attain</strong></td>
+                <td>v. 達到</td>
+                <td>attain a goal (達成目標)</td>
+            </tr>
+            <tr>
+                <td><strong>obtain</strong></td>
+                <td>v. 獲得</td>
+                <td>obtain permission (獲得許可)</td>
+            </tr>
+            <tr>
+                <td><strong>abstain</strong></td>
+                <td>v. 放棄；避開</td>
+                <td>abstain from (避開...)</td>
+            </tr>
+             <tr>
+                <td><strong>retain</strong></td>
+                <td>v. 保留；保持</td>
+                <td></td>
+            </tr>
+             <tr>
+                <td><strong>maintain</strong></td>
+                <td>v. 維持；保持</td>
+                <td>maintenance (n. 維修)</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>award</strong></td>
+                <td>v. 授予；n. 獎品</td>
+                <td>Academy Awards (奧斯卡獎)</td>
+            </tr>
+            <tr>
+                <td><strong>reward</strong></td>
+                <td>v./n. 獎賞；報償</td>
+                <td>做某事的回報</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Part 3: Collocations -->
+    <h2 class="section-title">3. 搭配詞 (Collocations) - 範圍 p.59-60</h2>
+    <p>請特別注意粗體字的介系詞或動詞搭配。</p>
+
+    <div class="word-card">
+        <div class="word-title">11. at stake</div>
+        <div class="word-def">緊急的狀態；緊要關頭</div>
+        <div class="example">Tens of thousands of lives in Ukraine will be <strong>at stake</strong> if emergency aid does not arrive in the country soon. 如果緊急援助不能很快抵達烏克蘭，數以萬計的生命將受到威脅。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">12. at any cost</div>
+        <div class="word-def">無論如何；不計代價</div>
+        <div class="example">Please find my daughter <strong>at any cost</strong>! She's just only 3 years old! 請不惜一切代價找到我的女兒！她才3歲啊！</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">13. at least</div>
+        <div class="word-def">至少</div>
+        <div class="example">The computer costs <strong>at least</strong> thirty thousand NT dollars. 電腦至少要花費新台幣三萬元。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">14. a variety of</div>
+        <div class="word-def">各式各樣的</div>
+        <div class="example">There is <strong>a variety of</strong> food on the table. 桌子上有各種各樣的食物。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">15. a sea change</div>
+        <div class="word-def">顯著變化</div>
+        <div class="example">If you want to behave well, it seems to require <strong>a sea change</strong> in behavior and attitudes. 如果你想表現得好，似乎需要在行為和態度上發生巨大的改變。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">16. a little rift within the lute</div>
+        <div class="word-def">不和；失睦 (琵琶內部有裂痕)</div>
+        <div class="example">If you guys keep quarreling, it would make you have <strong>a little rift within the lute</strong>. 如果你們一直吵架，就會讓你們之間失睦。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">17. apple of one's eye</div>
+        <div class="word-def">珍愛之人/物；掌上明珠</div>
+        <div class="example">Every daughter is the <strong>apple of dad's eye</strong>. 每個女兒都是爸爸的掌上明珠。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">18. as a result of + N/Ving</div>
+        <div class="word-def">由於...</div>
+        <div class="example"><strong>As a result of</strong> your poor behavior, you are grounded today. 由於你的不良行為，你今天被禁足。</div>
+    </div>
+    
+    <div class="word-card">
+        <div class="word-title">19. as well as</div>
+        <div class="word-def">也...；以及</div>
+        <div class="example">Plants, <strong>as well as</strong> animals need water to survive. 植物和動物一樣需要水才能生存。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">20. a number of</div>
+        <div class="word-def">很多；一些 (+複數名詞 +複數動詞)</div>
+        <div class="example">Only <strong>a number of</strong> employees have attended the orientation. 只有少數(一些)員工參加了入職訓練。 <br><small>(註: the number of ... 的數量，接單數動詞)</small></div>
+    </div>
+
+    <!-- Part 4: Quiz -->
+    <div class="quiz-container">
+        <h2>Day 02 隨堂測驗 (共 10 題)</h2>
+        <p>測驗看看你是否掌握了今天的內容！</p>
+        
+        <div id="quiz-box">
+            <!-- Questions will be injected by JS -->
+        </div>
+        
+        <button id="finishBtn" class="btn-complete" disabled>完成今日學習 (請先完成測驗)</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "The heavy rain caused the cancellation of the game. = The game was cancelled _____ the heavy rain.",
+            options: ["at stake", "as a result of", "at least", "at any cost"],
+            correct: 1,
+            explanation: "as a result of 意為「由於」，符合句意。"
+        },
+        {
+            q: "You need to _____ yourself to the new working environment as soon as possible.",
+            options: ["accumulate", "accustom", "account", "accompany"],
+            correct: 1,
+            explanation: "accustom oneself to 意為「使自己習慣/適應於...」。"
+        },
+        {
+            q: "The plane is flying at an _____ of 30,000 feet.",
+            options: ["attitude", "aptitude", "altitude", "latitude"],
+            correct: 2,
+            explanation: "altitude 意為「高度、海拔」；attitude 是態度。"
+        },
+        {
+            q: "He is determined to win the competition _____.",
+            options: ["at any cost", "a sea change", "a variety of", "at stake"],
+            correct: 0,
+            explanation: "at any cost 意為「不計代價、無論如何」。"
+        },
+        {
+            q: "She is not a close friend; she is just an _____.",
+            options: ["acquaintance", "accomplishment", "acumen", "angel"],
+            correct: 0,
+            explanation: "acquaintance 意為「泛泛之交、相識的人」。"
+        },
+        {
+            q: "I can _____ you that the product is of high quality.",
+            options: ["insure", "assure", "ensure", "sure"],
+            correct: 1,
+            explanation: "assure sb. (that) ... 意為「向某人保證」，重點在消除人的疑慮。"
+        },
+        {
+            q: "His business _____ helped him make the right decision at the right time.",
+            options: ["acumen", "angle", "ardor", "accent"],
+            correct: 0,
+            explanation: "acumen 意為「敏銳、聰明」，business acumen 指商業頭腦。"
+        },
+        {
+            q: "Thousands of jobs are _____ if the factory closes down.",
+            options: ["at least", "at stake", "at large", "at first"],
+            correct: 1,
+            explanation: "at stake 意為「在緊要關頭、瀕臨危險」，符合句意。"
+        },
+        {
+            q: "Please _____ me to the hospital; I don't want to go alone.",
+            options: ["accomplish", "accompany", "accelerate", "attain"],
+            correct: 1,
+            explanation: "accompany 意為「陪伴、陪同」。"
+        },
+        {
+            q: "You should look at the issue from a different _____.",
+            options: ["angel", "angle", "ankle", "anchor"],
+            correct: 1,
+            explanation: "angle 意為「角度」；angel 是天使。"
+        }
+    ];
+
+    const quizBox = document.getElementById('quiz-box');
+    const finishBtn = document.getElementById('finishBtn');
+    let answeredCount = 0;
+
+    questions.forEach((item, index) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'question';
+        
+        let html = `<p><strong>Q${index + 1}:</strong> ${item.q}</p><div class="options">`;
+        item.options.forEach((opt, optIndex) => {
+            html += `<button onclick="checkAnswer(this, ${index}, ${optIndex})">${opt}</button>`;
+        });
+        html += `</div><div class="feedback" id="feedback-${index}"></div>`;
+        
+        qDiv.innerHTML = html;
+        quizBox.appendChild(qDiv);
+    });
+
+    function checkAnswer(btn, qIndex, optIndex) {
+        const parent = btn.parentElement;
+        const feedback = document.getElementById(`feedback-${qIndex}`);
+        const qData = questions[qIndex];
+
+        const buttons = parent.getElementsByTagName('button');
+        for(let b of buttons) {
+            b.disabled = true;
+        }
+
+        if (optIndex === qData.correct) {
+            btn.classList.add('correct');
+            feedback.innerHTML = `<span style="color:green">Correct!</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#d4edda';
+        } else {
+            btn.classList.add('wrong');
+            buttons[qData.correct].classList.add('correct');
+            feedback.innerHTML = `<span style="color:red">Wrong.</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#f8d7da';
+        }
+
+        answeredCount++;
+        if (answeredCount === questions.length) {
+            finishBtn.disabled = false;
+            finishBtn.innerText = "完成今日學習 (紀錄進度)";
+        }
+    }
+
+    finishBtn.addEventListener('click', () => {
+        localStorage.setItem('day02_completed', 'true');
+        alert('恭喜完成 Day 02！進度已儲存。');
+        window.location.href = 'index.html';
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 01 - 國營英文衝刺</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 30px;
+        }
+        .nav-header a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .section-title {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+        .word-card {
+            background: var(--card);
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .word-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .word-def {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        .example {
+            background-color: #f1f8ff;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 15px;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background-color: #f2f2f2;
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .options button:hover {
+            background: #e9ecef;
+        }
+        .options button.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .options button.wrong {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .btn-complete {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success);
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        .btn-complete:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-header">
+        <a href="index.html">← 回首頁</a>
+        <span>Day 01 / 30</span>
+    </div>
+
+    <h1>Day 01 學習內容</h1>
+    <p>範圍：教科書單字 p.10 / 相似字 p.73 / 搭配詞 p.58</p>
+
+    <!-- Part 1: Vocabulary -->
+    <h2 class="section-title">1. 單字字彙 (Vocabulary)</h2>
+    
+    <div class="word-card">
+        <div class="word-title">above</div>
+        <div class="word-def">adj./adv./prep. 上面的；在...之上</div>
+        <div class="example">There is a bird <strong>above</strong> the tree. 小鳥在樹的正上面。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">absence</div>
+        <div class="word-def">n. 缺席</div>
+        <div class="example">Kevin got COVID yesterday, so he was <strong>absent</strong> for the class. Kevin 昨天確診新冠病毒，所以課沒來上。<br><small>(補: absent adj. 缺席的)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">abstain</div>
+        <div class="word-def">vi. 避免；避開 (使用上，後面加 from)</div>
+        <div class="example">You have to <strong>abstain from</strong> eating fried chicken and bread in order to stay in shape. 為了保持體態，你應該避免吃炸雞或麵包。<br><small>(stay in shape 保持體態)</small></div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">abundant</div>
+        <div class="word-def">adj. 充足的；豐富的</div>
+        <div class="example">There is <strong>abundant</strong> evidence that nuclear power plants have harmful effects on the environment. 有充分的證據顯示核電廠對環境有害。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">abroad</div>
+        <div class="word-def">adv. 在國外</div>
+        <div class="example">If you want to go <strong>abroad</strong>, you should take the airplane. 如果你要出國，你應該要搭飛機。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">absolutely</div>
+        <div class="word-def">adv. 絕對地；完全地</div>
+        <div class="example">We should trust him <strong>absolutely</strong>. 我們應當完全的相信他。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">absorb</div>
+        <div class="word-def">v. (尤指逐漸)吸收</div>
+        <div class="example">Plants <strong>absorb</strong> carbon dioxide. 植物吸收二氧化碳。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">accommodate</div>
+        <div class="word-def">vt. 能容納；提供住宿</div>
+        <div class="example">The hotel is big enough to <strong>accommodate</strong> three thousand people per day. 這飯店大到可以一天容納三千人。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">accumulate</div>
+        <div class="word-def">vt./vi. 累積；積聚</div>
+        <div class="example">If you want to <strong>accumulate</strong> more wealth, you have to learn how to invest your money. 若你想累積更多財富，你要學習如何投資。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">account</div>
+        <div class="word-def">vi./n. 解釋；對...負責；佔有 / 帳戶</div>
+        <div class="example">Kevin's fault <strong>accounts for</strong> 90% of the car accident. Kevin的肇責佔車禍的90趴。</div>
+    </div>
+
+    <!-- Part 2: Confusing Words -->
+    <h2 class="section-title">2. 相似字比較 (Confusing Words)</h2>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>abroad</strong></td>
+                <td>adv. 國外</td>
+                <td>go abroad (出國)</td>
+            </tr>
+            <tr>
+                <td><strong>aboard</strong></td>
+                <td>adv./prep. 在(船、飛機、車)上</td>
+                <td>Welcome aboard (歡迎登機/船)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>adapt</strong></td>
+                <td>v. 適應；改編</td>
+                <td>adapt to (適應...)</td>
+            </tr>
+            <tr>
+                <td><strong>adopt</strong></td>
+                <td>v. 採用；領養</td>
+                <td>opt (選擇) -> 採用</td>
+            </tr>
+             <tr>
+                <td><strong>adept</strong></td>
+                <td>adj. 內行的；熟練的</td>
+                <td>be adept at (擅長...)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>affect</strong></td>
+                <td>v. 影響</td>
+                <td>動作(Action) -> Affect</td>
+            </tr>
+            <tr>
+                <td><strong>effect</strong></td>
+                <td>n. 影響；效果</td>
+                <td>結果(Result) -> Effect</td>
+            </tr>
+            <tr>
+                <td><strong>affection</strong></td>
+                <td>n. 感情</td>
+                <td>deep affection (深厚的感情)</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>allusion</strong></td>
+                <td>n. 影射；典故</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>illusion</strong></td>
+                <td>n. 錯覺；幻覺</td>
+                <td>optical illusion (視錯覺)</td>
+            </tr>
+            <tr>
+                <td><strong>delusion</strong></td>
+                <td>n. 妄想；錯覺</td>
+                <td>delusional (妄想的)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="word-card">
+        <table class="comparison-table">
+            <tr>
+                <th>單字</th>
+                <th>意義</th>
+                <th>註記/聯想</th>
+            </tr>
+            <tr>
+                <td><strong>attribute</strong></td>
+                <td>v. 把...歸因於 n. 屬性</td>
+                <td>attribute A to B (把A歸因於B)</td>
+            </tr>
+            <tr>
+                <td><strong>distribute</strong></td>
+                <td>v. 分配；分派</td>
+                <td>dis (分開) + tribute (給予)</td>
+            </tr>
+             <tr>
+                <td><strong>tribute</strong></td>
+                <td>n. 敬意；貢品</td>
+                <td>pay tribute to (向...致敬)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Part 3: Collocations -->
+    <h2 class="section-title">3. 搭配詞 (Collocations) - 範圍 p.58</h2>
+    <p>請特別注意粗體字的介系詞或動詞搭配。</p>
+
+    <div class="word-card">
+        <div class="word-title">1. abide by</div>
+        <div class="word-def">遵守</div>
+        <div class="example">People have to <strong>abide by</strong> the law. 人們要遵守法律。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">2. above all</div>
+        <div class="word-def">尤其重要的是</div>
+        <div class="example">Be careful on your trip. <strong>Above all</strong>, don't drink and drive. 旅途中要小心。最重要的是，不要酒後駕車。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">3. account for</div>
+        <div class="word-def">做解釋 / 負責任 / 占比率</div>
+        <div class="example">Civil servants <strong>account for</strong> the majority of our customers. 公務員佔我們顧客的大部分。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">4. accuse sb. of sth.</div>
+        <div class="word-def">控告某人犯某罪 (= charge + 人 + with + 罪名)</div>
+        <div class="example">The police <strong>accused</strong> the notorious man <strong>of</strong> murder. 警察控告這名惡名昭彰的男子犯有謀殺罪。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">5. adhere to sth.</div>
+        <div class="word-def">堅持 (某信念)；黏附</div>
+        <div class="example">Maggie <strong>adhered to</strong> her principles throughout her life. Maggie一生都堅持自己的原則。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">6. add insult to injury</div>
+        <div class="word-def">雪上加霜；落井下石；傷口上灑鹽</div>
+        <div class="example">The manager told me that I was too young for the job, and then to <strong>add insult to injury</strong>, they refused to pay for my travel expenses. 經理告訴我，我太年輕不適合這份工作，然後雪上加霜的是，他們拒絕支付我的車馬費。</div>
+    </div>
+
+    <div class="word-card">
+        <div class="word-title">7. adjust to</div>
+        <div class="word-def">使適應；調整</div>
+        <div class="example">If the desk is too high, you can <strong>adjust it to</strong> suit you. 如果桌子太高，您可以調整它來合乎您。</div>
+    </div>
+    
+     <div class="word-card">
+        <div class="word-title">8. after all</div>
+        <div class="word-def">畢竟</div>
+        <div class="example">I love my sister and brother. <strong>After all</strong>, they are my lovely siblings. 我愛我的姐妹和兄弟。畢竟，他們是我可愛的兄弟姐妹。</div>
+    </div>
+    
+     <div class="word-card">
+        <div class="word-title">9. against one's will</div>
+        <div class="word-def">不情願地；違背意願</div>
+        <div class="example">Don't go <strong>against your will</strong> to do something. 不要違背自己的意願去做某事。</div>
+    </div>
+    
+     <div class="word-card">
+        <div class="word-title">10. all ears</div>
+        <div class="word-def">洗耳恭聽；認真聽</div>
+        <div class="example">I'm <strong>all ears</strong>. 我洗耳恭聽。</div>
+    </div>
+
+    <!-- Part 4: Quiz -->
+    <div class="quiz-container">
+        <h2>Day 01 隨堂測驗 (共 10 題)</h2>
+        <p>測驗看看你是否掌握了今天的內容！</p>
+        
+        <div id="quiz-box">
+            <!-- Questions will be injected by JS -->
+        </div>
+        
+        <button id="finishBtn" class="btn-complete" disabled>完成今日學習 (請先完成測驗)</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // Original 5 questions
+        {
+            q: "You have to _____ from eating too much junk food to stay healthy.",
+            options: ["abstain", "absence", "absorb", "account"],
+            correct: 0,
+            explanation: "abstain from 代表「避免、避開」，符合句意。"
+        },
+        {
+            q: "The heavy rain _____ 80% of the reasons why the event was cancelled.",
+            options: ["accounts for", "abides by", "adheres to", "adjusts to"],
+            correct: 0,
+            explanation: "account for 意為「佔...比例」或是「解釋...的原因」。"
+        },
+        {
+            q: "Please make sure to welcome the passengers _____.",
+            options: ["abroad", "aboard", "broad", "board"],
+            correct: 1,
+            explanation: "aboard 指「在交通工具上」；abroad 是「國外」。"
+        },
+        {
+            q: "Even though it's hard, we must _____ our principles.",
+            options: ["accuse of", "adhere to", "add insult to", "affect to"],
+            correct: 1,
+            explanation: "adhere to sth. 意為「堅持某信念」。"
+        },
+        {
+            q: "There is _____ evidence showing that he is innocent.",
+            options: ["abundant", "absent", "adapt", "adept"],
+            correct: 0,
+            explanation: "abundant 意為「充足的、豐富的」。"
+        },
+        // New 5 questions
+        {
+            q: "She is a talented pianist and is very _____ at playing classical music.",
+            options: ["adapt", "adopt", "adept", "affect"],
+            correct: 2,
+            explanation: "adept at 意為「熟練於、內行的」。adapt 是適應，adopt 是領養。"
+        },
+        {
+            q: "The stadium is large enough to _____ 50,000 spectators.",
+            options: ["accumulate", "accommodate", "account", "absorb"],
+            correct: 1,
+            explanation: "accommodate 意為「容納」。"
+        },
+        {
+            q: "I failed the exam, and to _____, my bike was stolen on the way home.",
+            options: ["add insult to injury", "account for", "abide by", "adhere to"],
+            correct: 0,
+            explanation: "add insult to injury 意為「雪上加霜」，符合句意。"
+        },
+        {
+            q: "The new policy will have a positive _____ on the economy.",
+            options: ["affect", "affection", "effect", "effort"],
+            correct: 2,
+            explanation: "effect (n.) 影響、效果。affect 通常當動詞。"
+        },
+        {
+            q: "Everyone in the company must _____ the safety regulations.",
+            options: ["abide by", "account for", "adjust to", "accuse of"],
+            correct: 0,
+            explanation: "abide by 意為「遵守」。"
+        }
+    ];
+
+    const quizBox = document.getElementById('quiz-box');
+    const finishBtn = document.getElementById('finishBtn');
+    let answeredCount = 0;
+
+    questions.forEach((item, index) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'question';
+        
+        let html = `<p><strong>Q${index + 1}:</strong> ${item.q}</p><div class="options">`;
+        item.options.forEach((opt, optIndex) => {
+            html += `<button onclick="checkAnswer(this, ${index}, ${optIndex})">${opt}</button>`;
+        });
+        html += `</div><div class="feedback" id="feedback-${index}"></div>`;
+        
+        qDiv.innerHTML = html;
+        quizBox.appendChild(qDiv);
+    });
+
+    function checkAnswer(btn, qIndex, optIndex) {
+        const parent = btn.parentElement;
+        const feedback = document.getElementById(`feedback-${qIndex}`);
+        const qData = questions[qIndex];
+
+        // Disable all buttons in this question
+        const buttons = parent.getElementsByTagName('button');
+        for(let b of buttons) {
+            b.disabled = true;
+        }
+
+        if (optIndex === qData.correct) {
+            btn.classList.add('correct');
+            feedback.innerHTML = `<span style="color:green">Correct!</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#d4edda';
+        } else {
+            btn.classList.add('wrong');
+            buttons[qData.correct].classList.add('correct'); // Show correct answer
+            feedback.innerHTML = `<span style="color:red">Wrong.</span> ${qData.explanation}`;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#f8d7da';
+        }
+
+        answeredCount++;
+        // Check if all questions are answered (works for any number of questions)
+        if (answeredCount === questions.length) {
+            finishBtn.disabled = false;
+            finishBtn.innerText = "完成今日學習 (紀錄進度)";
+        }
+    }
+
+    finishBtn.addEventListener('click', () => {
+        // Save progress to LocalStorage
+        localStorage.setItem('day01_completed', 'true');
+        alert('恭喜完成 Day 01！進度已儲存。');
+        window.location.href = 'index.html';
+    });
+</script>
+
+</body>
+</html>
