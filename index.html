@@ -1,163 +1,520 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>國營考試英文 30 天衝刺計畫</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --bg-color: #f4f6f7;
-            --card-bg: #ffffff;
-        }
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-        p {
-            color: #7f8c8d;
-        }
-        .progress-container {
-            width: 100%;
-            max-width: 600px;
-            background-color: #dfe6e9;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .progress-bar {
-            height: 20px;
-            background-color: var(--secondary-color);
-            width: 0%; /* JS will update this */
-            transition: width 0.5s ease;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 800px;
-        }
-        .day-card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px 10px;
-            text-align: center;
-            text-decoration: none;
-            color: var(--primary-color);
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-            border: 2px solid transparent;
-        }
-        .day-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: var(--secondary-color);
-        }
-        .day-card.completed {
-            background-color: #2ecc71;
-            color: white;
-            border-color: #27ae60;
-        }
-        .day-card.locked {
-            background-color: #ecf0f1;
-            color: #bdc3c7;
-            pointer-events: none;
-        }
-        .stats {
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #7f8c8d;
-        }
-        footer {
-            margin-top: 50px;
-            font-size: 0.8em;
-            color: #95a5a6;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英文學習測驗 App</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#222536;--border:#2e3248;
+  --accent:#7c6ef8;--accent2:#f86e51;--accent3:#4ecdc4;
+  --text:#e8eaf0;--text2:#9499b2;--text3:#5a5f7a;
+  --success:#52c41a;--error:#ff4d4f;--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:-50%;left:-20%;width:60%;height:120%;background:radial-gradient(ellipse,rgba(124,110,248,0.06) 0%,transparent 70%);pointer-events:none;z-index:0;}
+
+/* NAV */
+.nav{position:sticky;top:0;background:rgba(15,17,23,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;z-index:100;}
+.nav-title{font-size:1.1rem;font-weight:700;color:var(--accent);letter-spacing:.05em;}
+.nav-back{display:none;cursor:pointer;padding:6px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:.85rem;transition:all .2s;}
+.nav-back:hover{border-color:var(--accent);color:var(--accent);}
+.nav-back.show{display:block;}
+
+/* PAGES */
+.page{display:none;} .page.active{display:block;}
+
+/* HOME */
+.home-header{padding:48px 24px 24px;text-align:center;}
+.home-header h1{font-size:2.2rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.home-header p{color:var(--text2);font-size:.95rem;}
+.stats-bar{display:flex;gap:12px;padding:0 24px 28px;justify-content:center;flex-wrap:wrap;}
+.stat-chip{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:6px 16px;font-size:.8rem;color:var(--text2);display:flex;align-items:center;gap:8px;}
+.stat-dot{width:8px;height:8px;border-radius:50%;}
+
+/* UNIT GRID */
+.units-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:0 24px 40px;position:relative;z-index:1;}
+.unit-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.unit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent3));opacity:0;transition:opacity .2s;}
+.unit-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,110,248,.15);}
+.unit-card:hover::before{opacity:1;}
+/* completed state */
+.unit-card.done{border-color:rgba(82,196,26,.35);}
+.unit-card.done::before{background:linear-gradient(90deg,var(--success),#7ed957);opacity:1;}
+
+.unit-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.unit-number{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent);background:rgba(124,110,248,.1);padding:3px 10px;border-radius:6px;}
+/* checkmark badge */
+.unit-check{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.unit-check.done{background:rgba(82,196,26,.15);color:var(--success);}
+.unit-check.undone{background:var(--surface2);color:var(--text3);font-size:.65rem;font-family:'Space Mono',monospace;}
+
+.unit-title{font-size:1rem;font-weight:600;margin-bottom:6px;}
+.unit-subtitle{font-size:.8rem;color:var(--text2);margin-bottom:14px;}
+.unit-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.unit-tag{font-size:.7rem;padding:2px 8px;border-radius:4px;font-family:'Space Mono',monospace;}
+.tag-v{background:rgba(124,110,248,.15);color:var(--accent);}
+.tag-p{background:rgba(248,110,81,.15);color:var(--accent2);}
+.tag-s{background:rgba(78,205,196,.15);color:var(--accent3);}
+
+.reset-zone{padding:0 24px 48px;text-align:center;}
+.reset-btn{background:transparent;border:1px solid var(--border);color:var(--text3);font-size:.8rem;padding:8px 20px;border-radius:8px;cursor:pointer;transition:all .2s;font-family:'Space Mono',monospace;}
+.reset-btn:hover{border-color:var(--error);color:var(--error);}
+
+/* UNIT PAGE */
+.unit-page-header{padding:28px 24px 20px;border-bottom:1px solid var(--border);}
+.unit-page-title{font-size:1.4rem;font-weight:700;margin-bottom:6px;}
+.unit-page-sub{color:var(--text2);font-size:.85rem;}
+.unit-tabs{display:flex;padding:0 24px;border-bottom:1px solid var(--border);overflow-x:auto;gap:0;}
+.unit-tab{padding:14px 18px;font-size:.85rem;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.unit-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.unit-tab:hover:not(.active){color:var(--text);}
+.tab-content{display:none;padding:24px;} .tab-content.active{display:block;}
+
+/* STUDY CARDS */
+.study-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px;}
+.study-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.study-card .word{font-size:1.1rem;font-weight:700;color:var(--accent);margin-bottom:4px;font-family:'Space Mono',monospace;}
+.study-card .pos{font-size:.75rem;color:var(--text3);margin-bottom:6px;}
+.study-card .meaning{font-size:.9rem;color:var(--text);margin-bottom:8px;}
+.study-card .example{font-size:.78rem;color:var(--text2);border-left:2px solid var(--border);padding-left:10px;line-height:1.5;}
+.sim-num{font-size:.7rem;color:var(--accent3);margin-bottom:6px;font-family:'Space Mono',monospace;letter-spacing:.05em;}
+.sim-content{font-size:.85rem;line-height:1.9;}
+.sim-content .ew{color:var(--accent);font-weight:600;}
+
+/* QUIZ */
+.quiz-wrap{max-width:680px;margin:0 auto;}
+.quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.quiz-bar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.quiz-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:3px;transition:width .4s ease;}
+.quiz-counter{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--text2);white-space:nowrap;}
+.quiz-score-live{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--accent3);white-space:nowrap;}
+
+.quiz-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:20px;min-height:140px;}
+.quiz-type-badge{display:inline-block;font-size:.68rem;font-family:'Space Mono',monospace;color:var(--accent2);background:rgba(248,110,81,.1);padding:2px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.quiz-question{font-size:1.3rem;font-weight:600;line-height:1.5;margin-bottom:8px;}
+.quiz-question .hl{color:var(--accent);font-family:'Space Mono',monospace;}
+.quiz-hint{font-size:.78rem;color:var(--text3);margin-top:6px;font-style:italic;line-height:1.4;}
+
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.quiz-opt{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:14px 18px;cursor:pointer;transition:all .15s;font-size:.88rem;text-align:left;color:var(--text);line-height:1.4;font-family:'Noto Sans TC',sans-serif;}
+.quiz-opt:hover:not([disabled]){border-color:var(--accent);background:rgba(124,110,248,.08);}
+.quiz-opt.correct{border-color:var(--success)!important;background:rgba(82,196,26,.1)!important;color:var(--success);}
+.quiz-opt.wrong{border-color:var(--error)!important;background:rgba(255,77,79,.08)!important;color:var(--error);}
+.quiz-opt[disabled]{cursor:default;}
+
+.quiz-feedback{display:none;padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:.88rem;line-height:1.5;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:rgba(82,196,26,.08);border:1px solid rgba(82,196,26,.3);color:#a0d982;}
+.quiz-feedback.bad{background:rgba(255,77,79,.08);border:1px solid rgba(255,77,79,.25);color:#ff8a8b;}
+
+.quiz-next{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#5b4fd4);border:none;border-radius:10px;color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity .2s,transform .1s;display:none;font-family:'Noto Sans TC',sans-serif;}
+.quiz-next.show{display:block;}
+.quiz-next:hover{opacity:.9;transform:translateY(-1px);}
+
+/* RESULT */
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;text-align:center;max-width:480px;margin:40px auto;}
+.result-score{font-size:4rem;font-weight:700;font-family:'Space Mono',monospace;background:linear-gradient(135deg,var(--accent3),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.result-label{color:var(--text2);margin-bottom:24px;}
+.result-breakdown{display:flex;gap:16px;justify-content:center;margin-bottom:24px;}
+.result-stat{background:var(--surface2);border-radius:10px;padding:12px 20px;font-family:'Space Mono',monospace;}
+.result-stat .num{font-size:1.5rem;font-weight:700;}
+.result-stat .lbl{font-size:.7rem;color:var(--text2);margin-top:2px;}
+.result-stat.ok .num{color:var(--success);}
+.result-stat.bad .num{color:var(--error);}
+.result-missed{text-align:left;margin-bottom:24px;max-height:200px;overflow-y:auto;}
+.result-missed-title{font-size:.8rem;color:var(--text3);margin-bottom:10px;font-family:'Space Mono',monospace;}
+.missed-item{background:var(--surface2);border-radius:8px;padding:10px 14px;margin-bottom:6px;font-size:.82rem;}
+.missed-item .mq{color:var(--accent);margin-bottom:2px;}
+.missed-item .ma{color:var(--text2);}
+.result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:12px 24px;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;font-family:'Noto Sans TC',sans-serif;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#5b4fd4);color:#fff;}
+.btn-primary:hover{opacity:.9;}
+.btn-secondary{background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+.btn-secondary:hover{border-color:var(--accent);}
+
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+@media(max-width:600px){
+  .home-header h1{font-size:1.6rem;}
+  .units-grid{grid-template-columns:1fr;padding:0 16px 40px;}
+  .quiz-options{grid-template-columns:1fr;}
+  .tab-content{padding:16px;}
+  .study-grid{grid-template-columns:1fr;}
+  .quiz-card{padding:20px;}
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.page.active{animation:fadeIn .3s ease;}
+.unit-card{animation:fadeIn .3s ease backwards;}
+/* checkmark pop */
+@keyframes checkPop{0%{transform:scale(0);}70%{transform:scale(1.3);}100%{transform:scale(1);}}
+.unit-check.done{animation:checkPop .35s ease;}
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>國營考試英文 30 天衝刺</h1>
-        <p>基於「四版英文教科書0318」的個人化學習進度</p>
-    </header>
+<nav class="nav">
+  <button class="nav-back" id="navBack" onclick="goHome()">← 返回主頁</button>
+  <span class="nav-title" id="navTitle">英文學習測驗</span>
+</nav>
 
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div style="margin-bottom: 20px;">
-        總進度: <span id="progressText">0%</span>
-    </div>
+<!-- HOME -->
+<div class="page active" id="homePage">
+  <div class="home-header">
+    <h1>英文學習測驗</h1>
+    <p>字彙 · 片語 · 相似詞　全方位練習</p>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-chip"><div class="stat-dot" style="background:var(--accent)"></div>字彙 283</div>
+    <div class="stat-chip"><div class="stat-dot" style="background:var(--accent2)"></div>片語 115</div>
+    <div class="stat-chip"><div class="stat-dot" style="background:var(--accent3)"></div>相似詞 133</div>
+  </div>
+  <div class="units-grid" id="unitsGrid"></div>
+  <div class="reset-zone">
+    <button class="reset-btn" onclick="confirmReset()">🗑 清除所有學習紀錄</button>
+  </div>
+</div>
 
-    <div class="grid-container" id="daysGrid">
-        <!-- JS will populate days -->
-    </div>
+<!-- UNIT PAGE -->
+<div class="page" id="unitPage">
+  <div class="unit-page-header">
+    <div class="unit-page-title" id="unitTitle"></div>
+    <div class="unit-page-sub" id="unitSub"></div>
+  </div>
+  <div class="unit-tabs">
+    <div class="unit-tab active" onclick="switchTab(0)">📖 字彙複習</div>
+    <div class="unit-tab" onclick="switchTab(1)">📝 片語複習</div>
+    <div class="unit-tab" onclick="switchTab(2)">🔍 相似詞複習</div>
+    <div class="unit-tab" onclick="switchTab(3)">🎯 測驗（10題）</div>
+  </div>
+  <div class="tab-content active" id="tab0"></div>
+  <div class="tab-content" id="tab1"></div>
+  <div class="tab-content" id="tab2"></div>
+  <div class="tab-content" id="tab3"><div class="quiz-wrap" id="quizWrap"></div></div>
+</div>
 
-    <div class="stats">
-        <p>已完成天數: <span id="daysCount">0</span> / 30</p>
-    </div>
+<script>
+const APP_DATA = {"vocabulary":[{"word":"above","pos_def":"adj./adv./prep. 上面的；在...之上","chinese":"上面的；在...之上","example_en":"There is a bird above the tree. 小鳥在樹的正上面。","example_zh":""},{"word":"absence","pos_def":"n. 缺席","chinese":"缺席","example_en":"Kevin got COVID yesterday, so he was absent for the class.","example_zh":""},{"word":"abstain","pos_def":"vi. 避免；避開 (使用上，後面加 from)","chinese":"避免；避開 (使用上，後面加 from)","example_en":"You have to abstain from eating fried chicken and bread in order to stay in","example_zh":""},{"word":"abundant","pos_def":"adj. 充足的；豐富的","chinese":"充足的；豐富的","example_en":"There is abundant evidence that nuclear power plants have harmful effects on the","example_zh":""},{"word":"abroad","pos_def":"adv. 在國外","chinese":"在國外","example_en":"If you want to go abroad, you should take the airplane.","example_zh":""},{"word":"absolutely","pos_def":"adv. 絕對地；完全地","chinese":"絕對地；完全地","example_en":"We should trust him absolutely. 我們應當完全的相信他。","example_zh":""},{"word":"absorb","pos_def":"v. （尤指逐漸）吸收","chinese":"尤指逐漸）吸收","example_en":"Plants absorb carbon dioxide. 植物吸收二氧化碳 。","example_zh":""},{"word":"accommodate","pos_def":"vt. 能容納；提供住宿","chinese":"能容納；提供住宿","example_en":"The hotel is big enough to accommodate three thousand people per day.","example_zh":""},{"word":"accumulate","pos_def":"vt./vi. 累積；積聚","chinese":"累積；積聚","example_en":"If you want to accumulate more wealth, you have to learn how to invest your","example_zh":""},{"word":"account","pos_def":"vi./n. 解釋；對...負責;佔有/帳戶","chinese":"解釋；對...負責;佔有/帳戶","example_en":"Kevin’s fault accounts for 90% of the car accident.","example_zh":""},{"word":"accustom","pos_def":"vt. 使習慣；使適應","chinese":"使習慣；使適應","example_en":"As a freshman in the college, I have to accustom myself to the surroundings.","example_zh":""},{"word":"accomplishment","pos_def":"n. [C] 成尌；任務 / n. [U] 完成之事","chinese":"成尌；任務 / n. [U] 完成之事","example_en":"The team celebrated the successful accomplishment of their task.","example_zh":""},{"word":"accompany","pos_def":"vt. 陪伴；陪同","chinese":"陪伴；陪同","example_en":"My kid got COVID-19, he was so weak that he needed someone to accompany","example_zh":""},{"word":"accelerate","pos_def":"vt./vi 加快；加速","chinese":"加快；加速","example_en":"We can accelerate our car to let the speed increase.","example_zh":""},{"word":"achievement","pos_def":"n. [U]達成；成尌","chinese":"達成；成尌","example_en":"Winning the Nobel Prize is the greatest achievement that many scholars crave for.","example_zh":""},{"word":"acquaintance","pos_def":"n. 點頭之交的朋友","chinese":"點頭之交的朋友","example_en":"He is just an acquaintance, which means that I am not familiar with him.","example_zh":""},{"word":"acumen","pos_def":"n. [U] 敏銳；聰明","chinese":"敏銳；聰明","example_en":"Due to CEO’S commercial acumen, the company made a great profit.","example_zh":""},{"word":"acknowledge","pos_def":"vt. 承認；認可","chinese":"承認；認可","example_en":"The communist party would rather send the people who discover the problems","example_zh":""},{"word":"adaptable","pos_def":"adj. 適應性強的","chinese":"適應性強的","example_en":"The cockroaches are adaptable. They can adapt to different environments.","example_zh":""},{"word":"administration","pos_def":"n. [C] 行政；管理","chinese":"行政；管理","example_en":"Teachers complain that more of their time is taken up with administration than","example_zh":""},{"word":"addiction","pos_def":"n. 沉溺；沉癮","chinese":"沉溺；沉癮","example_en":"If your kids have Internet addiction, you have to find some ways to deal with","example_zh":""},{"word":"additional","pos_def":"adj. 附加的；額外的","chinese":"附加的；額外的","example_en":"If you don't pay the loan on time, the bank will add you additional charges.","example_zh":""},{"word":"address","pos_def":"n. 地址； v.處理(問題)","chinese":"地址； v.處理(問題)","example_en":"You didn't get her address, so you have to address this problem.","example_zh":""},{"word":"adequate","pos_def":"adj. 足夠的；適當的","chinese":"足夠的；適當的","example_en":"We don't have adequate time to do our work, so we have to burn the","example_zh":""},{"word":"advantage","pos_def":"n. [C/U]優勢；好處/ vt.有利於","chinese":"優勢；好處/ vt.有利於","example_en":"The advantage of booking a bus ticket in advance is that you will get a better","example_zh":""},{"word":"adultery","pos_def":"n. 通姦","chinese":"通姦","example_en":"Many celebrities have committed adultery these days.","example_zh":""},{"word":"admission","pos_def":"n. [C/U] 進入許可；入場券；門票","chinese":"進入許可；入場券；門票","example_en":"No admission before two o'clock p.m. 兩點以前禁止進入。","example_zh":""},{"word":"admit","pos_def":"vt. /vi. 承認；容許；接納","chinese":"承認；容許；接納","example_en":"It's great to admit you have done something wrong. Nobody is perfect.","example_zh":""},{"word":"afraid","pos_def":"adj. 害怕的；擔憂的","chinese":"害怕的；擔憂的","example_en":"I've always been afraid of cockroaches. 我一直都怕蟑螂。","example_zh":""},{"word":"affect","pos_def":"vt. 影響；感動；感染","chinese":"影響；感動；感染","example_en":"I think Roy is sincere and quite without affectation ,which affects me a lot.","example_zh":""},{"word":"afterwards","pos_def":"adv. 之後；後來","chinese":"之後；後來","example_en":"Afterwards, he became the husband of the good-looking woman.","example_zh":""},{"word":"affordable","pos_def":"adj. 負擔得貣","chinese":"負擔得貣","example_en":"Nowadays, most of the computers are sold at affordable prices, which enables","example_zh":""},{"word":"agenda","pos_def":"n. [C] 議事日程；（會議的）議程","chinese":"議事日程；（會議的）議程","example_en":"There were several important items on the agenda.","example_zh":""},{"word":"agent","pos_def":"n. [C] 代理人；代理商；仲介","chinese":"代理人；代理商；仲介","example_en":"You can get a plane ticket via a travel agent. 你可以透過旅行社購買一張飛機","example_zh":"You can get a plane ticket via a travel agent. 你可以透過旅行社購買一張飛機"},{"word":"agriculture","pos_def":"n.農業","chinese":"農業","example_en":"Yunlin is an agricultural county of Taiwan. 雲林是台灣的農業縣。","example_zh":"Yunlin is an agricultural county of Taiwan. 雲林是台灣的農業縣。"},{"word":"aggressive","pos_def":"adj. 好鬥的；侵略的","chinese":"好鬥的；侵略的","example_en":"Every war is aggressive, we have to avoid the war from happening.","example_zh":""},{"word":"agreement","pos_def":"n. 同意；協定","chinese":"同意；協定","example_en":"We hope that Ukraine and Russia can reach an agreement to stop the war.","example_zh":""},{"word":"allergic","pos_def":"adj.對...過敏的；對...厭惡的","chinese":"對...過敏的；對...厭惡的","example_en":"The man is allergic to pollen. 這男人對花粉過敏。","example_zh":""},{"word":"allocate","pos_def":"vt. 分配；分派","chinese":"分配；分派","example_en":"The CEO allocates necessary resources for the production of the products.","example_zh":""},{"word":"allow","pos_def":"v. 允許","chinese":"允許","example_en":"My mom allows me to take some allowance from my dad.","example_zh":""},{"word":"amateur","pos_def":"adj. 業餘的 ; n.業餘者","chinese":"業餘的 ; n.業餘者","example_en":"Our teachers here are all enthusiastic amateurs.","example_zh":""},{"word":"allusive","pos_def":"adj. 暗指的；富含典故的","chinese":"暗指的；富含典故的","example_en":"The author’s story is allusive and realistic. 這位作者的故事富含典故且寫實。","example_zh":""},{"word":"altitude","pos_def":"n. 海拔(高度)","chinese":"海拔(高度)","example_en":"The plane was flying at an altitude of 10000 meters. 飛機飛在海拔一萬公尺。","example_zh":""},{"word":"amazing","pos_def":"adj. 令人驚喜的/令人讚嘆的","chinese":"令人驚喜的/令人讚嘆的","example_en":"Taroko Gorge has amazing scenery. 太魯閣有令人讚嘆的景色。","example_zh":""},{"word":"amend","pos_def":"vt./vi. 修訂；修改","chinese":"修訂；修改","example_en":"We have to amend the law in that there are some errors in it.","example_zh":""},{"word":"ambiguous","pos_def":"adj. 模稜兩可的","chinese":"模稜兩可的","example_en":"If you consider something as an ambiguous thing , which means that it is unclear","example_zh":""},{"word":"among","pos_def":"prep. 在...之中","chinese":"在...之中","example_en":"Roy has always been the most popular boy among us.","example_zh":""},{"word":"ambassador","pos_def":"n. [C] 大使","chinese":"大使","example_en":"Derek has now accepted a posting as ambassador to Japan.","example_zh":""},{"word":"announce","pos_def":"n. 宣布；發表","chinese":"宣布；發表","example_en":"The company CEO announced that they will raise their employees’ salary by 5 %.","example_zh":""},{"word":"antique","pos_def":"n. [C]; adj. 古董；古老的","chinese":"古董；古老的","example_en":"There are many stores near our house , including grocery stores,antique stores","example_zh":""},{"word":"anonymous","pos_def":"adj.匿名的；匿名者","chinese":"匿名的；匿名者","example_en":"According to the anonymous employee in this company, they engaged in human","example_zh":""},{"word":"apartment","pos_def":"n. [C] 公寓套房","chinese":"公寓套房","example_en":"I'll give you the keys to my apartment. 我會把我公寓的鎖匙給你。","example_zh":""},{"word":"appliance","pos_def":"n. [C]裝置，器械；（尤指）家用電器","chinese":"裝置，器械；（尤指）家用電器","example_en":"Appliance is a device or piece of equipment, especially an electrical one that is","example_zh":""},{"word":"apparently","pos_def":"adv. 顯然地","chinese":"顯然地","example_en":"Tony got COVID yesterday, he apparently had been very ill.","example_zh":""},{"word":"approve","pos_def":"v. 批准；贊成；認可","chinese":"批准；贊成；認可","example_en":"According to the survey, only 25% of the citizens approve this new policy.","example_zh":""},{"word":"approach","pos_def":"v./n. 靠近；接近；方法；途徑","chinese":"靠近；接近；方法；途徑","example_en":"The boss has to adopt some creative approaches to build up a company.","example_zh":""},{"word":"applaud","pos_def":"v. 鼓掌","chinese":"鼓掌","example_en":"You should have heard the audience applaud - the noise was fantastic.","example_zh":""},{"word":"artist","pos_def":"n. [C] 藝術家；美術家；畫家；雕塑家","chinese":"藝術家；美術家；畫家；雕塑家","example_en":"Monet is one of my favorite artists. 莫內是我最喜歡的畫家之一。","example_zh":""},{"word":"appearance","pos_def":"n. [C/U]外表，外觀；外貌","chinese":"外表，外觀；外貌","example_en":"Appearances can be deceptive. 人不可貌相。","example_zh":"Appearances can be deceptive. 人不可貌相。"},{"word":"artificial","pos_def":"adj. 人工的","chinese":"人工的","example_en":"Artificial intelligence will play an important role in human lives for the next","example_zh":""},{"word":"assign","pos_def":"v. 指派；分派","chinese":"指派；分派","example_en":"The employee was assigned to sweep the floor. 這員工被指派去掃地。","example_zh":""},{"word":"assist","pos_def":"v. 協助；參加","chinese":"協助；參加","example_en":"Please assist me to carry the heavy boxes. 請協助我搬運沉重的箱子。","example_zh":""},{"word":"astonish","pos_def":"v. 使吃驚；使驚訝","chinese":"使吃驚；使驚訝","example_en":"I was astonished by his strong determination. 我因他強大的決心而感到驚訝。","example_zh":"I was astonished by his strong determination. 我因他強大的決心而感到驚訝。"},{"word":"attempt","pos_def":"v./n. 嘗試；企圖","chinese":"嘗試；企圖","example_en":"The criminal attempted to escape the police from jumping out through the","example_zh":""},{"word":"attribute","pos_def":"v./n. 把...歸因於；屬性、特質","chinese":"把...歸因於；屬性、特質","example_en":"Racial discrimination can be attributed to historical factors.","example_zh":""},{"word":"attitude","pos_def":"n. 態度","chinese":"態度","example_en":"His attitude toward me is good. 他對我的態度很好。","example_zh":"His attitude toward me is good. 他對我的態度很好。"},{"word":"available","pos_def":"adj.可用的；有空的","chinese":"可用的；有空的","example_en":"Are these pants available in a larger size? 這些長褲有大一號的嗎？","example_zh":"Are these pants available in a larger size? 這些長褲有大一號的嗎？"},{"word":"bachelor","pos_def":"n. 單身漢；學士(學位)","chinese":"單身漢；學士(學位)","example_en":"Roy got his bachelor’s degree at NTU. Roy 在台大得到學士學位。","example_zh":"Roy got his bachelor’s degree at NTU. Roy 在台大得到學士學位。"},{"word":"baffle","pos_def":"v. 使困惑","chinese":"使困惑","example_en":"I spent all night trying to find the solutions, but I am still baffled.","example_zh":""},{"word":"balance","pos_def":"n. 帄衡","chinese":"帄衡","example_en":"As a student, you have to make a balance between studying and playing.","example_zh":""},{"word":"bamboo","pos_def":"n. 竹子","chinese":"竹子","example_en":"As we know, the panda likes to eat bamboo.","example_zh":""},{"word":"bankrupt","pos_def":"n.破瓹者 v.使破瓹 adj.破瓹的","chinese":"破瓹者 v.使破瓹 adj.破瓹的","example_en":"She went bankrupt after buying lots of jewelry.","example_zh":""},{"word":"bargain","pos_def":"n. 協議；便宜貨 v.討價還價","chinese":"協議；便宜貨 v.討價還價","example_en":"Compared to Benz, Toyota is a much better bargain. (改編自台電)","example_zh":"Compared to Benz, Toyota is a much better bargain. (改編自台電)"},{"word":"barbarian","pos_def":"n. 野蠻人；野蠻的","chinese":"野蠻人；野蠻的","example_en":"Barbarian is an impolite word to describe aboriginal people.","example_zh":""},{"word":"barely","pos_def":"adv. 僅僅；勉強；幾乎不","chinese":"僅僅；勉強；幾乎不","example_en":"Jay was barely five when he started to play the piano.","example_zh":""},{"word":"barren","pos_def":"adj. 貧脊的；荒蕪的","chinese":"貧脊的；荒蕪的","example_en":"I drove through the rocky and barren mountainous area,which is really scary.","example_zh":""},{"word":"beforehand","pos_def":"adv. 事先","chinese":"事先","example_en":"If you are almost late for work, you have to tell your boss beforehand.","example_zh":""},{"word":"behavior","pos_def":"n. 行為(=behaviour 英式英文)","chinese":"行為(=behaviour 英式英文)","example_en":"The criminal was notorious for its violent behavior．","example_zh":""},{"word":"behalf","pos_def":"n. 代表","chinese":"代表","example_en":"On behalf of the entire team, I want to thank you for all you have done for us.","example_zh":""},{"word":"belongings","pos_def":"n. 財瓹；攜帶物品","chinese":"財瓹；攜帶物品","example_en":"Please make sure all the belongings are with you when leaving the library.","example_zh":""},{"word":"benefit","pos_def":"n. [C/U]利益；好處","chinese":"利益；好處","example_en":"The businessman gives lots of benefits to his customers.","example_zh":""},{"word":"benchmark","pos_def":"n. [C]基準（點）","chinese":"基準（點）","example_en":"The pianist’s outstanding performances set a new benchmark for other pianists","example_zh":""},{"word":"besiege","pos_def":"v. 圍攻；包圍","chinese":"圍攻；包圍","example_en":"The city has been besieged for two months by the aggressors.","example_zh":""},{"word":"beverage","pos_def":"n. 飲料","chinese":"飲料","example_en":"The store can't sell alcoholic beverages to teenagers.","example_zh":""},{"word":"beyond","pos_def":"adv. 在更遠處 prep. 超出...","chinese":"在更遠處 prep. 超出...","example_en":"Human-beings are mortal. Only a few people can live beyond 90.","example_zh":""},{"word":"bizarre","pos_def":"adj. 奇異的；超乎尋常的","chinese":"奇異的；超乎尋常的","example_en":"The psycho has a bizarre behavior that he shows everyone his penis on the","example_zh":""},{"word":"bleach","pos_def":"v.漂白； n.漂白劑","chinese":"漂白； n.漂白劑","example_en":"Roy had his hair bleached. Roy 染了頭髮。","example_zh":""},{"word":"blend","pos_def":"v. 混和 n. 混和物","chinese":"混和 n. 混和物","example_en":"Upon having the experiment, scientists would blend two chemical liquids","example_zh":""},{"word":"blur","pos_def":"v. 使模糊不清 ； n. 模糊不清的事物","chinese":"使模糊不清 ； n. 模糊不清的事物","example_en":"If you are near-sighted, please make sure to bring your glasses to class or","example_zh":""},{"word":"board","pos_def":"v.上傳；上車； n. 木板；甲板；車上；船上；董事會","chinese":"上傳；上車； n. 木板；甲板；車上；船上；董事會","example_en":"Passengers have to let flight attendants check your boarding pass before they","example_zh":""},{"word":"boundary","pos_def":"n. 邊界；界線","chinese":"邊界；界線","example_en":"If your country and the neighboring country have blurry boundaries, it might","example_zh":""},{"word":"boredom","pos_def":"n. 厭倦；無聊","chinese":"厭倦；無聊","example_en":"If you are bored, you are in a state of boredom.","example_zh":""},{"word":"boycott","pos_def":"v./n. 聯合抵制","chinese":"聯合抵制","example_en":"Many celebrities who want to earn RMB will support the ―one country ,two","example_zh":""},{"word":"breakthrough","pos_def":"n. 突破；突圍","chinese":"突破；突圍","example_en":"The negotiation between Ukraine and Russia has achieved a major","example_zh":""},{"word":"broaden","pos_def":"v. 使變寬","chinese":"使變寬","example_en":"People have to study more to broaden their horizons.","example_zh":""},{"word":"browse","pos_def":"v./n. 瀏覽","chinese":"瀏覽","example_en":"I was browsing through this website to find something to learn.","example_zh":""},{"word":"breakdown","pos_def":"n. 損壞；故障","chinese":"損壞；故障","example_en":"Ukraine and Russia blamed each other for the breakdown of the talks.","example_zh":""},{"word":"budget","pos_def":"n. [C/U] 預算","chinese":"預算","example_en":"The institute has drawn up a budget for the coming financial year.","example_zh":""},{"word":"Buddhism","pos_def":"n. 佛教","chinese":"佛教","example_en":"Kevin is a Buddhist, he always learns some knowledge from Buddhism.","example_zh":""},{"word":"butler","pos_def":"n. 男管家","chinese":"男管家","example_en":"Kevin is a butler in the businessman's house.","example_zh":""},{"word":"bureau","pos_def":"n. 局；事務處","chinese":"局；事務處","example_en":"The Central Weather Bureau is a place where the staff forecast the weather.","example_zh":""},{"word":"bureaucracy","pos_def":"n.官僚；官僚制度","chinese":"官僚；官僚制度","example_en":"Bureaucracy is a system for controlling the country or company or organization.","example_zh":""},{"word":"cabinet","pos_def":"n. 櫥櫃；內閣","chinese":"櫥櫃；內閣","example_en":"The cabinet meets every Thursday from May to December.","example_zh":""},{"word":"calculation","pos_def":"n. 計算","chinese":"計算","example_en":"The calculations you did last night were really great. I consider that you are","example_zh":""},{"word":"calculate","pos_def":"v. 計算","chinese":"計算","example_en":"He's calculated that it would take him ten years to save up enough for an","example_zh":""},{"word":"calendar","pos_def":"n. 日曆；行事曆","chinese":"日曆；行事曆","example_en":"If you have an appointment with me, please check your calendar in advance and","example_zh":""},{"word":"capability","pos_def":"n. 能力","chinese":"能力","example_en":"The exam is beyond the capability of those students.","example_zh":""},{"word":"campaign","pos_def":"n. 活動；（學運）運動","chinese":"活動；（學運）運動","example_en":"The election campaign will be held this Friday night.","example_zh":""},{"word":"capitalist","pos_def":"n. 資本主義","chinese":"資本主義","example_en":"Most of the western countries are capitalist countries, not communist countries.","example_zh":""},{"word":"capsule","pos_def":"n. 太空艙；膠囊","chinese":"太空艙；膠囊","example_en":"The capsule is a part of aircraft in which people live.","example_zh":""},{"word":"carbon","pos_def":"n. 碳","chinese":"碳","example_en":"People have to reduce carbon dioxide emission, or it will augment global","example_zh":""},{"word":"caretaker","pos_def":"n. 照顧者","chinese":"照顧者","example_en":"After taking care of the baby for all night, the caretaker was exhausted physically","example_zh":""},{"word":"carpenter","pos_def":"n. 木匠；木工","chinese":"木匠；木工","example_en":"Tony is a carpenter who works in a factory. Tony 是個在工廠裡工作的木工。","example_zh":"Tony is a carpenter who works in a factory. Tony 是個在工廠裡工作的木工。"},{"word":"cashier","pos_def":"n. 出納員；收銀員","chinese":"出納員；收銀員","example_en":"A cashier is a person whose job is to receive some money from the customers in","example_zh":""},{"word":"category","pos_def":"n. 種類","chinese":"種類","example_en":"There are three categories of these products.","example_zh":""},{"word":"catastrophe","pos_def":"n. 大災難；慘敗","chinese":"大災難；慘敗","example_en":"The emigration of TSMC engineers is a catastrophe for the country.","example_zh":""},{"word":"cement","pos_def":"v./n. 黏緊；水泥","chinese":"黏緊；水泥","example_en":"Several bags of cement are really heavy for me.","example_zh":""},{"word":"census","pos_def":"n. 人口普查","chinese":"人口普查","example_en":"We have a census in Taiwan every ten years. 台灣每十年都會有一次人口普查。","example_zh":""},{"word":"ceramic","pos_def":"n./adj.陶瓷；陶器的","chinese":"陶瓷；陶器的","example_en":"The bathroom floor is made up of ceramic tiles. 浴室地板是由瓷磚組成。","example_zh":"The bathroom floor is made up of ceramic tiles. 浴室地板是由瓷磚組成。"},{"word":"ceremony","pos_def":"n.儀式；典禮","chinese":"儀式；典禮","example_en":"The wedding ceremony was held at the fancy hotel. 婚禮在豪華飯店舉行。","example_zh":"The wedding ceremony was held at the fancy hotel. 婚禮在豪華飯店舉行。"},{"word":"change","pos_def":"n. [U]/v. 零錢；改變","chinese":"零錢；改變","example_en":"John used to carry a lot of change in his pocket.","example_zh":""},{"word":"channel","pos_def":"n. 管道；頻道；海峽 v. 形成河道","chinese":"管道；頻道；海峽 v. 形成河道","example_en":"The English Channel is between England and France.","example_zh":""},{"word":"characteristic","pos_def":"n. 特徵；特性； adj 特有的","chinese":"特徵；特性； adj 特有的","example_en":"A pair of big eyes is our family’s characteristic. 一雙大眼睛是家族特徵。","example_zh":"A pair of big eyes is our family’s characteristic. 一雙大眼睛是家族特徵。"},{"word":"cherish","pos_def":"v. 珍惜；珍愛","chinese":"珍惜；珍愛","example_en":"I cherish the time that I spent with my girlfriend.","example_zh":""},{"word":"chore","pos_def":"n. 家庭雜事；家事","chinese":"家庭雜事；家事","example_en":"I have already done all of the chores! 我已經完成所有的家事了!","example_zh":"I have already done all of the chores! 我已經完成所有的家事了!"},{"word":"checkout","pos_def":"n. [C] 結帳處，收銀臺","chinese":"結帳處，收銀臺","example_en":"Upon buying something, you have to pay money at the checkout.","example_zh":""},{"word":"chaotic","pos_def":"adj. 混亂的；毫無秩序的","chinese":"混亂的；毫無秩序的","example_en":"The apartment is chaotic at the moment . We've got all these extra people","example_zh":""},{"word":"circulate","pos_def":"v. 循環；流通；發行","chinese":"循環；流通；發行","example_en":"When we heat up the pot, the hot water will circulate inside.","example_zh":""},{"word":"confide","pos_def":"v. 吐露；傾訴","chinese":"吐露；傾訴","example_en":"He confided that he is a gay. 他吐露他是一位同性戀。","example_zh":""},{"word":"confirm","pos_def":"v. 證實；確認","chinese":"證實；確認","example_en":"The announcement from the celebrity confirmed that he did something bad to his","example_zh":""},{"word":"conversation","pos_def":"n. [C/U]交談，談話，對話","chinese":"交談，談話，對話","example_en":"She has a conversation with the man who dresses white.","example_zh":""},{"word":"compliment","pos_def":"n. [C] 讚美；讚揚；恭維的話","chinese":"讚美；讚揚；恭維的話","example_en":"Christine is wearing makeup today. She is fishing for compliments.","example_zh":""},{"word":"compromise","pos_def":"n. [C/U]妥協；折衷；讓步；和解","chinese":"妥協；折衷；讓步；和解","example_en":"It is hoped that a compromise will be reached in today's talks.","example_zh":""},{"word":"consistency","pos_def":"n. 一致性；連貫性；黏稠性","chinese":"一致性；連貫性；黏稠性","example_en":"Yu-ChengChang is a great baseball player but he lacks consistency.","example_zh":""},{"word":"clarification","pos_def":"n. 闡述；說明","chinese":"闡述；說明","example_en":"The president of R.O.C. (Taiwan) has further clarification of her position.","example_zh":""},{"word":"confine","pos_def":"v. 把…局限在，限制","chinese":"把…局限在，限制","example_en":"By means of closing the infected farms ,we're hoping to confine the disease to","example_zh":""},{"word":"chef","pos_def":"n.（飯店或餐館的）廚師；大廚，主廚","chinese":"飯店或餐館的）廚師；大廚，主廚","example_en":"Kevin is a chef in Din Tai Fung. Kevin 是鼎泰豐裡的大廚。","example_zh":""},{"word":"customer","pos_def":"n. 顧客，主顧，客戶","chinese":"顧客，主顧，客戶","example_en":"The company CEO adjusts the company's policy to meet customers’ needs.","example_zh":""},{"word":"dazzle","pos_def":"v. 使感到刺眼;使讚嘆","chinese":"使感到刺眼;使讚嘆","example_en":"I wasn’t dazzled by the moonlight. 我不會被月光刺眼。","example_zh":"I wasn’t dazzled by the moonlight. 我不會被月光刺眼。"},{"word":"deserve","pos_def":"v. 應得","chinese":"應得","example_en":"After winning the baseball game, the players deserve the holiday.","example_zh":""},{"word":"destruction","pos_def":"n. 破壞","chinese":"破壞","example_en":"Nowadays, due to the augment of the sea rising level, many people are","example_zh":""},{"word":"desperate","pos_def":"adj. 極度渴望的 ；非常嚴重的","chinese":"極度渴望的 ；非常嚴重的","example_en":"In many places of Africa, many people are in desperate poverty.","example_zh":""},{"word":"devote","pos_def":"v. 奉獻","chinese":"奉獻","example_en":"I devote myself to teaching orphans on weekends.","example_zh":""},{"word":"diligent","pos_def":"adj.勤奮的/勤勉的","chinese":"勤奮的/勤勉的","example_en":"Roy is a diligent student in the class. Roy 是班上中勤奮的學生。","example_zh":""},{"word":"delight","pos_def":"n. 欣喜；滿足；愜意","chinese":"欣喜；滿足；愜意","example_en":"My son is a real delight. 我的兒子很討人喜歡。","example_zh":""},{"word":"diminish","pos_def":"v. 減少","chinese":"減少","example_en":"If you use the wrong way to remember the words, it’s easy to diminish","example_zh":""},{"word":"diploma","pos_def":"n. 學位證書","chinese":"學位證書","example_en":"Upon graduation ceremony, the students who graduate will receive a diploma","example_zh":""},{"word":"distinguish","pos_def":"v. 分辨；區別","chinese":"分辨；區別","example_en":"Betty and Christina are twin sisters, it’s hard to distinguish between them.","example_zh":""},{"word":"drawback","pos_def":"n. 缺點","chinese":"缺點","example_en":"One of the drawbacks of having a roommate is that you have to share room","example_zh":""},{"word":"economic","pos_def":"adj. 經濟的","chinese":"經濟的","example_en":"Recently ,China has been in a really poor economic state in that many","example_zh":""},{"word":"eligible","pos_def":"adj.合適的；合格的","chinese":"合適的；合格的","example_en":"Are you eligible for the grant? 你有資格獲得補助金嗎?","example_zh":""},{"word":"emission","pos_def":"n. 排放","chinese":"排放","example_en":"Carbon dioxide emission gives rise to global warming.","example_zh":""},{"word":"enable","pos_def":"v. 使能夠","chinese":"使能夠","example_en":"Facing obstacles enables me to become a strong person in the following days.","example_zh":""},{"word":"enforcement","pos_def":"n. 執法","chinese":"執法","example_en":"The citizens support the enforcement of the traffic regulations.","example_zh":""},{"word":"escalator","pos_def":"n. 電扶梯","chinese":"電扶梯","example_en":"An escalator is not an elevator, it is slower and more dangerous .","example_zh":""},{"word":"establish","pos_def":"v. 建立；設立；創立","chinese":"建立；設立；創立","example_en":"Many bosses establish institutes to cultivate people to study more, which","example_zh":""},{"word":"facial","pos_def":"adj. 面部的","chinese":"面部的","example_en":"We can’t read her facial expressions, because she always looks the same","example_zh":""},{"word":"fate","pos_def":"n. 注定;命運","chinese":"注定;命運","example_en":"Human-beings always want to decide our own fate.","example_zh":""},{"word":"feedback","pos_def":"n. 回饋","chinese":"回饋","example_en":"Please give me some feedback after you watch my teaching.","example_zh":""},{"word":"fragment","pos_def":"n. 碎片；斷片","chinese":"碎片；斷片","example_en":"When the building collapsed, there were many fragments of glass on the road.","example_zh":""},{"word":"frosty","pos_def":"adj.嚴寒的；霜凍的","chinese":"嚴寒的；霜凍的","example_en":"The frosty air stung my neck.","example_zh":""},{"word":"frugal","pos_def":"adj. 節儉的","chinese":"節儉的","example_en":"Tom likes to live a frugal lifestyle. Tom 喜歡節儉的生活方式。","example_zh":""},{"word":"frustration","pos_def":"n. 挫折","chinese":"挫折","example_en":"Undoubtedly, people will face some frustration in their life.","example_zh":""},{"word":"fuel","pos_def":"n. 燃料","chinese":"燃料","example_en":"The gasoline is a fuel for the car to move.","example_zh":""},{"word":"furlough","pos_def":"v. 準休假；暫時解雇 n.休假；暫時解雇","chinese":"準休假；暫時解雇 n.休假；暫時解雇","example_en":"During the pandemic, many companies furloughed their employees.","example_zh":""},{"word":"furniture","pos_def":"n.U 傢俱","chinese":"傢俱","example_en":"There are several expensive pieces of furniture in the house.","example_zh":""},{"word":"gamble","pos_def":"v. 打賭 n. 賭博","chinese":"打賭 n. 賭博","example_en":"There are only a few places to gamble in Taiwan.","example_zh":""},{"word":"gender","pos_def":"n. 性別","chinese":"性別","example_en":"Nowadays, gender equality is an issue that people really care about.","example_zh":""},{"word":"generation","pos_def":"n. 世代","chinese":"世代","example_en":"It's easy to have a generation gap when talking to your parents.","example_zh":""},{"word":"gesture","pos_def":"n. 手勢","chinese":"手勢","example_en":"When you can’t speak English abroad, you can make use of gestures and facial","example_zh":""},{"word":"guarantee","pos_def":"n. 保證","chinese":"保證","example_en":"The computer comes with a three-year guarantee. 電腦有三年保固。","example_zh":""},{"word":"global","pos_def":"adj. 全球的","chinese":"全球的","example_en":"Due to global warming, people are concerned that the house would be in the","example_zh":""},{"word":"gossip","pos_def":"n. 八卦 v. 說閒話","chinese":"八卦 v. 說閒話","example_en":"Many employees like to gossip in the office, which is really bad for people","example_zh":""},{"word":"gradually","pos_def":"adv. 逐漸地","chinese":"逐漸地","example_en":"My girlfriend falls in love with me gradually. 我的女朋友漸漸地愛上我。","example_zh":""},{"word":"habitat","pos_def":"n. 棲息地","chinese":"棲息地","example_en":"The arctic is a habitat of polar bears. 匇極是匇極熊的棲息地。","example_zh":"The arctic is a habitat of polar bears. 匇極是匇極熊的棲息地。"},{"word":"hazardous","pos_def":"adj. 危險的","chinese":"危險的","example_en":"The haunted house is a hazardous place that people are scared of.","example_zh":""},{"word":"hemisphere","pos_def":"n. 半球","chinese":"半球","example_en":"Taiwan is located in the Northern hemisphere. 台灣位於匇半球。","example_zh":""},{"word":"hesitation","pos_def":"n. 猶豫","chinese":"猶豫","example_en":"Without any hesitation, Tony signed the contract to buy a new fancy house.","example_zh":""},{"word":"hygiene","pos_def":"n. 衛生","chinese":"衛生","example_en":"In Africa, many places have poor standards of hygiene, which causes diseases","example_zh":""},{"word":"impression","pos_def":"n. 印象","chinese":"印象","example_en":"First impressions are important for the job interview.","example_zh":""},{"word":"inadequate","pos_def":"adj. 不足的","chinese":"不足的","example_en":"If you prepare the test inadequately, you might fail it.","example_zh":""},{"word":"indifferent","pos_def":"adj. 冷漠的","chinese":"冷漠的","example_en":"She is an indifferent girl who doesn’t like to speak to other people in the class.","example_zh":""},{"word":"industry","pos_def":"n. 瓹業","chinese":"瓹業","example_en":"The city attracts many industries to invest the money.","example_zh":""},{"word":"intrusion","pos_def":"n. 侵擾","chinese":"侵擾","example_en":"If someone intrudes your own house, that is an intrusion.","example_zh":""},{"word":"interrupt","pos_def":"v. 打擾；打斷","chinese":"打擾；打斷","example_en":"Don’t interrupt people who are speaking. 不要打斷正說話的人。","example_zh":""},{"word":"intersection","pos_def":"n. 交點；十字路口","chinese":"交點；十字路口","example_en":"Taipei city has lots of busy intersections. 台匇市有許多交通繁忙的十字路口。","example_zh":""},{"word":"inspect","pos_def":"v. 檢查；審視","chinese":"檢查；審視","example_en":"After the car accident ,both drivers got out and inspected their cars for damage.","example_zh":""},{"word":"jealous","pos_def":"adj. 羨慕的；忌妒的","chinese":"羨慕的；忌妒的","example_en":"She is jealous of my income. 她很忌妒我的收入","example_zh":"She is jealous of my income. 她很忌妒我的收入"},{"word":"journey","pos_def":"n. 旅途","chinese":"旅途","example_en":"My journey to Europe is really great. 我的歐洲之旅真的很棒。","example_zh":"My journey to Europe is really great. 我的歐洲之旅真的很棒。"},{"word":"justice","pos_def":"n. 正義","chinese":"正義","example_en":"If you are not guilty, Please justify in the court and let justice have been done.","example_zh":""},{"word":"keen","pos_def":"adj. 熱衷的；熱心的","chinese":"熱衷的；熱心的","example_en":"He is keen to work . 他熱衷於工作。","example_zh":""},{"word":"keep","pos_def":"v. 持續；保持","chinese":"持續；保持","example_en":"You have to keep studying if you want to be a civil servant.","example_zh":""},{"word":"lavatory","pos_def":"n. 廁所；洗手間(=restroom≓bathroom)","chinese":"廁所；洗手間(=restroom≓bathroom)","example_en":"May I go to the lavatory? 我可以去洗手間嗎?","example_zh":"May I go to the lavatory? 我可以去洗手間嗎?"},{"word":"license","pos_def":"n. 許可；許可證","chinese":"許可；許可證","example_en":"Please bring your car license with you when you drive a car.","example_zh":""},{"word":"location","pos_def":"n. (=place)","chinese":"公園是學生情侶約會的好地方。","example_en":"The park is a great location for the student couple to date.","example_zh":""},{"word":"luxurious","pos_def":"adj. 豪華的；昂貴的","chinese":"豪華的；昂貴的","example_en":"The fancy car is really luxurious, I cannot afford it.","example_zh":""},{"word":"muse","pos_def":"v./n. 沉思;冥想;謬思女神","chinese":"沉思;冥想;謬思女神","example_en":"I like to muse about what I will do in the next two years.","example_zh":""},{"word":"malfunction","pos_def":"v. 發生故障；故障","chinese":"發生故障；故障","example_en":"Unfortunately, the pilot reported a malfunction of the aircraft’s power supply","example_zh":""},{"word":"maid","pos_def":"n.（飯店的）女服務員；（家中的）女傭；女僕","chinese":"飯店的）女服務員；（家中的）女傭；女僕","example_en":"The maid brought us our breakfast at nine last Monday.","example_zh":""},{"word":"maintenance","pos_def":"n. [C/U]維護，保養（保持道路、建築、機器設備等處於良","chinese":"維護，保養（保持道路、建築、機器設備等處於良","example_en":"Scientists have to do thorough maintenance checks on each instrument before","example_zh":""},{"word":"manifestation","pos_def":"n. 顯示；表明","chinese":"顯示；表明","example_en":"The rise in unemployment in China is a manifestation of communist party’s","example_zh":""},{"word":"nation","pos_def":"n. 國家(似 state 國家；州)","chinese":"國家(似 state 國家；州)","example_en":"There are more than 170 nations all over the world.","example_zh":""},{"word":"navigate","pos_def":"v. 導航；領航","chinese":"導航；領航","example_en":"Most of the sailors have special equipment to help them navigate in the ocean.","example_zh":""},{"word":"naked","pos_def":"adj. 裸體的","chinese":"裸體的","example_en":"The naked man was arrested by the police.","example_zh":""},{"word":"napkin","pos_def":"n. 餐巾","chinese":"餐巾","example_en":"The napkin is a small piece of cloth, used while you are having a meal to protect","example_zh":""},{"word":"neutral","pos_def":"adj. 中立的；中性的","chinese":"中立的；中性的","example_en":"Some people think that using English is a way of neutralizing communication,","example_zh":""},{"word":"necessary","pos_def":"adj.必要的；必須的","chinese":"必要的；必須的","example_en":"It is not necessary for you to give him a hand.","example_zh":""},{"word":"negotiate","pos_def":"v. 協商","chinese":"協商","example_en":"Upon having an argument with strikers, the government refused to negotiate","example_zh":""},{"word":"numerous","pos_def":"adj. 許多的 (≑many)","chinese":"許多的 (≑many)","example_en":"The document on the PPT contains numerous errors.","example_zh":""},{"word":"oak","pos_def":"n. 橡樹","chinese":"橡樹","example_en":"There are several oak trees in Daan forest park.","example_zh":""},{"word":"obese","pos_def":"adj. 肥胖的","chinese":"肥胖的","example_en":"Tony was not just fat, he was clinically obese.","example_zh":""},{"word":"objective","pos_def":"adj./n. 客觀的;目的","chinese":"客觀的;目的","example_en":"Xi, jin-ping’s prime objective is to stay in power in the Chinese communist party.","example_zh":""},{"word":"observation","pos_def":"n. 觀測；觀察","chinese":"觀測；觀察","example_en":"The suspects were under observation yesterday.","example_zh":""},{"word":"obstacle","pos_def":"n. 阻礙；障礙","chinese":"阻礙；障礙","example_en":"The obstacle in our way was a car accident that happened on the road.","example_zh":""},{"word":"obtain","pos_def":"v. 獲得；得到","chinese":"獲得；得到","example_en":"If you get permission from my boss, you can enter his office.","example_zh":""},{"word":"obvious","pos_def":"adj.明顯的","chinese":"明顯的","example_en":"It is obvious that Kevin likes you.","example_zh":""},{"word":"occasion","pos_def":"n. 場合；時機","chinese":"場合；時機","example_en":"Perhaps you can speak to some boss on this occasion occasionally.","example_zh":""},{"word":"occupation","pos_def":"n. 職業；佔領","chinese":"職業；佔領","example_en":"An occupation is a person’s job. 職業是一個人的工作。","example_zh":""},{"word":"official","pos_def":"adj. 官方的","chinese":"官方的","example_en":"Most of the internet celebrities have their own official accounts.","example_zh":""},{"word":"opportunity","pos_def":"n. 機會","chinese":"機會","example_en":"Thanks for giving me the golden opportunity to enter this company.","example_zh":""},{"word":"optimistic","pos_def":"adj. 樂觀的","chinese":"樂觀的","example_en":"I prefer to be an optimistic man rather than be a pessimistic one.","example_zh":""},{"word":"opposite","pos_def":"adj. 相反的","chinese":"相反的","example_en":"My sister and I live on the opposite sides of the city.","example_zh":""},{"word":"operate","pos_def":"v. 操作；運作","chinese":"操作；運作","example_en":"How did you operate this machine yesterday?","example_zh":""},{"word":"option","pos_def":"n. 選擇；選項","chinese":"選擇；選項","example_en":"Could you give me some options to opt for?","example_zh":""},{"word":"organization","pos_def":"n. 組織","chinese":"組織","example_en":"Taiwanese people like to participate in non-profit organizations to help people","example_zh":""},{"word":"orientation","pos_def":"n. 取向；目標；(工作)培訓","chinese":"取向；目標；(工作)培訓","example_en":"The department has arranged an orientation session for the new employees.","example_zh":""},{"word":"outsourcing","pos_def":"n. 委外；外包","chinese":"委外；外包","example_en":"The government guaranteed that outsourcing would not mean job losses of the","example_zh":""},{"word":"overcome","pos_def":"v. 克服","chinese":"克服","example_en":"Upon facing difficulties, people have to overcome them.","example_zh":""},{"word":"overlap","pos_def":"v. 重疊","chinese":"重疊","example_en":"The wood house is made of woods that overlap each other.","example_zh":""},{"word":"pace","pos_def":"v. 踱步、慢慢地走 (n.)步伐、節奏","chinese":"踱步、慢慢地走 (n.)步伐、節奏","example_en":"She walks at a slow pace in the bedroom.","example_zh":""},{"word":"passage","pos_def":"n. 通道；文章段落","chinese":"通道；文章段落","example_en":"My room is on the left at the middle of the passage.","example_zh":""},{"word":"passenger","pos_def":"n. 旅客","chinese":"旅客","example_en":"Passengers who want to visit Bitan, please disembark at this station.","example_zh":""},{"word":"passport","pos_def":"n. 護照","chinese":"護照","example_en":"If you want to travel overseas, you have to use your passport to pass the custom.","example_zh":""},{"word":"pain","pos_def":"n. 疼痛","chinese":"疼痛","example_en":"No pain, no gain.","example_zh":""},{"word":"paperwork","pos_def":"n. 文書工作","chinese":"文書工作","example_en":"The employees have to finish their paperwork before off duty.","example_zh":""},{"word":"payback","pos_def":"n. 報償；回報","chinese":"報償；回報","example_en":"Payback is a kind of profit that people can receive something from.","example_zh":""},{"word":"peace","pos_def":"n. 和帄","chinese":"和帄","example_en":"The police act on the public's behalf to keep the peace of the society.","example_zh":""},{"word":"phenomenon","pos_def":"n. 現象","chinese":"現象","example_en":"Betty told me that nobody likes her, which is a weird phenomenon.","example_zh":""},{"word":"physical","pos_def":"n. 身體的","chinese":"身體的","example_en":"Most of the students like to join the physical education class.","example_zh":""},{"word":"pollute","pos_def":"v. 污染","chinese":"污染","example_en":"The pesticides used on farms are polluting the water supply and animals nearby.","example_zh":""},{"word":"poverty","pos_def":"n. 貧窮","chinese":"貧窮","example_en":"Poverty is a condition of being poor. 貧窮是一個窮的狀態。","example_zh":"Poverty is a condition of being poor. 貧窮是一個窮的狀態。"},{"word":"prone","pos_def":"adj. 易於...","chinese":"易於...","example_en":"Amy is prone to exaggerate her words. Amy 很容易誇大其詞。","example_zh":"Amy is prone to exaggerate her words. Amy 很容易誇大其詞。"},{"word":"preserve","pos_def":"v. 維護；保存","chinese":"維護；保存","example_en":"There are many tips to preserve the monuments.","example_zh":""},{"word":"prevent","pos_def":"v. 阻止；預防；防止","chinese":"阻止；預防；防止","example_en":"People have to prevent bad things from happening.人們要防止壞事發生。","example_zh":"People have to prevent bad things from happening.人們要防止壞事發生。"},{"word":"persuade","pos_def":"v. 勸導；說服","chinese":"勸導；說服","example_en":"The HR manager persuades the interviewee to join the company.","example_zh":""},{"word":"pretend","pos_def":"v. 假裝；偽稱","chinese":"假裝；偽稱","example_en":"He pretended that he wasn't angry, but he was.(省瓺 angry)","example_zh":"He pretended that he wasn't angry, but he was.(省瓺 angry)"},{"word":"promote","pos_def":"v. 促進；促銷，推銷","chinese":"促進；促銷，推銷","example_en":"Advertising companies are always having to think up new ways to promote","example_zh":""},{"word":"profitable","pos_def":"adj. 有營利的；有益的","chinese":"有營利的；有益的","example_en":"The company has developed into a highly profitable company for three years.","example_zh":""},{"word":"pursue","pos_def":"v. 追求","chinese":"追求","example_en":"You have to pursue something that you craved for.","example_zh":""},{"word":"qualification","pos_def":"n. 資質；資格證書","chinese":"資質；資格證書","example_en":"Qualification is important for people who are looking for a job.","example_zh":""},{"word":"quarantine","pos_def":"n. 隔離","chinese":"隔離","example_en":"I spent a week in quarantine when I got COVID.","example_zh":""},{"word":"quest","pos_def":"n. 探求；尋求","chinese":"探求；尋求","example_en":"There's nothing to stop scientists in their quest for reality.","example_zh":""},{"word":"responsive","pos_def":"adj. 反應積極的","chinese":"反應積極的","example_en":"Tony was responsive to questioning.","example_zh":""},{"word":"resist","pos_def":"v. 反抗；回擊；抵抗","chinese":"反抗；回擊；抵抗","example_en":"Many employees can't resist the high salary from that company.","example_zh":""},{"word":"referee","pos_def":"n. 裁判","chinese":"裁判","example_en":"We lost the game in that the referee didn't see our opponents were cheating.","example_zh":""},{"word":"reduce","pos_def":"v. 減少；降低減少；降低","chinese":"減少；降低減少；降低","example_en":"Reduce,Reuse and Recycle is the slogan of eco-friendly policy.","example_zh":""},{"word":"renovate","pos_def":"v. 革新；修復；翻新","chinese":"革新；修復；翻新","example_en":"The real estate company renovates the old building and sells it at a profit.","example_zh":""},{"word":"region","pos_def":"n. 地區；區域；行政區","chinese":"地區；區域；行政區","example_en":"Alishan is a mountainous region，which attracts many tourists all around the","example_zh":""},{"word":"reserve","pos_def":"v.把…專門留給；把…留作；保留","chinese":"把…專門留給；把…留作；保留","example_en":"I reserve Fridays for tidying my desk and answering the questions from my","example_zh":""},{"word":"scar","pos_def":"v. 留疤、癒合 n. 疤痕、創傷","chinese":"留疤、癒合 n. 疤痕、創傷","example_en":"There is a scar on my shoulder. 我的肩膀上有一個傷疤。","example_zh":""},{"word":"span","pos_def":"n. 一段時間;長度；寬度","chinese":"一段時間;長度；寬度","example_en":"The naughty student has a short concentration span.","example_zh":""},{"word":"submit","pos_def":"v. 提交","chinese":"提交","example_en":"You have to submit your essay before the deadline.","example_zh":""},{"word":"segment","pos_def":"n.小部分；小片段","chinese":"小部分；小片段","example_en":"Each of the products from the factory is aimed at different market segments.","example_zh":""},{"word":"section","pos_def":"n. 部分；片段；部門","chinese":"部分；片段；部門","example_en":"The cook cut the pizza into eight equal sections. 廚師將披薩切成八等分。","example_zh":""},{"word":"scatter","pos_def":"v. 散開，分散","chinese":"散開，分散","example_en":"The soldiers came in and scattered the citizens.","example_zh":""},{"word":"solution","pos_def":"n. 解決方案；解決辦法","chinese":"解決方案；解決辦法","example_en":"Upon facing the problems, we have to find out the solutions to overcome the","example_zh":""},{"word":"spare","pos_def":"adj. 額外的，備用的；多餘的","chinese":"額外的，備用的；多餘的","example_en":"He has a spare room if you want to stay overnight with him.","example_zh":""},{"word":"tedious","pos_def":"adj. 令人厭煩的","chinese":"令人厭煩的","example_en":"The show is boring and tedious, which is a pity for the money I spent.","example_zh":""},{"word":"testify","pos_def":"v. 作證；證實","chinese":"作證；證實","example_en":"If you think you are not guilty, you have to testify in court.","example_zh":""},{"word":"tournament","pos_def":"n. 錦標賽；比賽","chinese":"錦標賽；比賽","example_en":"The professional player won a tournament in Taiwan.","example_zh":""},{"word":"transit","pos_def":"n. [U]運輸，過境","chinese":"運輸，過境","example_en":"On the way back from the UK, we only have a 3-hour transit in Tokyo.","example_zh":""},{"word":"transmit","pos_def":"v. 傳播；傳遞","chinese":"傳播；傳遞","example_en":"AIDS is a sexually transmitted disease.","example_zh":""},{"word":"transfer","pos_def":"v. 轉乘；轉移；轉讓","chinese":"轉乘；轉移；轉讓","example_en":"If you want to get on the train, you have to transfer at this station.","example_zh":""},{"word":"terror","pos_def":"n.（暴行引貣的）恐懼，驚駭","chinese":"暴行引貣的）恐懼，驚駭","example_en":"They fled from the city in terror.","example_zh":""},{"word":"urgent","pos_def":"adj. 緊急的","chinese":"緊急的","example_en":"The victims were in urgent need of water .","example_zh":""},{"word":"undermine","pos_def":"v. 逐漸損害；侵蝕...","chinese":"逐漸損害；侵蝕...","example_en":"Xi-Jing-Ping wants to be a leader until he dies,which undermines the law.","example_zh":""},{"word":"unanimous","pos_def":"adj. 一致同意的","chinese":"一致同意的","example_en":"Our team reached unanimous agreement to elect a new leader.","example_zh":""},{"word":"unexpectedly","pos_def":"adv. 意外地","chinese":"意外地","example_en":"My confidant showed up unexpectedly, which really surprised me.","example_zh":""},{"word":"unfold","pos_def":"v. 展開；打開","chinese":"展開；打開","example_en":"Tom unfolded the letter and read it.","example_zh":""},{"word":"volunteer","pos_def":"n. 志工","chinese":"志工","example_en":"Roy is a volunteer in a non-profit organization.","example_zh":""},{"word":"vulgar","pos_def":"adj. 粗俗的 n. 老百姓","chinese":"粗俗的 n. 老百姓","example_en":"It's really bad for parents to use vulgar words in front of their kids.","example_zh":""},{"word":"versatile","pos_def":"adj. 多才多藝的","chinese":"多才多藝的","example_en":"Roy is a versatile guy who can play piano and saxophone.","example_zh":""},{"word":"visible","pos_def":"adj. 可看見的","chinese":"可看見的","example_en":"If something is not invisible, and that is visible.","example_zh":""}],"phrases":[{"phrase":"abide by","definition":"遵守","example_en":"People have to abide by the law.人們要遵守法律。","example_zh":"People have to abide by the law.人們要遵守法律。"},{"phrase":"above all","definition":"尤其重要的是","example_en":"Be careful on your trip. Above all, don’t drink and drive.","example_zh":""},{"phrase":"account for","definition":"做解釋/負責任/占比率","example_en":"Civil servants account for the majority of our customers.","example_zh":""},{"phrase":"accuse sb. of sth.","definition":"控告某人犯某罪","example_en":"The police accused the notorious man of murder.","example_zh":""},{"phrase":"adhere to sth.","definition":"堅持某信念","example_en":"Maggie adhered to her principles throughout her life.","example_zh":""},{"phrase":"add insult to injury","definition":"雪上加霜;落井下石;傷口上灑鹽","example_en":"The manager told me that I was too young for the job, and then to add insult to","example_zh":""},{"phrase":"adjust to","definition":"使適應;調整","example_en":"If the desk is too high,you can adjust it to suit you.","example_zh":""},{"phrase":"after all","definition":"畢竟","example_en":"I love my sister and brother.After all, they are my lovely siblings.","example_zh":""},{"phrase":"against one’s will","definition":"不情願地...","example_en":"Don't go against your will to do something.","example_zh":""},{"phrase":"all ears","definition":"洗耳恭聽;認真聽","example_en":"I’m all ears. 我洗耳恭聽。","example_zh":"I’m all ears. 我洗耳恭聽。"},{"phrase":"at stake","definition":"緊急的狀態；緊要關頭","example_en":"Tens of thousands of lives in Ukraine will be at stake if emergency aid does","example_zh":""},{"phrase":"at any cost","definition":"無論如何；不計代價","example_en":"Please find my daughter at any cost! She’s just only 3 years old!","example_zh":""},{"phrase":"at least","definition":"至少","example_en":"The computer costs at least thirty thousand NT dollars.","example_zh":""},{"phrase":"a variety of","definition":"各式各樣的","example_en":"There is a variety of food on the table.","example_zh":""},{"phrase":"a sea change","definition":"顯著變化","example_en":"If you want to behave well ,it seems to require a sea change in behavior and","example_zh":""},{"phrase":"a little rift within the lute","definition":"不和；失睦","example_en":"If you guys keep quarreling, it would make you have a little rift within the lute.","example_zh":""},{"phrase":"apple of one's eye","definition":"珍愛之人/物；掌上明珠","example_en":"Every daughter is the apple of dad’s eye.","example_zh":""},{"phrase":"as a result of+N/Ving","definition":"由於...","example_en":"As a result of your poor behavior, you are grounded today.","example_zh":""},{"phrase":"as well as","definition":"也...","example_en":"Plants, as well as animals need water to survive.","example_zh":""},{"phrase":"a number of","definition":"很多；一些+ 複數名詞 + 複數動詞","example_en":"Only a small number of employees have attended the orientation.","example_zh":""},{"phrase":"apply for","definition":"申請","example_en":"Roy has decided to apply for admission to an outstanding university.","example_zh":""},{"phrase":"arise from","definition":"貣因於；源自於","example_en":"Several problems arise from anxiety.","example_zh":""},{"phrase":"around the corner","definition":"即將來臨","example_en":"Christmas is around the corner.Let’s celebrate it together!","example_zh":""},{"phrase":"at odds","definition":"爭吵","example_en":"My students are always at odds about trivial things.","example_zh":""},{"phrase":"as for","definition":"至於","example_en":"Mom and I are going to the store.As for you,please stay at home.","example_zh":""},{"phrase":"as long as","definition":"只要","example_en":"You can have a pet as long as you promise to take care of it every day.","example_zh":""},{"phrase":"get along with","definition":"相處","example_en":"Karen is so stubborn and selfish , so nobody likes to get along with her.","example_zh":""},{"phrase":"be addicted to","definition":"沉迷於","example_en":"Some kids are addicted to surfing on the Net all day long.","example_zh":""},{"phrase":"be at home","definition":"熟悉於，精通於","example_en":"Professor Chen is at home in our papers in two days.","example_zh":""},{"phrase":"bring about","definition":"造成","example_en":"Talking on the phone while driving has brought about many accidents in","example_zh":""},{"phrase":"bring up","definition":"提出；養育","example_en":"The student brought up a problem about English collocation.","example_zh":""},{"phrase":"blow hot and cold","definition":"前後矛盾","example_en":"He's been blowing hot and cold about the trip to Japan.","example_zh":""},{"phrase":"build on sand","definition":"根基不穩","example_en":"Your English proficiency is building on sand. Please practice more in daily","example_zh":""},{"phrase":"beat the air","definition":"白費力氣(字面翻:打空氣，當然白費力氣)","example_en":"There’s no need to arrive at the theater.","example_zh":""},{"phrase":"be based on","definition":"以…為基礎","example_en":"The opera is based on a novel.","example_zh":""},{"phrase":"bring about","definition":"造成；引貣","example_en":"Carbon dioxide emissions bring about a global warming effect.","example_zh":""},{"phrase":"by all means","definition":"好的；當然","example_en":"Would you lend me some pencils?","example_zh":""},{"phrase":"by no means","definition":"絕不；一點也不","example_en":"Roy earns millions of dollars in a year.That is by no means a small","example_zh":""},{"phrase":"block out","definition":"阻擋","example_en":"That tall building outside the window blocks out the sun.","example_zh":""},{"phrase":"come up with","definition":"想出","example_en":"My colleague came up with a great idea to solve the problems of our products.","example_zh":""},{"phrase":"come into being","definition":"瓹生;誕生","example_en":"No one knows how the products came into being.","example_zh":""},{"phrase":"consist of (=be composed of = be made up of)","definition":"由…組成","example_en":"The team consists of six members.","example_zh":""},{"phrase":"cope with","definition":"處理；應付","example_en":"Upon coping with the problems, you have to show your great attitude.","example_zh":""},{"phrase":"call for","definition":"要求；需要","example_en":"Don’t call for someone's help. Try to solve problems by yourself.","example_zh":""},{"phrase":"call up","definition":"打電話","example_en":"I called up my bosom friends to invite her to my party.","example_zh":""},{"phrase":"cry wolf","definition":"發假警報(狼來了)","example_en":"If you cry wolf too many times, people will stop believing you.","example_zh":""},{"phrase":"call off","definition":"取消","example_en":"My boss called off the meeting in that her wife was sick.","example_zh":""},{"phrase":"carry on","definition":"持續","example_en":"I think the faith infuses stamina in me to carry on conquering more obstacles","example_zh":""},{"phrase":"catch out","definition":"趕上","example_en":"I catch the train just in time, which means that I catch out train.","example_zh":""},{"phrase":"cut off","definition":"隔斷；切斷","example_en":"Your gas supply will be cut off if you don’t pay the bill.","example_zh":""},{"phrase":"compete for","definition":"競爭","example_en":"Several book sellers are competing for the contract.","example_zh":""},{"phrase":"drop in","definition":"偶訪","example_en":"On her way back home , she dropped in on us.","example_zh":""},{"phrase":"distinguish A from B =distinguish between A and B","definition":"區分 A 與 B","example_en":"It’s difficult to distinguish between Amy and Karen in that they are twins.","example_zh":""},{"phrase":"depend on =rely on","definition":"依賴","example_en":"All creatures depend on water and sunlight.","example_zh":""},{"phrase":"dress up","definition":"打扮","example_en":"My sister wore makeup and dressed up for the wedding.","example_zh":""},{"phrase":"do away with","definition":"廢除(似 abolish 廢除)","example_en":"The legislators should do away with obsolete laws.","example_zh":""},{"phrase":"have an effect /influence on +sb./sth.","definition":"對…瓹生影響","example_en":"His positive thinking had a great effect on people beside him.","example_zh":""},{"phrase":"embark on","definition":"開始","example_en":"Kevin decided to embark on a new way of studying.","example_zh":""},{"phrase":"be fed up with","definition":"受夠了","example_en":"Shut up! I am fed up with your complaints!","example_zh":""},{"phrase":"fix up","definition":"修理；安排；佈置","example_en":"Roy fixed up this important meeting.","example_zh":""},{"phrase":"for good","definition":"永遠地","example_en":"Do you really want to close the store for good ?","example_zh":""},{"phrase":"go with","definition":"與...相配","example_en":"He bought a new shirt to go with his pants.","example_zh":""},{"phrase":"hear from","definition":"接到…的消息","example_en":"I haven’t heard from Kevin for a long time.","example_zh":""},{"phrase":"handwriting on the wall","definition":"不祥之兆","example_en":"Many people consider that seeing a crow is a handwriting on the wall .","example_zh":""},{"phrase":"hand in","definition":"交出","example_en":"The teacher asked his students to hand in the homeworks in three days.","example_zh":""},{"phrase":"hold on","definition":"等一下","example_en":"Hold on a second, I’m on the phone.","example_zh":""},{"phrase":"hold on to","definition":"保留； 緊抓住…(加具體事物，也可加抽象事物)","example_en":"Simon wants to become an actor, so he holds on to every chance to enable him","example_zh":""},{"phrase":"in fact","definition":"事實上","example_en":"In fact, I’m not straight. I’m a gay.","example_zh":""},{"phrase":"in contrast","definition":"相反","example_en":"In contrast with his brothers, Tom is rather fat.","example_zh":""},{"phrase":"kill the goose that lays the golden eggs","definition":"殺雞取卵","example_en":"You would be in trouble if you kill the goose that lays the golden eggs.","example_zh":""},{"phrase":"let on","definition":"透露；洩漏","example_en":"It’s a confidential secret.Please don’t let on to anyone.","example_zh":""},{"phrase":"lay off","definition":"解雇","example_en":"Many workers in China are laid off because of the economic depression.","example_zh":""},{"phrase":"look after (=take care of)","definition":"照顧","example_en":"Being a dad, I am going to look after my kids.","example_zh":""},{"phrase":"look into","definition":"凝視；調查","example_en":"I look into the window of the building every day in that I am a policeman.","example_zh":""},{"phrase":"let alone","definition":"更不用說","example_en":"The notorious man won't even pay you the money, let alone thank you.","example_zh":""},{"phrase":"make up","definition":"編造；化裝；和解","example_en":"The naughty kid makes up the story to deceive his parents.","example_zh":""},{"phrase":"make up for","definition":"彌補","example_en":"Tom is working hard to make up for the lost time.","example_zh":""},{"phrase":"make believe","definition":"假裝","example_en":"The kids made believe that they were astronauts.","example_zh":""},{"phrase":"new wine in old bottles","definition":"舊瓶裝新酒","example_en":"The proverb \" you can't put new wine into old bottles\" is a reference to","example_zh":""},{"phrase":"off and on","definition":"斷斷續續","example_en":"It has rained off and on during the coming of the typhoon.","example_zh":""},{"phrase":"on behalf of","definition":"代表","example_en":"The spokesman is giving a speech on behalf of the government.","example_zh":""},{"phrase":"Pandora's box (","definition":"潘朵拉的盒子)禍患之源","example_en":"According to Greek mythology, Zeus, the king of the gods, asked Pandora not to","example_zh":""},{"phrase":"put aside (=put away)","definition":"儲蓄；放置一旁","example_en":"You should put some money aside every week to enable yourself to be rich.","example_zh":""},{"phrase":"put sth. into practice","definition":"實踐、執行","example_en":"If you want to get good grades on the exam, you should put studying into","example_zh":""},{"phrase":"play a trick on sb.","definition":"在某人身上玩小把戲","example_en":"The naughty boy played a trick on his mother to make her angry.","example_zh":""},{"phrase":"put up with","definition":"忍受(=endure)","example_en":"I couldn’t put up with his attitude any longer.","example_zh":""},{"phrase":"prohibit A from B","definition":"從 B 禁止 A","example_en":"The teacher prohibits his students from playing with their cellphones in the","example_zh":""},{"phrase":"result in = lead to=cause=give rise to","definition":"導致","example_en":"Being too fat might result in illness.","example_zh":""},{"phrase":"suffer from","definition":"遭受…之苦","example_en":"The kids suffered from the virus.","example_zh":""},{"phrase":"show up","definition":"出現","example_en":"Did you show up last week?","example_zh":""},{"phrase":"set up","definition":"建立；設置；成立","example_en":"He set up many restrooms for the citizens.","example_zh":""},{"phrase":"stand for","definition":"代表","example_en":"P.R.C. stands for the People Republic of China.","example_zh":""},{"phrase":"stay up","definition":"熬夜(burn the midnight oil)","example_en":"Roy stayed up until three a.m. in the morning for his work.","example_zh":""},{"phrase":"show the cloven foot","definition":"露出馬腳","example_en":"The thief showed the cloven foot yesterday.","example_zh":""},{"phrase":"stem from","definition":"源於...","example_en":"The tradition stemmed from ancient times.","example_zh":""},{"phrase":"stick to","definition":"堅持，遵循","example_en":"I will stick to my principles when I do things.","example_zh":""},{"phrase":"such as","definition":"像是...","example_en":"I have many hobbies, such as playing the piano and listening to music.","example_zh":""},{"phrase":"strike up","definition":"開始","example_en":"The judge struck up a talk with the defendant.","example_zh":""},{"phrase":"in season","definition":"盛瓹期；時季的","example_en":"Vegetables and fruits are fresh in season.","example_zh":""},{"phrase":"take in","definition":"接受；理解","example_en":"My students could not take in the meaning of the words.","example_zh":""},{"phrase":"take advantage of","definition":"利用(優勢)","example_en":"I took advantage of the nice weather to hang out with friends.","example_zh":""},{"phrase":"take on","definition":"從事(某工作)，雇用","example_en":"After graduation, he planned to take on teaching.","example_zh":""},{"phrase":"the pound of flesh","definition":"慘痛的代價;合法但不合情理的要求","example_en":"It’s the pound of flesh to lose two thousand dollars after being scammed by","example_zh":""},{"phrase":"take over","definition":"接管","example_en":"After his retirement, his son took over the whole company.","example_zh":""},{"phrase":"turn in","definition":"交出；上床睡覺","example_en":"I’m very exhausted.I think I’ll turn in now.","example_zh":""},{"phrase":"take turns","definition":"輪流","example_en":"The students take turns cleaning up the blackboard.","example_zh":""},{"phrase":"turn out(to be)","definition":"結果是...","example_en":"The jewelry that I bought online turned out to be a scam.","example_zh":""},{"phrase":". use up","definition":"用光","example_en":"He’s bad at handling money . He has used up all of his money.","example_zh":""},{"phrase":"in vain","definition":"沒結果，白費力氣","example_en":"Tony is really stubborn.We tried our best to persuade him not to go to","example_zh":""},{"phrase":"in other words","definition":"換句話說","example_en":"She has a close relationship with me.In other words, she is my girlfriend.","example_zh":""},{"phrase":"What…for","definition":"作何用","example_en":"What did you use this for?","example_zh":""},{"phrase":"when it comes to","definition":"一說到","example_en":"The kids were excited when it came to drinking soda.","example_zh":""},{"phrase":"wear out","definition":"穿破；使疲憊","example_en":"After working for an entire day, he was really worn out.","example_zh":""},{"phrase":"wild-goose chase","definition":"枉費心力","example_en":"Don’t talk to the naughty boys. It would be a wild-goose chase.","example_zh":""},{"phrase":"with respect to","definition":"關於","example_en":"With respect to the recent flood, please report the number of the victims.","example_zh":""}],"similar_words":[{"number":1,"content":"abroad 國外 ；aboard 上（船，飛機等）"},{"number":2,"content":"adapt 適應 ；adopt 採用/領養； adept 內行的"},{"number":3,"content":"affect (v.) 影響；effect (n.) 影響; affection 感情"},{"number":4,"content":"allusion 影射；illusion 錯覺/幻覺 delusion 錯覺 affliction 苦痛;exclusion 排除在外;aversion 厭惡 * attribute 把...歸因於； distribute 分配/分派 tribute 敬意/供品 ； (pay tribute to 展現敬意給...)"},{"number":6,"content":"amend 修正; emend 校正; recommend 推薦"},{"number":7,"content":"amoral immoral 不道德的; femoral 股骨的(一種腿上的骨頭)"},{"number":8,"content":"angel 天使; angle 角度;rectangle 長方形"},{"number":9,"content":"ardor 熱情; adore 愛慕；崇拜 adorn 裝飾;裝扮；odor 氣味/臭味"},{"number":10,"content":"attitude(+about/toward)態度; altitude 海拔 latitude 緯度; longitude 經度"},{"number":11,"content":"assent (n.)同意 ;ascent(n.) 上升; ascend(v.)上升 descend (v.)下降; descent(n.)血緣關係;憎恨 accent 口音 resent(v.)不滿"},{"number":12,"content":"assume (vt.)假定/認為;採取;呈現;承擔 resume (v.) 恢復; resume’(n.)履歷表 presume(vt.)假定,推測,擅自,意味著 (vi.)擅自行動,相信 consume 消耗/消費/消滅"},{"number":13,"content":"assure (v.) (為消除憂慮)向...保證 ensure (v.) (確保某事會發生)使確定/ 確保 insure 保險 reassure(v.) 使安心"},{"number":14,"content":"attain 達到 obtain 獲得 abstain 放棄 retain 保留/保持 ≒maintain 維持/保持"},{"number":16,"content":"award 授予; reward 獎賞"},{"number":17,"content":"abundant 大量的；豐富的 redundant 多餘的；過剩的"},{"number":10,"content":"attitude(+about/toward)態度; altitude 海拔 latitude 緯度; longitude 經度"},{"number":11,"content":"assent (n.)同意 ;ascent(n.) 上升; ascend(v.)上升 descend (v.)下降; descent(n.)血緣關係; accent 口音 resent(v.)不滿"},{"number":12,"content":"assume (vt.)假定/認為;採取;呈現;承擔 resume (v.) 恢復; resume’(n.)履歷表 presume(vt.)假定,推測,擅自,意味著 (vi.)擅自行動,相信 consume 消耗/消費/消滅"},{"number":13,"content":"assure (v.) (為消除憂慮)向...保證 ensure (v.) (確保某事會發生)使確定/ 確保 insure 保險 reassure(v.) 使安心"},{"number":14,"content":"attain 達到 obtain 獲得 abstain 放棄 retain 保留/保持 ≒maintain 維持/保持"},{"number":16,"content":"award 授予; reward 獎賞"},{"number":17,"content":"abundant 大量的；豐富的 redundant 多餘的；過剩的 版權所有 翻印必究"},{"number":18,"content":"baggage (American English) luggage 行李 bazaar (n.)市場、市集 ；bizarre (adj.)奇怪的"},{"number":19,"content":"baron 男爵;barber 理髮師;barren 不毛之地的;barn 穀倉"},{"number":20,"content":"beam 光束;bean 豆子 besides (adv.)除此此外 beside (prep.)在旁邊(=by/next to)"},{"number":21,"content":"blade 刀刃 ; bald 禿的 ; bold 大膽"},{"number":22,"content":"bloom 開花;blossom 開花(結果實) bosom 胸口 (bosom friend 摯友) 記憶法:胸口互相敞開的朋友尌是摯友"},{"number":23,"content":"blush 臉紅; flush 發紅(臉) break (v.)打破、弄壞 brake (n.)(v.)煞車"},{"number":24,"content":"bride 新娘 ；bribe 賄賂"},{"number":25,"content":"brown 褐色；brow 眼眉；blow 打擊 bullet 子彈 ;bulletin 公告; ballot 選票 crow 烏鴉; crown 王冠 credo信條 credence信任 clown 小丑; cow 牛 capitol 大廈 capital 首都 claim 宣稱/索賠/認領/奪命(極重要) clan 家族；宗族 ; clam 蛤蜊 chunk 大塊；厚片（木塊、肉） church 教堂 casual 隨意的 ; causal 因果關係; casualty 傷亡 campaign 活動;champion 冠軍;champagne 香檳 chivalry 騎士精神 ; cavalry 騎兵隊;charisma 魅力"},{"number":34,"content":"chore 家務活；家事 chord 和弦 ; cord 細繩 clarify(v)澄清；闡明 clarification(n)澄清"},{"number":35,"content":"cite 引用 ; site 場所 ; sight 視覺"},{"number":36,"content":"clash （金屬）撞擊聲;crash 碰撞；墜落 crush 壓壞;一見鍾情 →(have a crush on sb.)對...一見鍾情"},{"number":37,"content":"collar 領子 ; cellar 地窖 color(=colour)顏色 collective 集體的；共同的; collection 收集 collector 收藏者 collision 衝突；抵觸 colloquial 口語的；會話的"},{"number":38,"content":"commerce 商業 ；commence 開始 commentary 評論；註釋 commission(v)委託 (n)佣金 commit 犯罪；使作出保證；commitment 保證；承諾 confine 限制；conform 遵照；使一致 conservation 保護；保育 conservative 守舊的；守舊者 command (n.)(v.)命令； common (adj.)常見的 commodity 商品 ； commonplace(adj.)帄常的 commute 通勤；減刑 ； comment 評論"},{"number":39,"content":"compliment 讚美 ； complement 附加物 compatible 相容的；compassion 同情 compass 羅盤； compensate(v.) 賠償 cognitive 認知的；感知的 coherent 連貫的；條理清楚（語句） complete (adj.)完整的；compete +with(v.) 競爭"},{"number":40,"content":"confidant(=bosom friend) 知己 confident 有信心的;confidential 機密的 contaminate 汙染 ;conscientious 盡責的 contemplate 仔細考慮; contemptuous 輕蔑的 contempt 蔑視 ; contemporary 當代的 contend 奮鬥；鬥爭 ; consequential 後果的"},{"number":41,"content":"confirm 確認 conform 使順從；counterfeit 偽造"},{"number":42,"content":"contact 接觸;contract 合同;contrast 對照"},{"number":43,"content":"contend 奮鬥;鬥爭 content 內容；滿足的 context 上下文 contest 競爭, 比賽 controversial 有爭議的; contraceptive 避孕藥 contribution 貢獻 ; counteractive 反對的"},{"number":44,"content":"contort 扭彎 distort 弄彎 retort 反駁"},{"number":45,"content":"costume 服裝 ；custom 習慣/海關"},{"number":46,"content":"council 議會 ；counsel 忠告;法律顧問 consul 領事"},{"number":47,"content":"compliment 讚美；compile 彙編；compel 強迫 competent 能幹的；complain 抱怨 comply(with)遵守(=obey=abide by) ；conspiracy 陰謀 corrupt (v)貪汙 corruption 貪汙；賄賂 courteous 有禮貌的 coverage 新聞報導；保險覆蓋範圍 c cotton 棉花 ； cottage 小屋 cosmetic 化妝品 crayon 蠟筆； canyon 山谷"},{"number":48,"content":"currency 貨幣 curriculum 學校全部課程 current(adj)當前的;(n)水流 credibility 可信度 credulity輕信 reliability 可靠性 responsibility 責任感 dairy 牛奶廠 diary 日記"},{"number":49,"content":"decent 正經的；descent 向下/血統； descend (v) 下降；dissent 不同意 assent=consent 同意; resent 怨恨"},{"number":50,"content":"decline 下降 ; recline 橫臥 incline 傾斜 deaf 聾的 ; death 死亡 debris 殘骸 deadline 最後期限 dealer 商人 debt 債務 decay(v/n) 腐爛；腐朽"},{"number":51,"content":"definite 肯定的 ; infinite 無限的"},{"number":52,"content":"delicate 精美的； dedicate 奉獻"},{"number":53,"content":"depress 使沮喪；suppress 鎮壓 oppress 壓迫； impress 印象深刻 deploy 展開；部屬 deposit 存款 deprive 剝奪 deputy 代理人 deplete 耗盡資源精力 descriptive 描寫；描述性的 declaration 宣布； decline 下降 decoration 裝飾 despair 絕望 detach 拆卸；分開 detain 扣留 detergent 洗衣劑 determination 決心；堅定 device 裝置 devise(v)設計；發明 devote 奉獻 devour(v)狼吞虎嚥的吃 diagnose(v)診斷 diagnosis(n)診斷書"},{"number":54,"content":"dessert 瓸食 desert (n.)沙漠 (v.) 拋棄；放棄 deploy 展開；部屬；employ 雇用 employee 雇員；employer 雇主 delicate 精美的 ； delegate(會議)代表 despise 鄙視 despite 儘管 desperate 極度渴望的 destructive 破壞的 different 不同的 differentiate 區分(不同) difficult 困難的；difficulty(n)困難 disable 使失能 disadvantage 不利條件 disagreement 意見不一 disappoint 使失意；使失望 disapprove 不同意 discard 丟棄 dismiss 解散；解雇；開除 dilemma 進退兩難 ；dimension 面(長寬高構成一面) diminish 減少；縮減 dignity 尊嚴；digital 數位的；數字的"},{"number":56,"content":"dine 吃飯；diner 吃飯人 dining room 飯廳；dinner 晚飯"},{"number":57,"content":"dizzy 眼花繚亂； dazzle 使眼花 distress 悲痛；苦惱 disturb 妨礙；district 地區；區域 document 文件 ；documentary 紀錄片 domain 領土 domestic 國內的；dominant 佔優勢的 dormitory 宿舍 doze 打瞌睡；dose 一劑(藥品) dozen 一打(12 個) ；dough 麵團 drought 旱災 ；draught 對流風 draughts (英)國際跳棋 drown 淹沒；drowsy 昏昏欲睡的 drug 藥品；毒品；drugstore 藥房 drunk 喝醉酒的 dubious 半信半疑的 durable 持久的 dual 雙倍的 dude 老兄 dwell(v)居住 dwelling(n)住處；住所"},{"number":59,"content":"drawn (draw 過去分詞 ) drown 溺水"},{"number":60,"content":"dreg 渣滓 drag 拖拉"},{"number":61,"content":"dynamic 動態的；dynasty 朝代"},{"number":62,"content":"edict 法令； indict 控告"},{"number":63,"content":"earn 賺到(錢) earnest 熱心的；誠摯的 ease 減輕(壓力) eastern 東方的 emigrant 移民到國外 immigrant 從某國來的移民 embarrass 使難堪；使丟臉 embassy 大使館 embrace(v/n)擁抱"},{"number":64,"content":"eminent 傑出的 imminent 逼近的 emission 排放；散發 emotion 情緒 emphasis (n)強調；重點 emphasize (v)強調 endorse(v)背書；認可 endorsement(n)背書；認可；贊同 endurance 持久力 enforce(v)實行；強制執行 enforcement(n)強制執行 eccentric 古怪的；eclipse(日)蝕 enhance 增進；增加 enlarge 擴大 enlighten 啟發；啟蒙 enrich 使豐富；使富裕 enroll 登記；登入名冊 entry(n)入口 envy(v/n)羨慕；忌妒"},{"number":65,"content":"except 除外；expect 期望；accept 接受；excerpt 選錄 exempt 免除"},{"number":66,"content":"excess (n) 超過 ；exceed( v )超過 excel 擅長"},{"number":67,"content":"exclaim 呼喊；proclaim 宣布 acclaim 歡呼 ；declaim 朗誦"},{"number":68,"content":"expand 擴張； expend 花費 ；extend 延長"},{"number":69,"content":"expect 期望；respect 尊敬；aspect 方面； inspect 視察；suspect 懷疑"},{"number":70,"content":"expel 驅逐；repel 反擊；impel 推動 dispel 驅散"},{"number":71,"content":"extend 延伸 ；extent 長度 ；extant 現存的 extensive 廣泛的 ；intensive 深刻的"},{"number":72,"content":"electric 電的；electricity 電力 electronic 電子的；electrician 電工 election 選舉；erection 勃貣 erect 使豎立 errand 差事(run an errand 跑腿) ethnic 種族的 ethic 倫理標準 ethical 倫理的 element 元素；成分 elementary 基本的；初級的 fundamental 基本的(諧音:方的饅頭是基本款) basic 基本的 eligible 合格的 eliminate 排除；消除 epidemic 流行病 pandemic(疾病)大流行 equipment 裝備；配備 equivalent 相同的；等價物 evaluate 對...評價 evacuate 撤離；疏散 evolution 進化；發展 evoke 喚貣(記憶) evidence 證據 evident 明顯的 examination 考詴；檢查；檢驗 example 例子 exceptional 例外的；特殊的 exclaim 驚呼；喊叫 execute(v)處死 execution(n) 執行；死刑 executive 主管 exotic 異國情調的 expense 費用 experience 經驗 experiment 實驗 expertise 專門知識 explicit 詳盡的 exploit 開發；開採 extra 額外的 extracurricular 課外的 extraordinary 超乎帄常的；非凡的"},{"number":73,"content":"faint 失去知覺 ；feint 佯攻 fabulous 極好的；fabric 布料 facility 設施 ；factory 工廠；factor 因素 fashion 時尚的；fascination 迷戀 fastidious挑剔的 federal 聯邦的 fee 費用"},{"number":74,"content":"floor 地板 flour 麵粉 flourish(v)繁榮；繁茂 forbid (v)禁止 forecast(天氣)預測 foreign 外國的 formidable 令人畏懼的 fortunate 幸運的 figure 數字；外型輪廓；圖表；身形 finite 有限的 financial 金融的 finish 完成 fracture 使斷裂；使骨折 fragrance 香味 fragile 易碎的 frustration 挫折 fulfillment 完成；履行(承諾) furthermore 再者 further 較遠的 furniture 家具 fundamental 基本的(諧音:方的饅頭) functional 機能的；實用的"},{"number":75,"content":"gasp 上氣不接下氣;倒吸一口氣 grasp 抓住；gate 登機門 gather 集合 gaze + (at)凝視 galaxy 星系 gallery 畫廊 garage 車庫 garment 衣著 garlic 大蒜 general 普遍的；將軍；generate 瓹生 generation 世代 generator 發電機；generous 慷慨的 genetic 基因的； genuine 真正 glimpse 一瞥；瞥見 glare(v/n)生氣地注視；瞪人"},{"number":76,"content":"glide 滑翔； slide 使滑行； slip 跌落 goods 商品； goose 鵝 ； goodwill 商譽 gracious 親切和藹的 gradual 逐漸的；graduation 畢業 graphic 圖像 grateful 感激的；gratitude 感恩；感激 grease 油脂 ； greedy 貪心的 grief 悲傷 ； grumble 發牢騷"},{"number":77,"content":"grim 嚴酷的 ；grime 污點 guarantee (v/n)擔保；保證；保證書 gulf 海灣 ；golf 高爾夫球"},{"number":78,"content":"growl 咆哮 ；howl 狼叫"},{"number":79,"content":"hanger 衣架； hangar 機庫； hunger 飢餓 habit 習慣 ； habitat 棲息地 habitual 習以為常的 handicap(v/n) 妨礙；障礙 hurry 匆忙 harass (v) 騷擾 harassment(n)騷擾 hardware 硬體 software 軟體 harness 馬具 harsh 粗糙的 harvest 收穫；收割 hatred(n)憎恨 hazardous 危險的"},{"number":80,"content":"hotel 飯店； hostel 旅店 headquarters 總部 heal 治療 ； cure 治癒(完全好了) hedge 樹籬 height 高度 hemisphere 半球(南匇半球) hence 因此 =(consequently/ thus/ as a result)因此 heritage(文化)遺瓹 legacy(人死後)遺瓹 inheritance(人死後)遺瓹;繼承權 honorable 令人尊敬的 hop 單腳跳；(動物昆蟲的)跳 hospitable 好客的；氣候宜人的 hospital 醫院 hostage 人質；hostility 敵意 human-beings 人類；humankind 人類 humiliate 羞辱 humidity 濕度 humorous 幽默的 hypothesis 假說 hypocrite 偽善者"},{"number":81,"content":"idle 空閒的；idol 偶像 ideal 理想的 identical 完全相同的；一模一樣的 identify 識別(身分) identity 身分 ignore 忽瓺；ignorance 無知"},{"number":82,"content":"immoral 不道德的； immortal 不朽的 image 圖像；imagination 想像力 immense 巨大的；廣大的 immediate(adj)立即；馬上"},{"number":83,"content":"implicit 含蓄的； explicit 明白的"},{"number":84,"content":"imprudence 輕率 impudence 無恥 prudence 謹慎(諧音:不如等，謹慎之人會再等等) imperative 祈使句；必要的 immigrant 移入者 implement(v/n)實施;執行 impose +(on)加諸於(壓力) important 重要的 impressive 令人印象深刻的 imprisonment 監禁"},{"number":85,"content":"inability 沒能力； disability 殘疾"},{"number":86,"content":"incident 事件；accident 意外 coincident(a.)同時發生的 incentive(adj/n) 刺激的；動機 incredible 難以置信的；credible 可信的 incident 事件；accident 意外 indifferent 漠不關心的 indeed(adv)確實；的確 indigenous 土生土長的 indispensable 不可或缺的 disposable 一次性的；可拋棄的；免洗的"},{"number":87,"content":"induce 促使;勸誘;deduce 推段;推論;reduce 減少 seduce 誘使"},{"number":88,"content":"inspiration 靈感; aspiration 渴望 respire(v.) 呼吸 inevitable 不可避免的 influential 有影響的 infant 嬰兒 infer 推論 infection 感染 inflation 通貨膨脹 deflation 通貨緊縮"},{"number":89,"content":"intrude 入侵 extrude (v.)擠壓出; obtrude(v.)使過分顯眼 innovation 革新 renovation 裝修 innocent 清白的 inquiry (n)詢問；打聽 infrastructure 基礎建設(道路/公路等) structure 結構 insight 洞察力； inspire 鼓舞；激發；inspect 檢查； install 安裝； instance 例子 ； instinct 直覺 insult(v)羞辱 ；insurance 保險 interfere 干擾 interrupt 打擾；打斷 interior 內部 interpret 詮釋；闡釋 intervene 介入；干預 intimate 親密的 intimidate (v)威脅；脅迫 invaluable 無價的；天價的 =priceless 無價的；天價的 investigation (n)調查 janitor 工友 genital 生殖器(諧音:剪你的頭) joint 關節 join 參加 judge(v/n)判斷；法官 justice 正義 justify 辯解；證明某事為合理的 juvenile(adj/n)青少年的；青少年 keen 敏銳的；熱心的；kettle 水壺 kidnap 綁架；kidney 腎臟 kid(v/n)戲弄；小孩 know 知道 動詞三態(know-knew-known) knowledge 知識 knowledgable 知識淵博的；有見識的"},{"number":90,"content":"lapse 流逝 ；elapse 消逝； eclipse 日食；collapse 倒塌 labor 勞工(諧音:累爆了) lack+(of)+sth.缺乏某事物 lamb 小羊；lamp 燈 landlord 房東 landscape 風景；景色 landmark 地標 landslide 山崩 language 語言"},{"number":91,"content":"later 後來;latter 後者;latest 最近的 lately (adv.)最近"},{"number":92,"content":"latitude 緯度； altitude 高度 gratitude 感激；longitude 經度"},{"number":93,"content":"literal 文字的 literacy 識字；literary 文學的；literature 文學"},{"number":94,"content":"lone 孤獨的；alone 單獨的；lonely 寂寞的"},{"number":95,"content":"loose 鬆的；lose 丟失 loss (n) 損失 動詞三態 (lose-lost-lost) launch 發射(飛彈) laundry 洗衣店 leadership 領導才能 league 聯盟 lean+(on)+sth. 倚；靠(某物) leap(v/n)跳躍 legacy(人死後)遺瓹 legendary 傳奇的 legislator 立法委員 legitimate 合法的 lengthen 使加長 lengthy 長的 lethal 致命的；危險的(=fatal) 諧音:飛頭會致命 likewise 同樣地 likely 很可能地 lightening 閃電 logic 邏輯 logical 合邏輯的 longitude 經度 longevity 壽命 lucrative 有利可圖的 lure(v/n)引誘；誘餌 luxurious =extravagant 奢侈的"},{"number":96,"content":"march 三月, 前進；match 比賽 magnet 磁鐵 magnificient 壯麗；宏偉的 maintenance 維持；保養 majestic 雄偉的 management(n)管理 manifest(v)顯示 manufacture(v/n)製造；製品 manipulate (v)操縱 manager 經理 marvelous 非凡的；了不貣的 (諧音:媽樂死，媽媽樂到死，因為爸爸很非凡) martial 軍事的；武術的 mature 成熟的 measurable 可測量的 meaningful 有意義的 meanwhile(adv)同時 mechanic 技工"},{"number":97,"content":"median 中央的,中線的 medium 中等；媒介"},{"number":98,"content":"mission 使命; emission 散發, 發射 mansion 豪宅 missionary 傳教士 melancholy 憂鬱的 (諧音:沒人 call 你，使你憂鬱) melancholia 憂鬱症 (諧音:沒人 call 你阿，難怪好憂鬱) mental 心理的 merchandise 商品 mercy(n)仁慈；憐憫 merge(v)合併 metaphor 隱喻；暗喻 metro 地下鐵道 metropolitan 大都會的 minimal 最小的 minister 部長；大臣 minority 少數民族 miraculous 神奇的 (從這個字 miracle 變化而來) misery(n)悲慘；痛苦 misfortune 不幸；厄運 mislead(v)誤導 mission 任務；使命 missile 導彈 mistress 女主人"},{"number":99,"content":"monkey 猴子； donkey 驢 mob 暴民； mobilize 動員 modesty 謙遜；modify 修改 moist 潮濕 monetary 金融的；財政的；貨幣的 monopoly(n)獨佔；壟斷`;大富翁 monotony(n)單調 (mono 這個字首尌是一個的意思，只有一個當然單調)"},{"number":0,"content":"mortal 凡人；會死的 (諧音:看到魔頭會死) immortal 不死的；不朽 morality 倫理；道德 morale 士氣 model 模特兒；metal 金屬 mental 心理的；medal 勳章；meddle 插手；干預 naive 天真的；napkin 餐巾 nasty 下流的 native(adj/n) 本土的；原住民 navigate(v)導航；navy 海軍 negotiate 協商 negative 否定的 needy 貧窮的 neither…nor 兩者都不... either…or 不是 A 尌是 B nevertheless ≒nonetheless≒however 然而 night 夜晚；nightmare 夢魘 nominate 提名 (諧音:那麼累，某黨提名過程怎麼那麼累，一直沒有定案) nominee 被提名者 (諧音:那麼膩，某黨候選人怎麼又是他，怎麼那麼膩啊!) nonprofit 非營利的 nonsense(n) 胡說 notorious 惡名昭彰的；notion 想法；nourish(v)滋養 novice 新手；初學者 nowhere 任何地方都沒有... ；nowadays 當今 numerous 許多的 nutrient 營養的；營養物 nurture (v/n)養育 oak 橡樹 oasis 綠洲 obedient 服從的 obligation 義務 observe 觀察 obsess +(with)使著迷 obstinate 固執的 obtain 獲得 obvious 明顯的 occasion 場合 occasional 偶爾的 occupation 職業 occurrence(n)出現 appearance(n)外貌 offspring 後代子孫；ancestor=forefather 祖先 offend(v)冒犯 offensive 冒犯的 offense 攻擊；觸怒 official 官方的；官員 operate (v)運作；運轉；做手術 operation 操作；手術 opponent 對手；反對者 opposite 相反的 opposition(n) 反對；反抗 oppress(v)壓制 optimistic 樂觀的 option(n)選擇 optional 非必頇的；可選擇的 ordinary 帄常的 organ 器官 organic 有機的 organization 組織 oriental 東方的；東方人 orient (v/n)使...朝東；東亞國家 orientation 新生訓練；定位；定向 outdoor 戶外的 outfit(v)裝備；配備 outlaw 亡命之徒 outgoing 外向的 outstanding 傑出的(=excellent≒eminent) overcome 克服 overlap(v/n) 重疊 overseas(adj/adv)海外的；海外 overwhelm (v)壓倒；征服 ozone 臭氧 oxygen 氧氣 oyster 牡蠣；沉默寡言的人"},{"number":1,"content":"pat 輕拍；tap 輕打；slap 拍擊；rap 敲，打"},{"number":2,"content":"patent 專利; potent 有力的; omnipotent=invincible 無所不能 impotent 無能的；potential 潛在的 paradox 自相矛盾的事情或想法 parallel 帄行面 pardon (v/n)赦免；寬恕 parliament 國會；議會 parade 遊行 participate +in +sth. (v)參加；參與 anticipate(v) 預期；預料 participation (n)參加 particular 特殊的；特別的 particle 粒子 patent 專利 patience 耐心 pathetic 可憐的；可悲的 patriot 愛國者 patrol(v/n)巡邏；巡邏員 payment 支付 paw 爪子；pea 豌豆 penalty 處罰；刑罰(death penalty 死刑) penetrate 穿過；刺穿 pension 退休金 perceive (v) 察覺；感知 perception (n) 感知；認知 pedestrian =walker 行人 permanent 永久的 permissible 允許的 pet 寵物 petition 請願書"},{"number":3,"content":"personnel 人事 personal 個人的 personality 人格特質 perspective 觀點；看法"},{"number":4,"content":"perfuse 潑灑 profuse 豐富的 perfume 香水；refuse 拒絕； confuse 使困惑；profuse 奢侈的； transfuse 注入；輸血；diffuse 擴散 pharmacy 藥房 drugstore 藥局；藥店 phenomenon 現象 (色色聯想法:跟朋友去泰國看到人妖覺得很漂亮，問他的私 生活是不是很精彩，但人妖說沒有，朋友心理覺得屁拉! he 怎麼可能 no men on! 這是個奇怪的現象!) photograph 照片"},{"number":5,"content":"phrase 短語 ；phase 階段 pilgrim 香客 pigeon 鴿子 pillar 柱子；梁柱 pillow 枕頭 plan (v/n)計畫 plain 帄原 planet 星球 plant 植物 plea 請求；懇求 flea 跳蚤 pleasure (n)愉快 peasant 農夫"},{"number":6,"content":"police 警察； policy 政策； politics 政治 portion 一部分 portrait 肖像 portable 手提式的 population 人口 possess (v)擁有 possession(n)擁有 potential 潛在的 potent 有力的；強大的 postpone (v)延遲 postage 郵資"},{"number":7,"content":"pray 祈禱； prey 獵物；predator 獵食者"},{"number":8,"content":"precede 領先； proceed 進行；繼續"},{"number":9,"content":"principal 校長；主要的； principle 原則 practice 演練；練習 practical 實際的"},{"number":10,"content":"prospect 前景； perspective 觀點；看法"},{"number":11,"content":"protest 抗議 ；protect 保護"},{"number":12,"content":"purpose 目的；propose 提出(建議) primary 基本的 suppose 假設"},{"number":13,"content":"quite 相當 ；quiet 安靜的 mute 啞的；不講話的(跟 quiet 不一樣)"},{"number":14,"content":"recent 最近 ；resent 怨恨 absent 缺席的；consent 同意； dissent 不同意 essential 基本的；本質的"},{"number":15,"content":"reject 拒絕；eject 逐出；inject 注射；deject 使沮喪 ； projection 投擲；發射 object 受詞；目的；反對"},{"number":16,"content":"require 需要；inquire 詢問 enquire 查詢；acquire 習得；獲得"},{"number":17,"content":"resemble (v.)相似; assemble (v.) 集結 assembly (n.)集合, 裝配"},{"number":18,"content":"revenge 復仇； avenge 為...報仇"},{"number":19,"content":"rip 撕； ripe 熟的"},{"number":20,"content":"rude 魯莽的； crude 粗糙 crude oil 原油(剛開採上來的油)"},{"number":21,"content":"scare 驚嚇；scarce 缺乏的"},{"number":22,"content":"sled (兒童)雪橇； sledge 雪橇"},{"number":23,"content":"socks 短襪 ；stockings 長筒襪"},{"number":24,"content":"source 來源；sauce 醬油；saucer 小碟子 resource 資源；recourse 求助"},{"number":25,"content":"specie (=coin)硬幣; species 物種"},{"number":26,"content":"stationery 文具； stationary 固定的"},{"number":27,"content":"statue 塑像； statute 法令 stature 身長；身材；status 地位"},{"number":28,"content":"steal 偷竊；steel 鋼"},{"number":30,"content":"strike 打 ；stick 棒子； strict 嚴格的"},{"number":31,"content":"stripe 條紋；strip 條； trip 旅行"},{"number":32,"content":"strive 努力； stride 跨步；大步走"},{"number":33,"content":"suite 一(套)房； suit 套裝"},{"number":34,"content":"sweet 瓸的； sweat 汗水"},{"number":35,"content":"tax 稅 ；taxi 計程車；飛機降落時的滑行"},{"number":36,"content":"through 穿過；通過；thorough 徹底的 although(=though≑despite)儘管 thought 想法"},{"number":37,"content":"vanish 消失； evanish 使消失 banish 放逐；finish 完成 tarnish 玷污；blemish 缺陷 garnish 在（食物）上加裝飾"},{"number":38,"content":"vision 視覺； version 版本"},{"number":39,"content":"vocation 職業；vacation 假期 evocation 喚出；喚貣；招魂 revocation 撤消；廢除 widow 寡婦 ；window 窗戶"}]};
+const IPU = 10; // items per unit
+const TOTAL_UNITS = Math.ceil(APP_DATA.vocabulary.length / IPU);
 
-    <footer>
-        &copy; 2024 國營考試英文家教 | Designed for Self-Study
-    </footer>
+// ── Storage ──
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('eng_v4') || '{}'); } catch(e) { return {}; }
+}
+function saveProgress(p) { localStorage.setItem('eng_v4', JSON.stringify(p)); }
+function getUP(i) { return getProgress()[i] || {done: false, score:-1, total:0}; }
+function setUP(i, d) { const p = getProgress(); p[i] = {...getUP(i), ...d}; saveProgress(p); }
 
-    <script>
-        const totalDays = 30;
-        const grid = document.getElementById('daysGrid');
-        
-        // 模擬已完成的狀態 (實際應用時可以使用 localStorage 儲存)
-        // 使用者可以在各個 day 的頁面中點擊 "完成學習"，將狀態存入 localStorage
-        
-        function init() {
-            let completedCount = 0;
-            
-            for (let i = 1; i <= totalDays; i++) {
-                const dayLink = document.createElement('a');
-                // 注意：這裡假設你的檔案命名為 day01.html, day02.html...
-                const dayNum = i.toString().padStart(2, '0');
-                dayLink.href = `day${dayNum}.html`;
-                dayLink.className = 'day-card';
-                dayLink.innerText = `Day ${i}`;
-                
-                // 檢查 LocalStorage 狀態
-                const isDone = localStorage.getItem(`day${dayNum}_completed`) === 'true';
-                if (isDone) {
-                    dayLink.classList.add('completed');
-                    dayLink.innerText += ' ✓';
-                    completedCount++;
-                }
+function confirmReset() {
+  if(confirm('確定清除所有學習紀錄？勾勾將全部移除。')) {
+    localStorage.removeItem('eng_v4');
+    renderHome();
+  }
+}
 
-                grid.appendChild(dayLink);
-            }
+// ── Cycle-pick (distinct from quiz handler) ──
+function cyclePick(arr, startIdx) {
+  const n = arr.length;
+  const out = [];
+  for(let i = 0; i < IPU; i++) out.push(arr[(startIdx + i) % n]);
+  return out;
+}
 
-            // Update Progress
-            const percentage = Math.round((completedCount / totalDays) * 100);
-            document.getElementById('progressBar').style.width = `${percentage}%`;
-            document.getElementById('progressText').innerText = `${percentage}%`;
-            document.getElementById('daysCount').innerText = completedCount;
-        }
+function shuffle(a) {
+  const b = [...a];
+  for(let i = b.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
 
-        init();
-    </script>
+// ── Unit Data ──
+function getUD(ui) {
+  const vs = APP_DATA.vocabulary.slice(ui * IPU, ui * IPU + IPU);
+  const ps = cyclePick(APP_DATA.phrases, ui * IPU);
+  const ss = cyclePick(APP_DATA.similar_words, ui * IPU);
+  return { vocab: vs, phrases: ps, similar: ss };
+}
+
+// ── Home ──
+let CU = 0, CUD = null;
+
+function renderHome() {
+  const g = document.getElementById('unitsGrid');
+  g.innerHTML = '';
+  for(let i = 0; i < TOTAL_UNITS; i++) {
+    const up = getUP(i);
+    const d  = getUD(i);
+    const isDone = up.done;
+    const firstWord = d.vocab[0]?.word || '';
+    const lastWord  = d.vocab[d.vocab.length-1]?.word || '';
+
+    const c = document.createElement('div');
+    c.className = 'unit-card' + (isDone ? ' done' : '');
+    c.style.animationDelay = (i * 0.025) + 's';
+    c.onclick = () => openUnit(i);
+    c.innerHTML = `
+      <div class="unit-header">
+        <span class="unit-number">UNIT ${String(i+1).padStart(2,'0')}</span>
+        <div class="unit-check ${isDone ? 'done' : 'undone'}">${isDone ? '✓' : '—'}</div>
+      </div>
+      <div class="unit-title">${firstWord} ~ ${lastWord}</div>
+      <div class="unit-subtitle">${up.score >= 0 ? '上次測驗 '+up.score+'/'+up.total+' 分' : '尚未測驗'}</div>
+      <div class="unit-tags">
+        <span class="unit-tag tag-v">字彙 ${d.vocab.length}</span>
+        <span class="unit-tag tag-p">片語 10</span>
+        <span class="unit-tag tag-s">相似詞 10</span>
+      </div>`;
+    g.appendChild(c);
+  }
+}
+
+// ── Navigation ──
+function openUnit(i) {
+  CU  = i;
+  CUD = getUD(i);
+  document.getElementById('homePage').classList.remove('active');
+  document.getElementById('unitPage').classList.add('active');
+  document.getElementById('navBack').classList.add('show');
+  document.getElementById('navTitle').textContent = 'Unit ' + (i+1);
+  document.getElementById('unitTitle').textContent = 'Unit ' + (i+1) + ' 學習單元';
+  document.getElementById('unitSub').textContent = '字彙 · 片語 · 相似詞比較';
+  // reset tabs to first
+  document.querySelectorAll('.unit-tab').forEach((t,j) => t.classList.toggle('active', j===0));
+  document.querySelectorAll('.tab-content').forEach((t,j) => t.classList.toggle('active', j===0));
+  renderStudy();
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  document.getElementById('unitPage').classList.remove('active');
+  document.getElementById('homePage').classList.add('active');
+  document.getElementById('navBack').classList.remove('show');
+  document.getElementById('navTitle').textContent = '英文學習測驗';
+  renderHome();
+}
+
+function switchTab(i) {
+  document.querySelectorAll('.unit-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  document.querySelectorAll('.tab-content').forEach((t,j) => t.classList.toggle('active', j===i));
+  if(i === 3) startQuiz();
+}
+
+// ── Study Renders ──
+function renderStudy() {
+  // Vocab
+  document.getElementById('tab0').innerHTML = '<div class="study-grid">' +
+    CUD.vocab.map(v =>
+      '<div class="study-card">' +
+        '<div class="word">' + v.word + '</div>' +
+        '<div class="pos">' + (v.pos_def||'').substring(0,60) + '</div>' +
+        '<div class="meaning">' + (v.chinese||'') + '</div>' +
+        (v.example_en ? '<div class="example">' + v.example_en.substring(0,110) + '</div>' : '') +
+      '</div>'
+    ).join('') + '</div>';
+
+  // Phrases
+  document.getElementById('tab1').innerHTML = '<div class="study-grid">' +
+    CUD.phrases.map(p =>
+      '<div class="study-card">' +
+        '<div class="word">' + p.phrase + '</div>' +
+        '<div class="meaning">' + p.definition + '</div>' +
+        (p.example_en ? '<div class="example">' + p.example_en.substring(0,110) + '</div>' : '') +
+      '</div>'
+    ).join('') + '</div>';
+
+  // Similar words
+  document.getElementById('tab2').innerHTML = '<div class="study-grid">' +
+    CUD.similar.map(s => {
+      const hl = s.content.replace(/([a-zA-Z][a-zA-Z''-]*)/g, '<span class="ew">$1</span>');
+      return '<div class="study-card">' +
+        '<div class="sim-num">相似詞 #' + s.number + '</div>' +
+        '<div class="sim-content">' + hl + '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+}
+
+// ── Build Quiz (10 questions: 4 vocab + 3 phrase + 3 similar) ──
+function buildQuestions() {
+  const pool = [];
+
+  // 4 Vocab: word → Chinese meaning
+  CUD.vocab.filter(v => v.chinese).slice(0, 4).forEach(v => {
+    const wrong = shuffle(
+      APP_DATA.vocabulary.filter(x => x.word !== v.word && x.chinese)
+    ).slice(0, 3).map(x => x.chinese.substring(0, 20));
+    if(wrong.length < 3) return;
+    const ans = v.chinese.substring(0, 20);
+    pool.push({
+      type: '字彙',
+      q: v.word,
+      hint: (v.pos_def || '').split('\n')[0].substring(0, 55),
+      ans: ans,
+      opts: shuffle([ans, ...wrong])
+    });
+  });
+
+  // 3 Phrases: Chinese → English phrase
+  CUD.phrases.filter(p => p.definition && p.phrase).slice(0, 3).forEach(p => {
+    const wrong = shuffle(
+      APP_DATA.phrases.filter(x => x.phrase !== p.phrase)
+    ).slice(0, 3).map(x => x.phrase);
+    if(wrong.length < 3) return;
+    pool.push({
+      type: '片語',
+      q: '「' + p.definition + '」的英文片語是？',
+      hint: (p.example_en || '').substring(0, 65),
+      ans: p.phrase,
+      opts: shuffle([p.phrase, ...wrong])
+    });
+  });
+
+  // 3 Similar: Chinese meaning → correct English word
+  let simCount = 0;
+  for(const s of CUD.similar) {
+    if(simCount >= 3) break;
+    const wordMatches = s.content.match(/[a-zA-Z]{3,}/g) || [];
+    const chMatches   = s.content.match(/[一-鿿]{2,10}/g) || [];
+    if(!wordMatches.length || !chMatches.length) continue;
+    const targetWord    = wordMatches[0];
+    const targetMeaning = chMatches[0];
+    const wrongWords = [];
+    for(const x of APP_DATA.similar_words) {
+      if(x.number === s.number) continue;
+      const ws = (x.content.match(/[a-zA-Z]{3,}/g) || []);
+      if(ws.length && ws[0] !== targetWord) wrongWords.push(ws[0]);
+      if(wrongWords.length >= 15) break;
+    }
+    const wrong = shuffle(wrongWords).slice(0, 3);
+    if(wrong.length < 3) continue;
+    pool.push({
+      type: '相似詞',
+      q: '「' + targetMeaning + '」的英文是？',
+      hint: s.content.substring(0, 75),
+      ans: targetWord,
+      opts: shuffle([targetWord, ...wrong])
+    });
+    simCount++;
+  }
+
+  return shuffle(pool).slice(0, 10);
+}
+
+// ── Quiz State ──
+let QS = { questions:[], cur:0, correct:0, missed:[], answered:false };
+
+function startQuiz() {
+  QS = { questions: buildQuestions(), cur:0, correct:0, missed:[], answered:false };
+  if(!QS.questions.length) {
+    document.getElementById('quizWrap').innerHTML =
+      '<div style="text-align:center;padding:60px;color:var(--text2)">題目載入失敗，請重新整理頁面。</div>';
+    return;
+  }
+  renderQ();
+}
+
+function renderQ() {
+  const wrap  = document.getElementById('quizWrap');
+  const total = QS.questions.length;
+  const cur   = QS.cur;
+
+  if(cur >= total) {
+    // Mark unit as done + save score
+    setUP(CU, { done: true, score: QS.correct, total: total });
+    const pct   = Math.round(QS.correct / total * 100);
+    const emoji = pct >= 90 ? '🏆' : pct >= 70 ? '👏' : pct >= 50 ? '📚' : '💪';
+    const missedHTML = QS.missed.length
+      ? '<div class="result-missed">' +
+          '<div class="result-missed-title">答錯的題目：</div>' +
+          QS.missed.map(m =>
+            '<div class="missed-item">' +
+              '<div class="mq">' + m.q.substring(0,40) + '</div>' +
+              '<div class="ma">正確答案：' + m.ans + '</div>' +
+            '</div>'
+          ).join('') +
+        '</div>'
+      : '';
+    wrap.innerHTML =
+      '<div class="result-card">' +
+        '<div style="font-size:2.5rem;margin-bottom:12px">' + emoji + '</div>' +
+        '<div class="result-score">' + QS.correct +
+          '<span style="font-size:2rem;color:var(--text2)">/' + total + '</span></div>' +
+        '<div class="result-label">' + pct + '% · ' + (pct>=80?'優秀！繼續保持':'繼續加油，多複習再測！') + '</div>' +
+        '<div class="result-breakdown">' +
+          '<div class="result-stat ok"><div class="num">' + QS.correct + '</div><div class="lbl">答對</div></div>' +
+          '<div class="result-stat bad"><div class="num">' + QS.missed.length + '</div><div class="lbl">答錯</div></div>' +
+        '</div>' +
+        missedHTML +
+        '<div class="result-actions">' +
+          '<button class="btn btn-primary" onclick="startQuiz()">再測一次</button>' +
+          '<button class="btn btn-secondary" onclick="switchTab(0)">回複習</button>' +
+          '<button class="btn btn-secondary" onclick="goHome()">主頁</button>' +
+        '</div>' +
+      '</div>';
+    return;
+  }
+
+  const q      = QS.questions[cur];
+  const barPct = cur / total * 100;
+  const isLast = (cur + 1 >= total);
+
+  wrap.innerHTML =
+    '<div class="quiz-progress">' +
+      '<div class="quiz-bar"><div class="quiz-bar-fill" style="width:' + barPct + '%"></div></div>' +
+      '<div class="quiz-counter">' + (cur+1) + ' / ' + total + '</div>' +
+      '<div class="quiz-score-live">✓ ' + QS.correct + '</div>' +
+    '</div>' +
+    '<div class="quiz-card">' +
+      '<div class="quiz-type-badge">' + q.type + '</div>' +
+      '<div class="quiz-question"><span class="hl">' + q.q + '</span></div>' +
+      (q.hint ? '<div class="quiz-hint">' + q.hint + '</div>' : '') +
+    '</div>' +
+    '<div class="quiz-options" id="opts">' +
+      q.opts.map((o,i) =>
+        '<button class="quiz-opt" onclick="selectOpt(' + i + ')" data-i="' + i + '">' + o + '</button>'
+      ).join('') +
+    '</div>' +
+    '<div class="quiz-feedback" id="fb"></div>' +
+    '<button class="quiz-next" id="nxt" onclick="nextQ()">' + (isLast ? '查看結果' : '下一題 →') + '</button>';
+}
+
+function selectOpt(idx) {
+  if(QS.answered) return;
+  QS.answered = true;
+  const q    = QS.questions[QS.cur];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.setAttribute('disabled', true));
+  const isOK = q.opts[idx] === q.ans;
+  if(isOK) {
+    QS.correct++;
+    opts[idx].classList.add('correct');
+    document.getElementById('fb').className = 'quiz-feedback show ok';
+    document.getElementById('fb').innerHTML = '✓ 正確！';
+  } else {
+    QS.missed.push(q);
+    opts[idx].classList.add('wrong');
+    q.opts.forEach((o,i) => { if(o === q.ans) opts[i].classList.add('correct'); });
+    document.getElementById('fb').className = 'quiz-feedback show bad';
+    document.getElementById('fb').innerHTML = '✗ 正確答案：<strong>' + q.ans + '</strong>';
+  }
+  document.getElementById('nxt').classList.add('show');
+}
+
+function nextQ() {
+  QS.cur++;
+  QS.answered = false;
+  renderQ();
+}
+
+// ── Init ──
+renderHome();
+</script>
 </body>
 </html>
