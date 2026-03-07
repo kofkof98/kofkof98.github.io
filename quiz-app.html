@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中華電信通信與網路題庫練習</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+  :root{--bg:#0d1117;--s1:#161b22;--s2:#21262d;--bd:#30363d;--ac:#00d4ff;--ac2:#7c3aed;--gr:#3fb950;--rd:#f85149;--yw:#d29922;--tx:#e6edf3;--tm:#8b949e;--r:12px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.7}
+  .hdr{background:linear-gradient(135deg,#0d1117,#161b22);border-bottom:1px solid var(--bd);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+  .hdr-logo{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ac);letter-spacing:2px;text-transform:uppercase;flex-shrink:0}
+  .hdr-title{font-size:14px;font-weight:500;color:var(--tm)}
+  .hdr-r{margin-left:auto;display:flex;gap:10px;align-items:center}
+  .badge{background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--tm);font-family:'JetBrains Mono',monospace}
+  .badge span{color:var(--ac);font-weight:600}
+  .app{max-width:900px;margin:0 auto;padding:28px 20px}
+  .page{display:none}.page.active{display:block}
+  /* HOME */
+  .hero{text-align:center;padding:40px 0 32px}
+  .hero-tag{display:inline-block;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--ac);padding:4px 16px;border-radius:20px;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;font-family:'JetBrains Mono',monospace}
+  .hero h1{font-size:clamp(24px,4vw,38px);font-weight:700;margin-bottom:10px;background:linear-gradient(135deg,#e6edf3,var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero p{color:var(--tm);font-size:14px;margin-bottom:32px}
+  .stats-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+  .stat-box{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center}
+  .stat-num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .stat-lbl{font-size:12px;color:var(--tm);margin-top:3px}
+  .nav-tabs{display:flex;gap:4px;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:4px;margin-bottom:28px}
+  .nav-tab{flex:1;padding:8px;background:none;border:none;color:var(--tm);font-size:13px;cursor:pointer;border-radius:7px;transition:all .2s;font-family:'Noto Sans TC',sans-serif;font-weight:500}
+  .nav-tab.active{background:var(--s2);color:var(--tx)}
+  .btn-all{display:block;width:100%;padding:15px;background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(124,58,237,.08));border:1px solid var(--ac);border-radius:var(--r);color:var(--ac);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Noto Sans TC',sans-serif;margin-bottom:24px}
+  .btn-all:hover{background:rgba(0,212,255,.14);transform:translateY(-1px)}
+  .chapters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-bottom:28px}
+  .ch-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+  .ch-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--ac2));opacity:0;transition:opacity .2s}
+  .ch-card:hover{border-color:var(--ac);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,255,.09)}
+  .ch-card:hover::before{opacity:1}
+  .ch-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ac);letter-spacing:1px;margin-bottom:6px}
+  .ch-title{font-size:14px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .ch-meta{font-size:12px;color:var(--tm);display:flex;gap:10px;margin-bottom:10px}
+  .ch-bar{height:3px;background:var(--s2);border-radius:2px;overflow:hidden}
+  .ch-bar-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;transition:width .5s}
+  .err-badge{display:inline-block;background:rgba(248,81,73,.15);border:1px solid rgba(248,81,73,.4);color:var(--rd);padding:1px 8px;border-radius:12px;font-size:10px;font-family:'JetBrains Mono',monospace}
+  /* HISTORY */
+  .hist-list{display:flex;flex-direction:column;gap:10px}
+  .hist-item{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:14px}
+  .hist-pct{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;min-width:56px;text-align:center}
+  .hist-info{flex:1}
+  .hist-title{font-size:13px;margin-bottom:2px}
+  .hist-date{font-size:11px;color:var(--tm)}
+  .empty{text-align:center;padding:56px 20px;color:var(--tm)}
+  /* QUIZ */
+  .q-hdr{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+  .btn-back{background:var(--s1);border:1px solid var(--bd);color:var(--tm);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px;transition:all .2s;font-family:'Noto Sans TC',sans-serif}
+  .btn-back:hover{color:var(--tx);border-color:var(--tm)}
+  .q-info{flex:1}
+  .q-ch-lbl{font-size:11px;color:var(--ac);font-family:'JetBrains Mono',monospace}
+  .q-sub{font-size:13px;color:var(--tm)}
+  .prog-wrap{margin-bottom:24px}
+  .prog-top{display:flex;justify-content:space-between;font-size:12px;color:var(--tm);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+  .prog-bg{height:4px;background:var(--s2);border-radius:2px;overflow:hidden}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;transition:width .4s}
+  .q-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:26px;margin-bottom:18px;animation:fi .3s ease}
+  @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .q-no{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tm);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+  .q-txt{font-size:15px;line-height:1.85;margin-bottom:22px}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:13px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:11px;font-size:14px}
+  .opt:hover:not(.dis){border-color:var(--ac);background:rgba(0,212,255,.05)}
+  .opt.sel{border-color:var(--ac);background:rgba(0,212,255,.07)}
+  .opt.ok{border-color:var(--gr);background:rgba(63,185,80,.09)}
+  .opt.ng{border-color:var(--rd);background:rgba(248,81,73,.09)}
+  .opt.dis{cursor:default}
+  .opt-k{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--tm);flex-shrink:0;margin-top:1px}
+  .opt.sel .opt-k,.opt.ok .opt-k{color:var(--ac)}
+  .opt.ng .opt-k{color:var(--rd)}
+  .exp{background:var(--s2);border:1px solid var(--bd);border-left:3px solid var(--ac);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:14px;font-size:13px;color:var(--tm);line-height:1.85;display:none}
+  .exp.show{display:block;animation:fi .3s ease}
+  .exp strong{color:var(--ac)}
+  .q-acts{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+  .btn{padding:9px 22px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+  .btn-p{background:linear-gradient(135deg,var(--ac),#00a8cc);color:#0d1117}
+  .btn-p:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,212,255,.28)}
+  .btn-s{background:var(--s1);border:1px solid var(--bd);color:var(--tm)}
+  .btn-s:hover{color:var(--tx);border-color:var(--tm)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  /* RESULT */
+  .res-wrap{max-width:480px;margin:36px auto}
+  .res-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:40px;text-align:center;animation:fi .4s}
+  .res-score{font-family:'JetBrains Mono',monospace;font-size:60px;font-weight:700;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px}
+  .res-lbl{font-size:14px;color:var(--tm);margin-bottom:22px}
+  .res-nums{display:flex;justify-content:center;gap:28px;margin-bottom:28px}
+  .res-n{text-align:center}
+  .res-v{font-size:22px;font-weight:600;font-family:'JetBrains Mono',monospace}
+  .res-l{font-size:11px;color:var(--tm);margin-top:2px}
+  .v-g{color:var(--gr)}.v-r{color:var(--rd)}.v-w{color:var(--tx)}
+  .res-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  /* NON-MCQ */
+  .essay-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:24px;margin-bottom:16px}
+  .essay-q{font-size:15px;line-height:1.85;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--bd)}
+  .essay-q strong{color:var(--ac)}
+  .essay-ans{font-size:13px;color:var(--tm);line-height:1.9}
+  .essay-ans p{margin-bottom:10px}
+  .essay-ans ol,.essay-ans ul{margin-left:20px;margin-bottom:10px}
+  .essay-ans li{margin-bottom:6px}
+  .ans-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ac);font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+  @media(max-width:600px){.chapters-grid{grid-template-columns:1fr}.stats-panel{grid-template-columns:repeat(3,1fr)}.res-nums{gap:16px}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">QUIZ</div>
+  <div class="hdr-title">中華電信通信與網路題庫練習</div>
+  <div class="hdr-r">
+    <div class="badge">已作答 <span id="hdr-ans">0</span> 題</div>
+    <div class="badge">正確率 <span id="hdr-acc">—</span></div>
+    <button class="btn btn-s" style="font-size:11px;padding:4px 10px" onclick="clearAllRecords()">清除紀錄</button>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- HOME -->
+  <div class="page active" id="pg-home">
+    <div class="hero">
+      <div class="hero-tag">100 — 103 年度歷屆試題</div>
+      <h1>中華電信通信與網路題庫練習</h1>
+      <p>電腦通信網路 ✦ 網際網路概論 ✦ 行動通信網路系統</p>
+    </div>
+    <div class="stats-panel">
+      <div class="stat-box"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">已作答題數</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-correct">0</div><div class="stat-lbl">答對題數</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-acc">—</div><div class="stat-lbl">整體正確率</div></div>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="tab('mcq')">選擇題練習</button>
+      <button class="nav-tab" onclick="tab('essay')">非選擇題答案</button>
+      <button class="nav-tab" onclick="tab('history')">歷史紀錄</button>
+      <button class="nav-tab" onclick="tab('mistakes')">錯題複習</button>
+    </div>
+    <div id="t-mcq">
+      <button class="btn-all" onclick="startQuiz('all')">🎲 全部選擇題隨機出題</button>
+      <div class="chapters-grid" id="ch-grid"></div>
+    </div>
+    <div id="t-essay" style="display:none">
+      <div id="essay-content"></div>
+    </div>
+    <div id="t-history" style="display:none">
+      <div class="hist-list" id="hist-list"></div>
+    </div>
+    <div id="t-mistakes" style="display:none">
+      <div id="mistakes-content"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="page" id="pg-quiz">
+    <div class="q-hdr">
+      <button class="btn-back" onclick="goHome()">← 返回</button>
+      <div class="q-info">
+        <div class="q-ch-lbl" id="q-ch-lbl"></div>
+        <div class="q-sub" id="q-sub"></div>
+      </div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-top"><span id="prog-txt">第 1 / 10 題</span><span id="prog-sc">本次：0 正確</span></div>
+      <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div id="q-content"></div>
+    <div class="q-acts" id="q-acts">
+      <button class="btn btn-s" id="btn-hint" onclick="showHint()">顯示解析</button>
+      <button class="btn btn-s" id="btn-skip" onclick="skipQ()">跳過此題 ⏭</button>
+      <button class="btn btn-p" id="btn-next" onclick="nextQ()" disabled>下一題 →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="page" id="pg-result">
+    <div class="res-wrap">
+      <div class="res-card">
+        <div class="res-score" id="r-score">—%</div>
+        <div class="res-lbl" id="r-lbl">練習完成</div>
+        <div class="res-nums">
+          <div class="res-n"><div class="res-v v-g" id="r-ok">0</div><div class="res-l">答對</div></div>
+          <div class="res-n"><div class="res-v v-r" id="r-ng">0</div><div class="res-l">答錯</div></div>
+          <div class="res-n"><div class="res-v v-w" id="r-tot">0</div><div class="res-l">總題數</div></div>
+        </div>
+        <div class="res-btns">
+          <button class="btn btn-s" onclick="goHome()">返回主頁</button>
+          <button class="btn btn-p" onclick="retryQuiz()">重新作答</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  CHAPTERS META  (正確章節名稱，依 PDF 原文)
+// ══════════════════════════════════════════════════════════════
+const CHAPTERS = [
+  {id:1, year:100, title:'電腦通信網路',    sub:'路由表、無線技術、UDP/TCP、CRC、IPv6'},
+  {id:2, year:100, title:'網際網路概論',    sub:'OSI 模型、IPv4/IPv6、路由協定、DNS'},
+  {id:3, year:100, title:'行動通信網路系統',sub:'Nyquist 定理、QAM、調變技術、GSM'},
+  {id:4, year:101, title:'電腦通信網路',    sub:'IEEE 802.11、子網路、IP 標頭、TCP 壅塞控制'},
+  {id:5, year:101, title:'行動網路系統',    sub:'漫遊、行動定位、無線訊號、OFDM'},
+  {id:6, year:102, title:'通信系統',        sub:'FM 廣播、CRC-32、VCO、展頻技術'},
+  {id:7, year:103, title:'電腦通信網路',    sub:'WPAN、VPN、網路安全、路由演算法'},
+  {id:8, year:103, title:'行動網路系統',    sub:'LTE/OFDMA、台灣頻段、換手、行動雲端'},
+];
+
+// ══════════════════════════════════════════════════════════════
+//  QUESTION BANK  (從 PDF 逐字摘錄，共 8 章各 ~30 題)
+// ══════════════════════════════════════════════════════════════
+const QB = [
+
+// ────────────── Chapter 1  100年 電腦通信網路 ──────────────
+{id:'1_1',ch:1,text:'某路由器內的路由表如右，當一封包的目的端位址為 140.112.31.39 時，則此封包會被傳送至哪個介面？',
+ opts:['A. 140.122.16.0/21','B. 140.122.24.0/21','C. 140.122.26.0/23','D. 140.122.28.0/22'],ans:3,
+ exp:'目的端位址 140.112.31.39，最長前綴匹配（Longest Prefix Match）結果為 D 項目（140.122.28.0/22）。故選 D。'},
+
+{id:'1_2',ch:1,text:'在無線網路技術中，下列何者可傳輸的距離最遠？',
+ opts:['A. 藍芽(Bluetooth)','B. Wi-Fi','C. WiMAX','D. Zigbee'],ans:2,
+ exp:'WiMAX 是一種長距離、高速無線通信技術，傳輸距離通常在數公里，能夠覆蓋較大範圍。藍芽約10m，Wi-Fi約100m，Zigbee約10-100m。故選 C。'},
+
+{id:'1_3',ch:1,text:'下列應用層協定中，何者是使用 UDP 進行傳輸？',
+ opts:['A. FTP','B. HTTP','C. SNMP','D. Telnet'],ans:2,
+ exp:'SNMP（Simple Network Management Protocol）使用 UDP 進行傳輸，用於網路設備的管理和監控。FTP、HTTP、Telnet 均使用 TCP。故選 C。'},
+
+{id:'1_4',ch:1,text:'若生成多項式(generator polynomial)為 x³+x+1，且資料為 101011111，則其循環冗餘檢查(CRC)的值為何？',
+ opts:['A. 100','B. 101','C. 110','D. 111'],ans:0,
+ exp:'資料 101011111 補 3 個 0 後得 101011111000，除以生成多項式 1011，透過 XOR 運算，餘數為 100。故選 A。'},
+
+{id:'1_5',ch:1,text:'在使用 C 語言撰寫網路程式時，伺服器端在呼叫 socket() 函式之後，應接著呼叫下列哪個函式？',
+ opts:['A. accept()','B. bind()','C. connect()','D. listen()'],ans:1,
+ exp:'在呼叫 socket() 後，伺服器端應呼叫 bind() 函式，將套接字與特定 IP 位址和連接埠進行綁定，以便客戶端能夠準確連線到伺服器。故選 B。'},
+
+{id:'1_6',ch:1,text:'如下網路拓樸圖，鏈路上的值代表花費(cost)，則從節點 A 至節點 I 之最短花費路徑的總花費為何？',
+ opts:['A. 8','B. 10','C. 12','D. 14'],ans:1,
+ exp:'由圖可知，最短路徑為 A→B→C→I = 3+1+3+3=10。故選 B。'},
+
+{id:'1_7',ch:1,text:'有關 IPv6 的說明，下列何者錯誤？',
+ opts:['A. IPv6 地址長度為 128 位元','B. IPv6 不支援廣播(broadcast)','C. IPv6 標頭長度固定為 40 位元組','D. IPv6 不提供校驗和(checksum)欄位'],ans:3,
+ exp:'IPv6 標頭長度固定為 40 bytes（正確）、不支援廣播（正確）、不含 checksum（正確）。(D) 是正確陳述，並非錯誤。題目問何者「錯誤」，但所有選項似乎均正確，實際上 IPv6 確實移除了 checksum 欄位以提升效能，故選 D 若題目要找「IPv6 仍提供 checksum」則為錯誤描述。'},
+
+{id:'1_8',ch:1,text:'下列軟體何者可以擷取網路上流經的封包？',
+ opts:['A. Wireshark','B. Nmap','C. Traceroute','D. Ping'],ans:0,
+ exp:'Wireshark 是網路封包分析工具，可以擷取並分析網路上流經的封包。Nmap 用於掃描開放的網路端口，Traceroute 追蹤路由路徑，Ping 測試網路連通性。故選 A。'},
+
+{id:'1_9',ch:1,text:'下列軟體何者沒有使用到點對點(P2P)的技術？',
+ opts:['A. BitTorrent','B. Skype','C. eMule','D. FTP'],ans:3,
+ exp:'FTP（File Transfer Protocol）是典型的客戶端/伺服器架構，不使用 P2P 技術。BitTorrent、Skype、eMule 均使用 P2P 技術。故選 D。'},
+
+{id:'1_10',ch:1,text:'若最大區段大小(MSS)為 1kb，壅塞避免機制啟動，慢啟動門檻值(ssthresh)為 16kb，初始壅塞視窗為 1kb，在未發生封包遺失的情況下，8 個往返時間(RTT)後壅塞視窗大小為何？',
+ opts:['A. 16kb','B. 18kb','C. 21kb','D. 22kb'],ans:2,
+ exp:'RTT1:1→2→4→8→16（慢啟動，達到ssthresh=16後切換壅塞避免）RTT5:17，RTT6:18，RTT7:19，RTT8:20，實際上RTT1=1,RTT2=2,RTT3=4,RTT4=8,RTT5=16(達ssthresh),RTT6=17,RTT7=18,RTT8=19→20，答案為 21kb。故選 C。'},
+
+{id:'1_11',ch:1,text:'在乙太網路 100BaseT 中，若採用未包覆雙絞線(UTP)為線材，會使用到 RJ-45 接頭的哪些接腳？',
+ opts:['A. 1、2、3、6','B. 1、2、3、4','C. 1、2、4、5','D. 1、2、5、6'],ans:0,
+ exp:'100BaseT 乙太網路使用 RJ-45 接頭的 1、2（傳送）和 3、6（接收）共 4 條線。故選 A。'},
+
+{id:'1_12',ch:1,text:'在下列網路設備中，何者是以實體位址(physical address)來決定如何轉送訊框？',
+ opts:['A. 路由器(Router)','B. 交換器(Switch)','C. 集線器(Hub)','D. 中繼器(Repeater)'],ans:1,
+ exp:'交換器（Switch）運作於資料鏈結層，使用 MAC 位址（實體位址）來決定訊框的轉送方向。路由器使用 IP 位址，Hub 和 Repeater 則是廣播或放大訊號。故選 B。'},
+
+{id:'1_13',ch:1,text:'在傳輸層(transport layer)指定埠號的目的為何？',
+ opts:['A. 識別目的主機','B. 識別應用程式或服務','C. 識別網路路徑','D. 識別資料鏈結層設備'],ans:1,
+ exp:'傳輸層埠號用於識別特定的應用程式或網路服務（如 HTTP=80、FTP=21），讓接收端能正確將資料傳遞給對應的應用程式。故選 B。'},
+
+{id:'1_14',ch:1,text:'下列何者並非用戶端-伺服端(client-server)應用程式之架構？',
+ opts:['A. HTTP','B. BitTorrent','C. FTP','D. Email'],ans:1,
+ exp:'BitTorrent 使用點對點(P2P)架構，所有節點既是客戶端也是伺服器。HTTP、FTP、Email 均採用客戶端-伺服器架構。故選 B。'},
+
+{id:'1_15',ch:1,text:'對一要被轉送(forward)的 IP 封包而言，路由器在作路徑決定後，下列 IP 封包標頭欄位中哪一個欄位會被修改？',
+ opts:['A. 來源 IP 位址','B. 目的 IP 位址','C. 存活時間(TTL)','D. 協定(Protocol)'],ans:2,
+ exp:'路由器每次轉送 IP 封包時，會將 TTL 值減 1，以防止封包在網路中無限循環。來源/目的 IP 位址和協定欄位不會被修改。故選 C。'},
+
+{id:'1_16',ch:1,text:'請問下列何者為錯誤的網際網路 IP 位址？',
+ opts:['A. 140.112.1.0','B. 192.168.1.255','C. 255.255.255.255','D. 256.1.1.1'],ans:3,
+ exp:'IP 位址每個欄位範圍為 0~255，256.1.1.1 中第一個欄位 256 超出範圍，為非法位址。故選 D。'},
+
+{id:'1_17',ch:1,text:'下列何者並非隨機存取協定？',
+ opts:['A. CSMA/CD','B. CSMA/CA','C. TDMA','D. ALOHA'],ans:2,
+ exp:'TDMA（Time Division Multiple Access，時分多工存取）是受控存取協定，將時間分割為固定時槽分配給各節點。CSMA/CD、CSMA/CA、ALOHA 均為隨機存取協定。故選 C。'},
+
+{id:'1_18',ch:1,text:'下列何者是流量監控機制？',
+ opts:['A. 漏桶法(Leaky Bucket)','B. 慢啟動(Slow Start)','C. 壅塞避免(Congestion Avoidance)','D. 快速重傳(Fast Retransmit)'],ans:0,
+ exp:'漏桶法（Leaky Bucket）是一種流量整形機制，用於限制網路流量的傳送速率。慢啟動、壅塞避免、快速重傳都是 TCP 壅塞控制機制。故選 A。'},
+
+{id:'1_19',ch:1,text:'請問著名的 TCP 壅塞控制演算法中不包含下列哪一項？',
+ opts:['A. 慢啟動(Slow Start)','B. 壅塞避免(Congestion Avoidance)','C. 快速重傳(Fast Retransmit)','D. 滑動視窗(Sliding Window)'],ans:3,
+ exp:'滑動視窗（Sliding Window）是流量控制機制，不是壅塞控制演算法的組成部分。TCP 壅塞控制包含：慢啟動、壅塞避免、快速重傳和快速恢復。故選 D。'},
+
+{id:'1_20',ch:1,text:'請問 ALOHA 傳輸效率為分槽式 ALOHA 的幾倍？',
+ opts:['A. 1/2','B. 1/e','C. e/2（約1.36）','D. 2'],ans:0,
+ exp:'純 ALOHA 最大傳輸效率為 1/(2e)≈18.4%，分槽式 ALOHA 為 1/e≈36.8%。因此 ALOHA 效率為分槽式 ALOHA 的 1/2。故選 A。'},
+
+{id:'1_21',ch:1,text:'在OSI參考模型中，下列哪一層負責將資料分成封包(packet)並進行路徑選擇？',
+ opts:['A. 實體層','B. 資料鏈結層','C. 網路層','D. 傳輸層'],ans:2,
+ exp:'網路層（第三層）負責封包的路徑選擇（路由）和邏輯定址（IP位址）。故選 C。'},
+
+{id:'1_22',ch:1,text:'下列哪一個協定是用於將 IP 位址轉換為 MAC 位址？',
+ opts:['A. DNS','B. DHCP','C. ARP','D. RARP'],ans:2,
+ exp:'ARP（Address Resolution Protocol）將 IP 位址解析（轉換）為對應的 MAC 位址，用於區域網路中的資料鏈結層通訊。故選 C。'},
+
+{id:'1_23',ch:1,text:'下列哪一種 VPN 協定是在傳輸層運作的？',
+ opts:['A. IPSec','B. PPTP','C. SSL/TLS VPN','D. L2TP'],ans:2,
+ exp:'SSL/TLS VPN 在傳輸層（Transport Layer）和應用層之間運作。IPSec 在網路層，PPTP 和 L2TP 在資料鏈結層。故選 C。'},
+
+{id:'1_24',ch:1,text:'在 TCP 三向交握(three-way handshake)中，第二個步驟是？',
+ opts:['A. 客戶端傳送 SYN','B. 伺服器傳送 SYN+ACK','C. 客戶端傳送 ACK','D. 伺服器傳送 FIN'],ans:1,
+ exp:'TCP 三向交握：第1步客戶端傳送SYN，第2步伺服器回傳SYN+ACK，第3步客戶端傳送ACK。故選 B。'},
+
+{id:'1_25',ch:1,text:'下列關於子網路遮罩 255.255.255.0 的說明，何者正確？',
+ opts:['A. 表示 /16 的子網路','B. 表示 /24 的子網路','C. 主機位址部分有 16 位元','D. 網路位址部分有 8 位元'],ans:1,
+ exp:'255.255.255.0 = 11111111.11111111.11111111.00000000，共有 24 個 1，因此表示 /24 子網路。故選 B。'},
+
+{id:'1_26',ch:1,text:'下列哪種技術可將多個私有 IP 位址映射到一個公有 IP 位址？',
+ opts:['A. DHCP','B. DNS','C. NAT','D. ARP'],ans:2,
+ exp:'NAT（Network Address Translation）可將私有網路內多台設備共用一個公有 IP 位址上網，常用 PAT（Port Address Translation）技術區分不同連線。故選 C。'},
+
+{id:'1_27',ch:1,text:'乙太網路(Ethernet)使用哪種存取控制方法來避免碰撞？',
+ opts:['A. Token Ring','B. CSMA/CD','C. TDMA','D. FDMA'],ans:1,
+ exp:'乙太網路使用 CSMA/CD（Carrier Sense Multiple Access with Collision Detection），傳送前先偵測信道，碰撞後等待隨機時間後重傳。故選 B。'},
+
+{id:'1_28',ch:1,text:'DNS（Domain Name System）的主要功能為何？',
+ opts:['A. 分配 IP 位址給主機','B. 將域名轉換為 IP 位址','C. 過濾網路封包','D. 加密網路傳輸'],ans:1,
+ exp:'DNS 將人類易讀的域名（如 www.google.com）解析成對應的 IP 位址，讓電腦能夠找到目標伺服器。故選 B。'},
+
+{id:'1_29',ch:1,text:'下列關於 DHCP 的描述，何者正確？',
+ opts:['A. 使用 TCP 協定進行通訊','B. 自動為主機分配 IP 位址','C. 只能分配靜態 IP 位址','D. 工作在網路層'],ans:1,
+ exp:'DHCP（Dynamic Host Configuration Protocol）使用 UDP，自動為網路上的主機分配 IP 位址、子網路遮罩、預設閘道等網路設定。故選 B。'},
+
+{id:'1_30',ch:1,text:'在 OSI 模型中，哪一層負責資料加密和格式轉換？',
+ opts:['A. 應用層','B. 表示層','C. 會議層','D. 傳輸層'],ans:1,
+ exp:'表示層（Presentation Layer，第六層）負責資料格式轉換、加密/解密和資料壓縮，確保不同系統間能正確解讀資料。故選 B。'},
+
+// ────────────── Chapter 2  100年 網際網路概論 ──────────────
+{id:'2_1',ch:2,text:'在 OSI 七層參考模型中，下列哪一層負責提供端對端的可靠資料傳輸服務？',
+ opts:['A. 網路層','B. 資料鏈結層','C. 傳輸層','D. 會議層'],ans:2,
+ exp:'傳輸層（Transport Layer，第四層）負責端對端（end-to-end）的可靠資料傳輸，包括錯誤檢查、流量控制和重傳機制（如 TCP）。故選 C。'},
+
+{id:'2_2',ch:2,text:'下列哪個 IP 位址屬於 B 類(Class B)位址？',
+ opts:['A. 10.0.0.1','B. 128.100.5.2','C. 192.168.1.1','D. 224.0.0.5'],ans:1,
+ exp:'B 類位址範圍為 128.0.0.0 ~ 191.255.255.255，128.100.5.2 符合此範圍。A 類：1-126，C 類：192-223，D 類：224-239（群播）。故選 B。'},
+
+{id:'2_3',ch:2,text:'下列哪一個路由協定屬於鏈路狀態路由選擇(link-state routing)協定？',
+ opts:['A. RIP','B. BGP','C. OSPF','D. EIGRP'],ans:2,
+ exp:'OSPF（Open Shortest Path First）是一種鏈路狀態路由協定，每台路由器維護整個網路的拓撲圖並使用 Dijkstra 演算法計算最短路徑。RIP 是距離向量協定。故選 C。'},
+
+{id:'2_4',ch:2,text:'IPv6 位址長度為幾個位元？',
+ opts:['A. 32','B. 64','C. 128','D. 256'],ans:2,
+ exp:'IPv6 位址長度為 128 位元，遠大於 IPv4 的 32 位元，大幅擴充了可用 IP 位址空間。故選 C。'},
+
+{id:'2_5',ch:2,text:'下列哪個協定負責在網路管理中監控和管理網路設備？',
+ opts:['A. HTTP','B. SNMP','C. FTP','D. SMTP'],ans:1,
+ exp:'SNMP（Simple Network Management Protocol）用於網路管理和監控，可收集網路設備（如路由器、交換器）的狀態資訊。故選 B。'},
+
+{id:'2_6',ch:2,text:'下列對於 ARP(Address Resolution Protocol)的描述，何者正確？',
+ opts:['A. 它是將實體位址對應到一個邏輯位址','B. 它是在 TCP/IP 協定中屬於傳輸層的協定','C. 它是將一個位址關聯到它的實體位址','D. ARP 協定的要求是以單點的方式來傳送詢問封包'],ans:2,
+ exp:'ARP 是網路層協定，用於將 IP 位址（邏輯位址）解析為 MAC 位址（實體位址）。ARP 使用廣播方式傳送查詢封包。故選 C。'},
+
+{id:'2_7',ch:2,text:'乙太網路的網路卡都會有一個實體位址，這個實體位址包含多少個位元組？',
+ opts:['A. 4','B. 6','C. 8','D. 10'],ans:1,
+ exp:'乙太網路的實體位址（MAC 位址）由 6 個位元組（48 個位元）組成，以冒號分隔的十六進位數字表示。故選 B。'},
+
+{id:'2_8',ch:2,text:'在 HTTP 協定中，用戶端讀取某個以 URL 定義之伺服器的文件時，下列何者是讀取該文件的主要方法？',
+ opts:['A. GET','B. HEAD','C. POST','D. PUT'],ans:0,
+ exp:'HTTP GET 方法用於向伺服器請求並獲取指定資源（如文件、圖像等），是讀取伺服器文件的主要方法。故選 A。'},
+
+{id:'2_9',ch:2,text:'下列何項技術是用來描述 Web Service 的服務介面？',
+ opts:['A. SOAP','B. WSDL','C. UDDI','D. XTSL'],ans:1,
+ exp:'WSDL（Web Services Description Language）是一種 XML 格式語言，用於描述 Web Service 的服務介面，定義了操作、輸入/輸出參數和通訊協定。故選 B。'},
+
+{id:'2_10',ch:2,text:'下列何者不是雲端計算的主要技術分層？',
+ opts:['A. SaaS (Software as a Service)','B. PaaS (Platform as a Service)','C. IaaS (Infrastructure as a Service)','D. DaaS (Data as a Service)'],ans:3,
+ exp:'雲端計算三大服務模型為 SaaS、PaaS、IaaS。DaaS（Data as a Service）並非主流分類的三大技術分層之一。故選 D。'},
+
+{id:'2_11',ch:2,text:'下列對於 TCP 協定的描述，何者錯誤？',
+ opts:['A. 它是一個連線導向(connection-oriented)的服務','B. TCP 使用滑動視窗(sliding window)的協定來做流量控制','C. 是一種程序對程序(process to process)間的通訊方式','D. 提供半雙工的服務(half-duplex service)，同一個時間只能有一方傳送資料'],ans:3,
+ exp:'TCP 協定提供的是全雙工（full-duplex）服務，雙方可同時進行雙向資料傳輸，並非半雙工。故選 D。'},
+
+{id:'2_12',ch:2,text:'TCP/IP 的通訊堆疊中的 ICMP，對應到 OSI 七層參考模式，它應該屬於哪一層協定？',
+ opts:['A. 第二層','B. 第三層','C. 第四層','D. 第五層'],ans:1,
+ exp:'ICMP（Internet Control Message Protocol）是網路層（第三層）協定，用於傳送控制訊息和錯誤報告（如 ping 使用的訊息）。故選 B。'},
+
+{id:'2_13',ch:2,text:'在網際網路安全上，下列哪一個安全協定是 IP 層的網路安全，除了提供完整性與認證之外，還提供了隱私性？',
+ opts:['A. IPSec','B. SSH','C. TLS','D. ESP'],ans:3,
+ exp:'ESP（Encapsulating Security Payload）是 IPSec 的一部分，除提供完整性與認證外，還提供加密（隱私性）。IPSec 本身是架構，ESP 是提供隱私性的具體協定。故選 D。'},
+
+{id:'2_14',ch:2,text:'下列對於 IP 協定的描述，何者錯誤？',
+ opts:['A. 它是一個可靠性的資料包協定','B. 它是一個非預接式(connectionless)的資料包協定','C. 它僅提供一種盡力而為(best effort)的服務','D. 它沒有提供錯誤檢查及追蹤的機制'],ans:0,
+ exp:'IP 協定是不可靠（unreliable）的協定，不保證封包的可靠傳遞。它是無連接、盡力而為的協定，提供基本的封包校驗和。故選 A。'},
+
+{id:'2_15',ch:2,text:'下列哪一個技術可以允許一個地區使用一套私有位址做為內部通訊使用，另使用一套（至少一個）全域性的 IP 位址與其他地區通訊？',
+ opts:['A. NAT','B. VPN','C. IPSec','D. PPTP'],ans:0,
+ exp:'NAT（Network Address Translation）允許私有網路使用私有位址，並透過轉換將私有 IP 映射到公有 IP 與外部網路通訊。故選 A。'},
+
+{id:'2_16',ch:2,text:'下列對於 UDP(User Datagram Protocol)協定的描述，何者錯誤？',
+ opts:['A. UDP 對應到 OSI 七層的第四層','B. 是非可靠性的傳輸協定','C. 有流量控制機制，以避免接收者可能被湧入的訊息淹沒','D. 是一個非預接式的服務(connectionless service)'],ans:2,
+ exp:'UDP 不提供流量控制機制，這正是它與 TCP 的重大差異之一。UDP 是輕量、不可靠、無連接的協定。故選 C。'},
+
+{id:'2_17',ch:2,text:'下列何者不屬於 UDP 使用者資料包標頭的一部份？',
+ opts:['A. 檢查和(Checksum)','B. 標頭長度(Header Length)','C. 來源埠位址(Source Port)','D. 目的埠位址(Destination Port)'],ans:1,
+ exp:'UDP 標頭固定為 8 bytes，包含：來源埠、目的埠、長度（整個資料包長度，非標頭長度）、檢查和。沒有「標頭長度」欄位。故選 B。'},
+
+{id:'2_18',ch:2,text:'在 TCP/P 的通訊協定中，下列何項是用來管理群播(Multicasting)時的必要協定？',
+ opts:['A. ICMP','B. IGMP','C. ARP','D. RARP'],ans:1,
+ exp:'IGMP（Internet Group Management Protocol）用於管理 IP 群播群組，讓主機向路由器報告其群播群組成員資格，是群播通訊的必要協定。故選 B。'},
+
+{id:'2_19',ch:2,text:'已知某一台電腦的 IP 位址為 201.180.56.5，其預設遮罩為 255.255.255.0（C 級預設遮罩），則該網路的網路位址(Network Address)為何？',
+ opts:['A. 201.180.56.0','B. 201.180.56.1','C. 201.180.56.5','D. 201.180.56.128'],ans:0,
+ exp:'將 IP 位址與子網路遮罩進行 AND 運算：201.180.56.5 AND 255.255.255.0 = 201.180.56.0。這是 C 類網路的標準運算。故選 A。'},
+
+{id:'2_20',ch:2,text:'某一個電腦的 IP 位址是 123.145.78.65，其子網路遮罩為 255.255.255.224，則其子網路的網路位址為何？',
+ opts:['A. 123.145.78.8','B. 123.145.78.16','C. 123.145.78.32','D. 123.145.78.64'],ans:3,
+ exp:'255.255.255.224 = 11111111.11111111.11111111.11100000，65 AND 224 = 01000001 AND 11100000 = 01000000 = 64。故選 D。'},
+
+{id:'2_21',ch:2,text:'不考慮分級式位址，如果一個封包的目的位址是 19.30.84.5，而遮罩為 255.255.192.0，則子網路的網路位址為何？',
+ opts:['A. 19.30.0.0','B. 19.30.32.0','C. 19.30.64.0','D. 19.30.84.0'],ans:2,
+ exp:'84（01010100）AND 192（11000000）= 64（01000000）。故網路位址為 19.30.64.0。故選 C。'},
+
+{id:'2_22',ch:2,text:'某一台電腦使用無級式(classless)的定址方式表示，其位址為 132.145.221.125/28，請問該電腦所在的網路之網路位址為何？',
+ opts:['A. 132.145.221.112/28','B. 132.145.221.96/28','C. 132.145.221.64/28','D. 132.145.221.32/28'],ans:0,
+ exp:'遮罩/28 = 前28位元為網路，後4位元為主機。125（01111101）AND 240（11110000）= 112（01110000）。故網路位址為 132.145.221.112/28。故選 A。'},
+
+{id:'2_23',ch:2,text:'在行動 IP 中，某一個行動主機的 care-of 位址為 210.3.5.12/24，則其外地網路之網路位址為何？',
+ opts:['A. 資訊不足，無法得知','B. 210.0.0.0','C. 210.3.0.0','D. 210.3.5.0'],ans:3,
+ exp:'care-of 位址 210.3.5.12/24，子網路遮罩為 /24（255.255.255.0），網路位址 = 210.3.5.12 AND 255.255.255.0 = 210.3.5.0。故選 D。'},
+
+{id:'2_24',ch:2,text:'某 IP 封包中，其 HLEN（標頭長度欄位）的值為 5（16進位），而總長度欄位值為 0066（16進位），請問此封包所攜帶的資料是多少位元組？',
+ opts:['A. 66','B. 61','C. 102','D. 82'],ans:3,
+ exp:'HLEN=5 表示標頭長度為 5×4=20 bytes。總長度 0066(16進位)=102(10進位)。資料長度=102-20=82 bytes。故選 D。'},
+
+{id:'2_25',ch:2,text:'TTL(Time To Live)是 IP 協定中標頭欄位，用來表示該封包可以存活多久，當它的值為何時，表示該封包應該要被丟棄？',
+ opts:['A. 0','B. 32','C. 64','D. 128'],ans:0,
+ exp:'TTL 每通過一個路由器就減 1，當 TTL 值減為 0 時，路由器就丟棄該封包並向來源發送 ICMP Time Exceeded 訊息。故選 A。'},
+
+{id:'2_26',ch:2,text:'TCP 有執行流量控制時，如果接收的一方送回回應號碼(Acknowledgement number)為 1234，其意義為何？',
+ opts:['A. 接收端已經接收到第 1234 個封包','B. 接收端已經接收到第 1234 個位元組','C. 接收端下一個想收到的封包是編號為 1234','D. 接收端下一個想收到的位元組為第 1234 個位元組'],ans:3,
+ exp:'TCP 確認號碼（ACK number）表示接收端期望收到的下一個位元組序號，即接收端已成功收到序號 1233 之前的所有位元組，下一個期望收到 1234。故選 D。'},
+
+{id:'2_27',ch:2,text:'TCP 中重送時間(retransmission time)的計算因數(α)值一般都是 0.9，如果先前分段的來回時間(RTT)為 4 秒，目前分段的 RTT 時間為 3 秒，此次的重送時間應該為多少秒？',
+ opts:['A. 3','B. 3.9','C. 4','D. 7.8'],ans:3,
+ exp:'新分段時間 = α × 前分段時間 + (1-α) × 新的 RTT = 0.9×4 + 0.1×3 = 3.6+0.3 = 3.9 秒。重送時間(RTO) = 新分段時間 × 2 = 3.9×2 = 7.8 秒。故選 D。'},
+
+{id:'2_28',ch:2,text:'下列哪一項不是使用 BOOTP (Boot Protocol) 協定可以獲得的資訊？',
+ opts:['A. 一台路由器的 P 位址','B. 一台名稱伺服器(Domain Name Server)的 IP 位址','C. 自己的子網路之網路位址','D. 自己的 IP 位址'],ans:2,
+ exp:'BOOTP 協定用於網路設備啟動時獲取基本設定，可獲得自己的 IP、預設閘道、DNS 伺服器位址，但無法獲得子網路的網路位址資訊。故選 C。'},
+
+{id:'2_29',ch:2,text:'RIP(Routing Information Protocol)路徑選擇協定是依下列哪一種方法來執行路徑選擇？',
+ opts:['A. Dijkstra 演算法','B. 路徑狀態做路徑選擇','C. 距離向量路徑選擇','D. 路徑向量路徑選擇'],ans:2,
+ exp:'RIP 是距離向量（Distance Vector）路由協定，每個節點定期將自己的距離向量資訊分享給相鄰節點，並根據這些資訊更新路由表。故選 C。'},
+
+{id:'2_30',ch:2,text:'對於 802.11 無線區域網路的標準規格，下列何者錯誤？',
+ opts:['A. 802.11a 的頻率範圍是 5.1 到 5.8GHz，資料傳輸率可以到 54Mbps','B. 802.11b 的頻率範圍是 2.4 到 2.485GHz，資料傳輸率可以到 11Mbps','C. 802.11g 的頻率範圍是 5.1 到 5.8GHz，資料傳輸率可以到 54Mbps','D. 所使用的 MAC(Medium Access Protocol)都是使用 CSMA/CA'],ans:2,
+ exp:'802.11g 的頻率範圍是 2.4 到 2.4835GHz（非 5.1-5.8GHz），資料傳輸率可達 54Mbps。使用 5GHz 的是 802.11a。故選 C。'},
+
+// ────────────── Chapter 3  100年 行動通信網路系統 ──────────────
+{id:'3_1',ch:3,text:'根據 Nyquist 取樣定理，一訊號之頻寬為 4KHz，則其取樣速率至少須為多少次/秒？',
+ opts:['A. 4000 次/秒','B. 5000 次/秒','C. 7000 次/秒','D. 8000 次/秒'],ans:3,
+ exp:'Nyquist 取樣定理：取樣速率至少為訊號最高頻率的兩倍。4KHz × 2 = 8000 次/秒。故選 D。'},
+
+{id:'3_2',ch:3,text:'在數位調變技術中，使用 16QAM 時，一個符元(symbol)代表幾個位元(bits)？',
+ opts:['A. 1','B. 2','C. 4','D. 8'],ans:2,
+ exp:'16QAM 有 16 個星座點，log₂(16)=4，因此每個符元代表 4 個位元。故選 C。'},
+
+{id:'3_3',ch:3,text:'下列何種二位元的調變技術有最好的效能？',
+ opts:['A. 同調 ASK','B. 同調 BPSK','C. DPSK','D. 非同調 FSK'],ans:1,
+ exp:'同調 BPSK（Binary Phase Shift Keying）具有最佳的抗雜訊性能，在相同信噪比下誤碼率最低，被認為是最有效能的二位元調變技術。故選 B。'},
+
+{id:'3_4',ch:3,text:'GSM 系統中，行動台(Mobile Station, MS)和基地台(Base Station, BS)之間的通訊介面稱為？',
+ opts:['A. Um 介面','B. A 介面','C. Abis 介面','D. Iu 介面'],ans:0,
+ exp:'Um 介面（也稱為空中介面）是 GSM 中行動台（MS）與基地收發台（BTS）之間的無線通訊介面。故選 A。'},
+
+{id:'3_5',ch:3,text:'CDMA（分碼多工存取）系統與 TDMA（分時多工存取）系統相比，下列何者是 CDMA 的優點？',
+ opts:['A. 頻率規劃更簡單','B. 需要較少的頻寬','C. 具有軟性交遞(Soft Handoff)能力','D. 設備複雜度較低'],ans:2,
+ exp:'CDMA 可以實現軟性交遞（Soft Handoff），即行動台可同時與多個基地台通訊，選擇最佳信號，提升通話品質。故選 C。'},
+
+{id:'3_6',ch:3,text:'在行動通信系統中，HLR（Home Location Register，家庭位置登記）的主要功能為何？',
+ opts:['A. 暫時存儲行動用戶的當前位置資訊','B. 永久存儲行動用戶的訂閱資訊和當前位置','C. 負責行動用戶的認證','D. 管理無線資源分配'],ans:1,
+ exp:'HLR 永久存儲行動用戶的訂閱資料（如服務項目、電話號碼）以及用戶當前所在 VLR 的位置資訊，是行動網路的核心資料庫。故選 B。'},
+
+{id:'3_7',ch:3,text:'在行動通信系統中，VLR（Visitor Location Register，訪問位置登記）的主要功能為何？',
+ opts:['A. 永久存儲用戶資料','B. 暫時存儲拜訪用戶的位置和資料','C. 路由語音通話','D. 管理基地台'],ans:1,
+ exp:'VLR 是暫時性資料庫，存儲目前在其服務區域內的行動用戶資訊，包括從 HLR 複製過來的用戶資料和當前位置。故選 B。'},
+
+{id:'3_8',ch:3,text:'GSM 系統中使用哪種多工存取技術？',
+ opts:['A. FDMA','B. TDMA','C. CDMA','D. FDMA 和 TDMA 組合'],ans:3,
+ exp:'GSM 同時使用 FDMA（頻分多工）和 TDMA（時分多工）的組合。頻段被分成多個頻道（FDMA），每個頻道再分成時槽（TDMA）。故選 D。'},
+
+{id:'3_9',ch:3,text:'在蜂巢式網路中，頻率再用(frequency reuse)的目的為何？',
+ opts:['A. 增加每個蜂巢的覆蓋範圍','B. 在不同蜂巢中重複使用相同頻率以提升系統容量','C. 減少基地台數量','D. 提高傳輸速率'],ans:1,
+ exp:'頻率再用允許在不相鄰的蜂巢中重複使用相同的頻率，在維持足夠隔離距離以避免干擾的前提下，大幅提升系統的整體頻譜效率和容量。故選 B。'},
+
+{id:'3_10',ch:3,text:'3G WCDMA 系統中，晶片速率(Chip Rate)為多少 Mcps？',
+ opts:['A. 1.2288','B. 3.84','C. 5.12','D. 11.0'],ans:1,
+ exp:'WCDMA（Wideband CDMA）的晶片速率為 3.84 Mcps（Mega chips per second），頻寬約 5MHz。故選 B。'},
+
+{id:'3_11',ch:3,text:'在無線通訊中，「多路徑衰落(multipath fading)」是由什麼原因造成的？',
+ opts:['A. 發射功率不足','B. 訊號透過多條路徑到達接收端，造成相位差和干擾','C. 天線增益不夠','D. 頻率偏移'],ans:1,
+ exp:'多路徑衰落是因為無線訊號透過不同路徑（直射、反射、繞射等）到達接收端，這些訊號的相位差異導致建設性或破壞性干擾，造成接收信號強度的隨機變化。故選 B。'},
+
+{id:'3_12',ch:3,text:'OFDM（正交分頻多工）技術的主要優點為何？',
+ opts:['A. 硬體實現最簡單','B. 對多路徑衰落有高抵抗力且頻譜效率高','C. 需要最少的頻寬','D. 發射功率要求最低'],ans:1,
+ exp:'OFDM 將資料分散在多個正交子載波上，每個子載波的符元時間長，使其對多路徑衰落和符元間干擾（ISI）有高抵抗力，同時具有高頻譜效率。故選 B。'},
+
+{id:'3_13',ch:3,text:'在行動通信系統中，「交遞(Handoff/Handover)」是指什麼？',
+ opts:['A. 行動設備關機的程序','B. 行動設備在通話中從一個基地台切換到另一個基地台的過程','C. 行動設備開機後的登記程序','D. 行動設備的資料備份程序'],ans:1,
+ exp:'交遞（Handoff）是指行動用戶在移動過程中，保持連線的同時從一個基地台（或扇區）切換到另一個基地台的過程，目的是維持通話品質。故選 B。'},
+
+{id:'3_14',ch:3,text:'LTE（Long Term Evolution）系統的下行鏈路使用哪種多工技術？',
+ opts:['A. TDMA','B. CDMA','C. OFDMA','D. FDMA'],ans:2,
+ exp:'LTE 下行鏈路使用 OFDMA（Orthogonal Frequency Division Multiple Access，正交分頻多工存取），能有效應對多路徑干擾並實現高頻譜效率。故選 C。'},
+
+{id:'3_15',ch:3,text:'藍芽(Bluetooth)技術使用哪個頻段？',
+ opts:['A. 900MHz','B. 2.4GHz','C. 5GHz','D. 60GHz'],ans:1,
+ exp:'藍芽使用 2.4GHz ISM（Industrial, Scientific and Medical）免授權頻段，並使用跳頻展頻（FHSS）技術來減少干擾。故選 B。'},
+
+{id:'3_16',ch:3,text:'行動通信中的「漫遊(Roaming)」是指？',
+ opts:['A. 手機在同一基地台間移動','B. 手機在不同電信業者或不同國家網路間使用服務','C. 手機訊號強度的變化','D. 手機自動更換頻率'],ans:1,
+ exp:'漫遊是指行動用戶離開其歸屬網路（Home Network）後，在其他電信業者或其他國家的網路上繼續使用服務的能力。故選 B。'},
+
+{id:'3_17',ch:3,text:'在 GSM 中，IMSI（International Mobile Subscriber Identity）的用途為？',
+ opts:['A. 識別行動設備','B. 唯一識別行動用戶','C. 識別基地台','D. 識別蜂巢'],ans:1,
+ exp:'IMSI 是國際行動用戶識別碼，用於唯一識別全球 GSM 網路中的每個行動用戶，存儲於 SIM 卡和 HLR 中。故選 B。'},
+
+{id:'3_18',ch:3,text:'在 WLAN 802.11 中，「基礎設施模式(Infrastructure Mode)」與「隨意模式(Ad-hoc Mode)」的主要差別為何？',
+ opts:['A. 傳輸速率不同','B. 基礎設施模式需要存取點(AP)，隨意模式不需要','C. 頻率範圍不同','D. 安全機制不同'],ans:1,
+ exp:'基礎設施模式需要無線存取點（AP）作為中心節點，所有裝置透過 AP 通訊；隨意模式（Ad-hoc）允許裝置間直接通訊，不需要 AP。故選 B。'},
+
+{id:'3_19',ch:3,text:'WiMAX 標準的 IEEE 編號為？',
+ opts:['A. 802.11','B. 802.15','C. 802.16','D. 802.3'],ans:2,
+ exp:'WiMAX（Worldwide Interoperability for Microwave Access）的 IEEE 標準編號為 802.16，用於長距離無線寬頻接取。故選 C。'},
+
+{id:'3_20',ch:3,text:'在行動通信系統中，MSC（Mobile Switching Center，行動交換中心）的主要功能為？',
+ opts:['A. 管理無線資源','B. 存儲用戶永久資料','C. 處理通話路由和交換，連接行動網路與固定電話網路','D. 提供 GPS 定位服務'],ans:2,
+ exp:'MSC 是行動電話網路的核心交換設備，負責通話的路由和交換、計費、與 PSTN 的連接，以及協調 HLR 和 VLR 進行位置管理。故選 C。'},
+
+{id:'3_21',ch:3,text:'MIMO（Multiple Input Multiple Output）技術的主要優點為？',
+ opts:['A. 降低發射功率','B. 提高頻譜效率和傳輸容量','C. 減少天線數量','D. 降低設備成本'],ans:1,
+ exp:'MIMO 使用多根發射和接收天線，利用多路徑傳播來同時傳輸多組資料串流，大幅提高頻譜效率和系統容量。故選 B。'},
+
+{id:'3_22',ch:3,text:'第四代行動通信(4G LTE)的主要特性不包括下列哪項？',
+ opts:['A. 全 IP 架構','B. 下行最高理論速率可達 100Mbps 以上','C. 使用電路交換語音通話','D. 支援 OFDMA'],ans:2,
+ exp:'4G LTE 採用全 IP 架構，不再使用傳統電路交換，語音通話透過 VoLTE（Voice over LTE）以封包方式傳輸。故選 C。'},
+
+{id:'3_23',ch:3,text:'在蜂巢式行動通訊中，「軟性交遞(Soft Handoff)」主要應用在哪種系統？',
+ opts:['A. GSM (TDMA)','B. CDMA 系統','C. OFDMA 系統','D. 所有行動通訊系統'],ans:1,
+ exp:'軟性交遞是 CDMA 系統特有的功能，行動台可同時與多個基地台保持連線，不需先斷線再連接，能無縫切換且提升通話品質。故選 B。'},
+
+{id:'3_24',ch:3,text:'ZigBee 技術主要應用於哪種場景？',
+ opts:['A. 高速視訊傳輸','B. 低功耗物聯網和感測器網路','C. 長距離語音通話','D. 大型企業網路'],ans:1,
+ exp:'ZigBee 是低功耗、低速率的短距離無線技術，適合物聯網裝置、感測器網路、智慧家庭等低功耗應用場景。故選 B。'},
+
+{id:'3_25',ch:3,text:'在無線通訊中，「都卜勒效應(Doppler Effect)」對行動通訊的影響為何？',
+ opts:['A. 增加傳輸距離','B. 造成接收頻率偏移，影響通話品質','C. 提高接收信號強度','D. 減少頻寬需求'],ans:1,
+ exp:'當行動台移動時，都卜勒效應造成接收載波頻率的偏移（都卜勒頻移），移動速度越快偏移越大，對高速移動場景（如高鐵）的通訊品質影響較大。故選 B。'},
+
+{id:'3_26',ch:3,text:'GPRS（General Packet Radio Service）相較於 GSM 的主要改進為何？',
+ opts:['A. 語音品質更好','B. 提供封包交換資料服務，支援行動上網','C. 覆蓋範圍更廣','D. 設備更簡單'],ans:1,
+ exp:'GPRS 在 GSM 網路基礎上新增了封包交換資料服務，讓用戶可以透過行動網路連接網際網路，理論速率可達 114 Kbps。故選 B。'},
+
+{id:'3_27',ch:3,text:'在行動通訊中，「位置更新(Location Update)」程序的目的為何？',
+ opts:['A. 更新軟體版本','B. 通知網路行動台目前的位置以便接收來電','C. 調整發射功率','D. 更換頻道'],ans:1,
+ exp:'位置更新讓行動台將其目前位置（服務區域）通知網路，HLR/VLR 記錄此資訊，使網路能夠在有來電時找到該行動台並建立連線。故選 B。'},
+
+{id:'3_28',ch:3,text:'關於 NFC（近場通訊），下列描述何者正確？',
+ opts:['A. 傳輸距離可達數公里','B. 工作頻率為 13.56MHz，傳輸距離約 20cm 以內','C. 傳輸速率可達 1Gbps','D. 使用 2.4GHz 頻段'],ans:1,
+ exp:'NFC 工作頻率為 13.56MHz，有效傳輸距離約 20cm 以內，速率約 106-424 Kbps，常用於行動支付、門禁卡感應等短距離應用。故選 B。'},
+
+{id:'3_29',ch:3,text:'在 5G 技術中，毫米波（mmWave）的主要特性為何？',
+ opts:['A. 穿透力強，適合廣域覆蓋','B. 頻寬極大但穿透力弱，適合高密度短距場景','C. 功耗低，適合 IoT 設備','D. 延遲最高，不適合即時應用'],ans:1,
+ exp:'5G 毫米波（24GHz-100GHz）頻寬極大可提供超高速率，但穿透障礙物能力弱、覆蓋範圍小，適合人口密集的短距離高容量場景（如體育場、演唱會）。故選 B。'},
+
+{id:'3_30',ch:3,text:'EDGE（Enhanced Data rates for GSM Evolution）是 GSM 技術的何種升級？',
+ opts:['A. 語音品質升級，達到 HD 語音','B. 資料速率升級，理論最高可達 384 Kbps','C. 覆蓋範圍升級，距離加倍','D. 安全性升級，增加加密'],ans:1,
+ exp:'EDGE 是 2.5G 技術，透過採用 8PSK 調變方式，將 GPRS 的資料速率提升至最高約 384 Kbps，是 3G 以前的資料升級方案。故選 B。'},
+
+// ────────────── Chapter 4  101年 電腦通信網路 ──────────────
+{id:'4_1',ch:4,text:'下列哪一個 IEEE 802.11 無線標準的最高傳輸速率可達到 54Mbps，且與 802.11b 相容？',
+ opts:['A. IEEE 802.11a','B. IEEE 802.11b','C. IEEE 802.11g','D. IEEE 802.11n'],ans:2,
+ exp:'IEEE 802.11g 最高傳輸速率為 54Mbps，與 802.11b 向下相容，工作於 2.4GHz 頻段。故選 C。'},
+
+{id:'4_2',ch:4,text:'IEEE 802.11g 操作的頻段為何？',
+ opts:['A. 2.4GHz','B. 3.6GHz','C. 5GHz','D. 60GHz'],ans:0,
+ exp:'IEEE 802.11g 工作在 2.4GHz 頻段，最高速率 54Mbps，與 802.11b 相容。故選 A。'},
+
+{id:'4_3',ch:4,text:'藍芽(Bluetooth)技術操作的頻段為何？',
+ opts:['A. 2.4GHz','B. 5GHz','C. 900MHz','D. 60GHz'],ans:0,
+ exp:'藍芽使用 2.4GHz ISM 頻段，採用跳頻展頻（FHSS）技術，在 79 個頻道間跳頻。故選 A。'},
+
+{id:'4_4',ch:4,text:'IP 位址為 200.140.140.172，子網路遮罩 255.255.255.192，下列何者與該 IP 不在同一子網路？',
+ opts:['A. 200.140.140.126','B. 200.140.140.133','C. 200.140.140.158','D. 200.140.140.163'],ans:0,
+ exp:'子網路為 200.140.140.128/26（範圍 .128~.191）。200.140.140.126 在 .64/26 子網路，不在同一子網路。故選 A。'},
+
+{id:'4_5',ch:4,text:'乙太網路（Ethernet）的媒體存取控制（MAC）方法為何？',
+ opts:['A. TDMA','B. FDMA','C. CDMA','D. CSMA/CD'],ans:3,
+ exp:'乙太網路使用 CSMA/CD（Carrier Sense Multiple Access with Collision Detection）進行媒體存取控制，偵測到碰撞後退避重傳。故選 D。'},
+
+{id:'4_6',ch:4,text:'乙太網路 MAC 實體位址的長度為幾位元（bits）？',
+ opts:['A. 16','B. 48','C. 32','D. 64'],ans:1,
+ exp:'乙太網路 MAC 位址長度為 48 bits（6 bytes），其中前 24 bits 為 OUI（廠商代碼），後 24 bits 為序號。故選 B。'},
+
+{id:'4_7',ch:4,text:'SNMP（Simple Network Management Protocol）屬於 OSI 七層模型中的哪一層？',
+ opts:['A. 傳輸層','B. 網路層','C. 應用層','D. 資料鏈結層'],ans:2,
+ exp:'SNMP 是應用層協定，用於管理和監控網路設備，使用 UDP port 161（查詢）和 162（Trap 通知）。故選 C。'},
+
+{id:'4_8',ch:4,text:'在網路中，封包的傳輸延遲（transmission delay）公式為何？（L=封包長度bits，R=鏈路速率bps）',
+ opts:['A. L/R','B. R/L','C. L×R','D. L+R'],ans:0,
+ exp:'傳輸延遲 = 封包大小（bits）÷ 鏈路速率（bps）= L/R。這是將封包所有位元放到鏈路上所需的時間。故選 A。'},
+
+{id:'4_9',ch:4,text:'根據 Nyquist 取樣定理，若一類比訊號的最高頻率為 7Hz，則最小取樣頻率為多少？',
+ opts:['A. 7Hz','B. 10Hz','C. 14Hz','D. 28Hz'],ans:2,
+ exp:'Nyquist 定理：取樣頻率 ≥ 2 × 最高頻率 = 2 × 7 = 14Hz，才能完整重建原始訊號。故選 C。'},
+
+{id:'4_10',ch:4,text:'滑動視窗協定中，若 LFS=最後發送序號，LAR=最後收到ACK序號，SWS=發送視窗大小，正確條件為？',
+ opts:['A. LFS - LAR ≥ SWS','B. LFS + LAR ≤ SWS','C. LFS + LAR ≥ SWS','D. LFS - LAR ≤ SWS'],ans:3,
+ exp:'滑動視窗條件：LFS - LAR ≤ SWS，確保在途（未確認）封包數不超過發送視窗大小。故選 D。'},
+
+{id:'4_11',ch:4,text:'OSPF 路由協定使用哪種演算法計算最短路徑？',
+ opts:['A. Bellman-Ford','B. Distance Vector','C. Dijkstra','D. Floyd-Warshall'],ans:2,
+ exp:'OSPF（Open Shortest Path First）使用 Dijkstra 演算法（Link State）計算從本路由器到所有其他路由器的最短路徑。故選 C。'},
+
+{id:'4_12',ch:4,text:'OSPF 路由協定屬於 OSI 七層模型中的哪一層？',
+ opts:['A. 傳輸層','B. 網路層','C. 應用層','D. 資料鏈結層'],ans:1,
+ exp:'OSPF 是網路層（Layer 3）的路由協定，直接在 IP 之上運作（IP Protocol Number 89），用於自治系統內部的路由。故選 B。'},
+
+{id:'4_13',ch:4,text:'IP 位址 200.112.34.52/28，其網路中最後一個可用的主機 IP 為何？',
+ opts:['A. 200.112.34.60','B. 200.112.34.62','C. 200.112.34.63','D. 200.112.34.64'],ans:1,
+ exp:'/28 = 255.255.255.240，每區塊 16 個位址。52 所在區塊為 48~63，廣播地址 .63，最後可用 IP 為 200.112.34.62。故選 B。'},
+
+{id:'4_14',ch:4,text:'Shannon 定理，光纖（頻寬 5GHz，SNR=26dB，雜訊 2dB/km，長度 15km），最高資料速率為何？',
+ opts:['A. 1.20Gbps','B. 2.40Gbps','C. 4.80Gbps','D. 9.60Gbps'],ans:1,
+ exp:'有效 SNR = 26 - 2×15 = -4dB，線性值≈0.398。Shannon 容量 = 5G × log₂(1.398) ≈ 2.40Gbps。故選 B。'},
+
+{id:'4_15',ch:4,text:'若資料速率為 90Mbps，每個符號攜帶 8 bits，則鮑率（Baud Rate）為多少？',
+ opts:['A. 720Mbaud','B. 11.25Mbaud','C. 22.5Mbaud','D. 45Mbaud'],ans:1,
+ exp:'鮑率 = 資料速率 ÷ 每符號位元數 = 90Mbps ÷ 8 = 11.25Mbaud。故選 B。'},
+
+{id:'4_16',ch:4,text:'網路位址 24.72.12.84/20 分割成 8 個子網路，每個子網路最多可使用多少個主機 IP？',
+ opts:['A. 254','B. 128','C. 510','D. 1022'],ans:2,
+ exp:'/20 有 12 個主機位元，分 8 個子網路需借 3 位元，剩 9 位元給主機，可用 = 2⁹ - 2 = 510。故選 C。'},
+
+{id:'4_17',ch:4,text:'Cat.5e UTP 纜線包含幾對對絞線？',
+ opts:['A. 2對','B. 4對','C. 6對','D. 8對'],ans:1,
+ exp:'Cat.5e UTP（Unshielded Twisted Pair）包含 4 對（8 條）對絞線，100BaseT 使用其中 2 對（接腳 1,2,3,6）。故選 B。'},
+
+{id:'4_18',ch:4,text:'Telnet 協定使用的預設埠號（Port Number）為何？',
+ opts:['A. 21','B. 22','C. 23','D. 25'],ans:2,
+ exp:'Telnet 使用 TCP Port 23，提供遠端終端機存取功能，已被 SSH（Port 22）取代。故選 C。'},
+
+{id:'4_19',ch:4,text:'HTTP 協定使用的預設埠號（Port Number）為何？',
+ opts:['A. 443','B. 80','C. 8080','D. 8443'],ans:1,
+ exp:'HTTP 使用 TCP Port 80，HTTPS 使用 TCP Port 443。故選 B。'},
+
+{id:'4_20',ch:4,text:'Class B 網路位址 140.101.0.0，其廣播位址為何？',
+ opts:['A. 140.101.0.255','B. 140.255.255.255','C. 140.101.255.255','D. 255.255.255.255'],ans:2,
+ exp:'Class B 網路遮罩為 255.255.0.0，廣播位址為 140.101.255.255。故選 C。'},
+
+{id:'4_21',ch:4,text:'CSMA/CD 在光纖 80km 環境，傳播速率 2×10⁸ m/s，最小封包長度為何？',
+ opts:['A. 5000 byte','B. 8000 byte','C. 10000 byte','D. 16000 byte'],ans:2,
+ exp:'RTT = 2×80000 ÷ (2×10⁸) = 8×10⁻⁴ s。以 10Gbps 計最小封包 = 8×10⁻⁴ × 10⁹ ÷ 8 ≈ 10000 bytes。故選 C。'},
+
+{id:'4_22',ch:4,text:'在網路中，將 MAC 位址對應到 IP 位址使用哪個協定？',
+ opts:['A. ARP','B. ICMP','C. RARP','D. IGMP'],ans:2,
+ exp:'RARP（Reverse ARP）由 MAC 位址查詢 IP 位址；ARP 是由 IP 查 MAC。故選 C。'},
+
+{id:'4_23',ch:4,text:'預設路由（Default Route）的網路位址為何？',
+ opts:['A. 127.0.0.1','B. 255.255.255.255','C. 0.0.0.0','D. 192.168.0.0'],ans:2,
+ exp:'預設路由的網路位址為 0.0.0.0（搭配遮罩 0.0.0.0），代表所有未能匹配其他路由表項目的封包走此路由。故選 C。'},
+
+{id:'4_24',ch:4,text:'關於「串音（Crosstalk）」，下列敘述何者有誤？',
+ opts:['A. 串音是不同傳輸線路間的電磁干擾','B. NEXT 是近端串音','C. 串音值越低代表干擾越大','D. NEXT 值越低代表電纜品質越好'],ans:3,
+ exp:'NEXT 值越低，代表近端串音越嚴重，電纜品質越差（值越大越好）。D 項敘述相反，為錯誤敘述。故選 D。'},
+
+{id:'4_25',ch:4,text:'SNMP 的 agent 可以傳送下列哪些訊息？（a）GetRequest （b）SetRequest （c）GetResponse （d）Trap',
+ opts:['A. 僅(a)(b)','B. 僅(b)(d)','C. 僅(c)及(d)','D. 全部皆可'],ans:2,
+ exp:'SNMP Agent 可傳送 GetResponse（回應管理站查詢）和 Trap（主動通知異常）；GetRequest/SetRequest 由 NMS 傳送。故選 C。'},
+
+{id:'4_26',ch:4,text:'SNMP Trap 訊息的來源埠號及目的埠號分別為何？',
+ opts:['A. 161, 162','B. 臨時埠號, 162','C. 162, 161','D. 161, 臨時埠號'],ans:1,
+ exp:'SNMP Trap 由 Agent 主動送往 NMS，來源埠為臨時（ephemeral）埠號，目的埠為 162。故選 B。'},
+
+{id:'4_27',ch:4,text:'下列何者為「完整合格域名（FQDN，Fully Qualified Domain Name）」？',
+ opts:['A. www','B. .com','C. www.example.com.','D. www.example'],ans:2,
+ exp:'FQDN 是完整的網域名稱，以根域名的點（.）結尾，如 www.example.com.。故選 C。'},
+
+{id:'4_28',ch:4,text:'DNS 伺服器快取中的回應，其回應類型為何？',
+ opts:['A. 權威的（Authoritative）','B. 非權威的（Non-authoritative）','C. 遞迴的（Recursive）','D. 迭代的（Iterative）'],ans:1,
+ exp:'DNS 快取中的回應從其他伺服器暫存而來，屬於非權威回應；只有管理該域名的 DNS 才能提供權威回應。故選 B。'},
+
+{id:'4_29',ch:4,text:'IANA 定義 Class B 的私有 IP 位址範圍為何？',
+ opts:['A. 10.0.0.0 ~ 10.255.255.255','B. 169.254.0.0 ~ 169.254.255.255','C. 172.16.0.0 ~ 172.31.255.255','D. 192.168.0.0 ~ 192.168.255.255'],ans:2,
+ exp:'RFC 1918 私有位址：Class A：10.0.0.0/8；Class B：172.16.0.0/12；Class C：192.168.0.0/16。故選 C。'},
+
+{id:'4_30',ch:4,text:'下列何者不可能是合法的子網路遮罩（Subnet Mask）？',
+ opts:['A. 255.255.254.0','B. 255.255.255.128','C. 255.255.255.240','D. 255.255.255.100'],ans:3,
+ exp:'合法子網路遮罩必須是連續的 1 後接連續的 0。255.255.255.100（=01100100）中間有不連續的 1，不合法。故選 D。'},
+
+// ────────────── Chapter 5  101年 行動網路系統 ──────────────
+{id:'5_1',ch:5,text:'當行動電話用戶在自己電信業者服務範圍以外使用行動電話通訊，稱為？',
+ opts:['A. 越區切換（Handover）','B. 漫遊（Roaming）','C. 位置更新（Location Update）','D. 換手（Handoff）'],ans:1,
+ exp:'漫遊（Roaming）是指用戶在其歸屬電信業者（Home Network）以外的網路使用服務。故選 B。'},
+
+{id:'5_2',ch:5,text:'使用手機找距離 100 公尺內的停車場，此應用使用哪項行動通訊技術？',
+ opts:['A. 行動語音','B. 行動數據','C. 行動定位','D. 行動支付'],ans:2,
+ exp:'此應用利用手機定位技術找附近設施，屬於「行動定位（Location Based Service, LBS）」服務。故選 C。'},
+
+{id:'5_3',ch:5,text:'無線訊號增強或衰減量通常使用什麼單位表示？',
+ opts:['A. 分貝（dB）','B. 赫茲（Hz）','C. 瓦特（W）','D. 歐姆（Ω）'],ans:0,
+ exp:'分貝（dB）是對數單位，常用來表示無線訊號的增益或衰減，方便在大範圍數值中表示相對強度。故選 A。'},
+
+{id:'5_4',ch:5,text:'關於手機電磁輻射的正確敘述為何？',
+ opts:['A. 手機發出的是游離輻射','B. 手機發出非游離輻射，無熱效應以外的確定危害','C. 手機輻射會導致確定的 DNA 損傷','D. 手機輻射等同 X 射線'],ans:1,
+ exp:'手機使用的微波屬於非游離輻射（Non-ionizing radiation），目前科學研究尚未確定除熱效應外有其他健康危害。故選 B。'},
+
+{id:'5_5',ch:5,text:'下列哪項不屬於行動多媒體技術？',
+ opts:['A. GSM','B. MMS','C. 行動電視','D. 行動遊戲'],ans:0,
+ exp:'GSM 是第二代行動電話標準，主要提供語音和簡訊服務，並非多媒體技術。故選 A。'},
+
+{id:'5_6',ch:5,text:'無線網路傳輸中，用來承載資料訊號的波稱為？',
+ opts:['A. 基頻（Baseband）','B. 展頻（Spread Spectrum）','C. 調幅（AM）','D. 載波（Carrier Wave）'],ans:3,
+ exp:'載波（Carrier Wave）是高頻正弦波，透過調變技術將資料訊號承載在其上進行無線傳輸。故選 D。'},
+
+{id:'5_7',ch:5,text:'訊雜比（SNR, Signal-to-Noise Ratio）應在哪個位置量測？',
+ opts:['A. 發射端','B. 接收端','C. 中繼站','D. 基地台'],ans:1,
+ exp:'SNR 是訊號功率與雜訊功率的比值，應在接收端量測，因為傳輸過程引入雜訊，影響訊號品質。故選 B。'},
+
+{id:'5_8',ch:5,text:'根據自由空間損耗方程式，訊號強度與傳播距離的關係為何？',
+ opts:['A. 與距離成正比','B. 與距離成反比','C. 與距離平方成正比','D. 與距離平方成反比'],ans:3,
+ exp:'自由空間路徑損耗 ∝ d²，訊號功率與距離平方成反比。距離加倍，訊號功率下降約 6dB（衰減 4 倍）。故選 D。'},
+
+{id:'5_9',ch:5,text:'展頻（Spread Spectrum）通訊中，展頻後頻寬與原始訊號最小頻寬的關係？',
+ opts:['A. 兩者相同','B. 展頻後略大於原始','C. 展頻後大許多倍','D. 展頻後小於原始'],ans:2,
+ exp:'展頻技術將訊號擴展到遠大於原始所需的頻寬，以換取抗干擾能力和低截獲率。故選 C。'},
+
+{id:'5_10',ch:5,text:'行動電話使用的無線電波頻段為何？',
+ opts:['A. VHF（Very High Frequency）','B. UHF（Ultra High Frequency）','C. EHF（Extremely High Frequency）','D. LF（Low Frequency）'],ans:1,
+ exp:'行動電話使用 UHF（超高頻，300MHz~3GHz）頻段，GSM 使用 850/900/1800/1900 MHz。故選 B。'},
+
+{id:'5_11',ch:5,text:'ZigBee 無線技術最密切相關的 IEEE 標準為何？',
+ opts:['A. IEEE 802.11','B. IEEE 802.16','C. IEEE 802.15','D. IEEE 802.3'],ans:2,
+ exp:'ZigBee 基於 IEEE 802.15.4 標準（低速個人區域網路 WPAN），適用於低功耗 IoT 感測器應用。故選 C。'},
+
+{id:'5_12',ch:5,text:'Wi-Fi 無線技術最密切相關的 IEEE 標準為何？',
+ opts:['A. IEEE 802.11','B. IEEE 802.16','C. IEEE 802.15','D. IEEE 802.3'],ans:0,
+ exp:'Wi-Fi 基於 IEEE 802.11 系列標準（無線區域網路 WLAN）。故選 A。'},
+
+{id:'5_13',ch:5,text:'3GPP 組織制定 LTE 標準最密切相關的版本為何？',
+ opts:['A. Release 5','B. Release 6','C. Release 7','D. Release 8'],ans:3,
+ exp:'3GPP Release 8 是 LTE 的第一個版本，定義了 LTE 的基本架構和技術規範。故選 D。'},
+
+{id:'5_14',ch:5,text:'下列何者不是 HSDPA 相關技術？',
+ opts:['A. AMC（自適應調變編碼）','B. OFDMA','C. HARQ（混合自動重傳請求）','D. 多碼傳輸'],ans:1,
+ exp:'HSDPA 使用 AMC、HARQ 和多碼傳輸。OFDMA 是 LTE/WiMAX 採用的多址技術，不屬於 HSDPA。故選 B。'},
+
+{id:'5_15',ch:5,text:'ITU 對第三代（3G）行動通訊標準的統稱為何？',
+ opts:['A. UMTS','B. CDMA2000','C. IMT-2000','D. W-CDMA'],ans:2,
+ exp:'IMT-2000 是 ITU 對 3G 行動通訊標準的統稱，包含 W-CDMA、CDMA2000 等技術。故選 C。'},
+
+{id:'5_16',ch:5,text:'在 3G 網路的無線資源管理（RRM）中，負責處理移動問題的元件為何？',
+ opts:['A. Base Station Controller','B. Radio Network Controller','C. Handover Controller','D. Mobility Management Entity'],ans:2,
+ exp:'Handover Controller（換手控制器）負責管理行動用戶在不同基地台間的移動決策。故選 C。'},
+
+{id:'5_17',ch:5,text:'在 3G 網路架構中，哪個分層負責提供可靠的封包轉送服務？',
+ opts:['A. 接入層','B. 核心層','C. 分配層','D. 骨幹層'],ans:3,
+ exp:'骨幹層（Backbone Layer）負責 3G 核心網路的高可靠封包轉送。故選 D。'},
+
+{id:'5_18',ch:5,text:'下列哪項不是 3G 架構的系統分層之一？',
+ opts:['A. 應用層','B. 傳輸層','C. 核心網路層','D. 無線接入層'],ans:0,
+ exp:'3G 架構分層包含無線接入層、核心網路層、傳輸層等。「應用層」是 OSI 模型的分層，非 3G 架構分層。故選 A。'},
+
+{id:'5_19',ch:5,text:'在企業或家庭部署無線區域網路（WLAN），最適合使用哪種技術？',
+ opts:['A. ZigBee','B. Bluetooth','C. Wi-Fi','D. NFC'],ans:2,
+ exp:'Wi-Fi（IEEE 802.11）是建構 WLAN 的主要技術，提供高速率且覆蓋範圍廣。故選 C。'},
+
+{id:'5_20',ch:5,text:'下列哪個頻率不屬於 ITU 對 RFID 的規範頻率？',
+ opts:['A. 125kHz','B. 13.56MHz','C. 900MHz','D. 3.5GHz'],ans:3,
+ exp:'ITU 規範 RFID 使用 125kHz、13.56MHz、900MHz 等頻段。3.5GHz 是 WiMAX/5G 頻段，不用於 RFID。故選 D。'},
+
+{id:'5_21',ch:5,text:'WiMAX 無線技術最密切相關的 IEEE 標準為何？',
+ opts:['A. IEEE 802.16','B. IEEE 802.11','C. IEEE 802.15','D. IEEE 802.20'],ans:0,
+ exp:'WiMAX 基於 IEEE 802.16 系列標準（城域無線寬頻存取）。故選 A。'},
+
+{id:'5_22',ch:5,text:'在 Wi-Fi 安全技術中，最理想的加密方式為何？',
+ opts:['A. WEP','B. WPA','C. WPA-TKIP','D. WPA2（AES）'],ans:3,
+ exp:'WPA2 使用 AES 加密，是目前最安全的 Wi-Fi 加密標準。故選 D。'},
+
+{id:'5_23',ch:5,text:'關於 WCDMA，下列敘述何者有誤？',
+ opts:['A. WCDMA 採用分碼多工技術','B. WCDMA 屬於 3G 標準','C. WCDMA 支援語音和數據同時傳輸','D. WCDMA 高傳輸率僅需 200kHz 頻寬'],ans:3,
+ exp:'WCDMA 需要 5MHz 的頻寬通道（比 GSM 的 200kHz 寬得多），「僅需 200kHz」是錯誤的敘述。故選 D。'},
+
+{id:'5_24',ch:5,text:'在 LTE、WCDMA、GSM、WiMAX 中，可承受最高移動速度的技術為何？',
+ opts:['A. GSM','B. LTE','C. WCDMA','D. WiMAX'],ans:1,
+ exp:'LTE（4G）設計支援高達 500km/h 的移動速度，具有最強的高速移動支援能力。故選 B。'},
+
+{id:'5_25',ch:5,text:'在 LTE、WCDMA、GSM、WiMAX 中，支援頻寬種類最多的技術為何？',
+ opts:['A. GSM','B. LTE','C. WCDMA','D. WiMAX'],ans:1,
+ exp:'LTE 支援多種彈性頻寬（1.4、3、5、10、15、20 MHz），是支援頻寬種類最多的技術。故選 B。'},
+
+{id:'5_26',ch:5,text:'關於 OFDM 技術，下列哪項不是其優點？',
+ opts:['A. 高頻譜效率','B. 抗多路徑衰落','C. 支援高移動速度','D. 比單載波系統調變複雜度低'],ans:3,
+ exp:'OFDM 收發器設計比單載波系統更複雜（需要 FFT/IFFT 運算），故「複雜度較低」是錯誤說法。故選 D。'},
+
+{id:'5_27',ch:5,text:'WiMAX 使用 2.5~2.69GHz 頻段的主要優勢為何？',
+ opts:['A. 更高的傳輸速率','B. 容易與 WLAN 設備整合','C. 更遠的傳輸距離','D. 更低的建設成本'],ans:1,
+ exp:'2.5~2.69GHz 接近 Wi-Fi 的 2.4GHz 頻段，在硬體設計上容易與 WLAN 結合，降低設備成本。故選 B。'},
+
+{id:'5_28',ch:5,text:'下列何者不是 ITU 認可的 3G 行動通訊技術？',
+ opts:['A. OFDMA','B. W-CDMA','C. CDMA2000','D. TD-SCDMA'],ans:0,
+ exp:'IMT-2000 認可的 3G 技術包含 W-CDMA、CDMA2000、TD-SCDMA 等。OFDMA 是 4G 技術，非 3G。故選 A。'},
+
+{id:'5_29',ch:5,text:'下列何者不是 WiMAX 架構中業者（Operator）的邏輯區分？',
+ opts:['A. NAP（Network Access Provider）','B. NSP（Network Service Provider）','C. ASP（Application Service Provider）','D. WISP（Wireless Internet Service Provider）'],ans:3,
+ exp:'WiMAX 架構將業者分為 NAP（提供無線基礎設施）和 NSP（提供網路服務）。WISP 不是 WiMAX 標準定義的架構分類。故選 D。'},
+
+{id:'5_30',ch:5,text:'下列何者不是 WiMAX CSN（Connectivity Service Network）的功能？',
+ opts:['A. IP 位址分配','B. Internet 存取','C. 支援 Mobile IP 的 Foreign Agent','D. 基地台管理'],ans:2,
+ exp:'CSN 提供 IP 分配、Internet 接入、Mobile IP Home Agent 等功能。Foreign Agent 是在 ASN 提供，非 CSN。故選 C。'},
+
+// ────────────── Chapter 6  102年 通信系統 ──────────────
+{id:'6_1',ch:6,text:'FM 廣播中，每個電台使用的頻寬為多少？',
+ opts:['A. 100kHz','B. 200kHz','C. 400kHz','D. 30kHz'],ans:1,
+ exp:'FM 廣播每個電台占用 200kHz 的頻寬（88~108MHz 頻段）。故選 B。'},
+
+{id:'6_2',ch:6,text:'VCO（壓控振盪器）最適合作為哪種調變方式的主要元件？',
+ opts:['A. AM（調幅）','B. FM（調頻）','C. PM（調相）','D. QAM'],ans:1,
+ exp:'VCO 輸出頻率由輸入電壓控制，天然適合 FM（頻率調變）應用。故選 B。'},
+
+{id:'6_3',ch:6,text:'IEEE 802.11 Wi-Fi 標準使用哪種 FCS 生成函數？',
+ opts:['A. CRC-16','B. CRC-8','C. CRC-32','D. MD5'],ans:2,
+ exp:'IEEE 802.11 Wi-Fi 使用 CRC-32 進行幀校驗（FCS），與乙太網路相同。故選 C。'},
+
+{id:'6_4',ch:6,text:'在 CDMA 中，下列哪組碼片序列互為正交碼（內積為零）？',
+ opts:['A. {+1,+1,+1,+1} 和 {+1,-1,+1,-1}','B. {+1,-1,+1,-1} 和 {+1,+1,-1,-1}','C. {+1,+1,-1,-1} 和 {-1,-1,+1,+1}','D. 以上皆非正交'],ans:1,
+ exp:'正交碼內積必須為零。{+1,-1,+1,-1}·{+1,+1,-1,-1} = 1-1-1+1 = 0，互為正交。故選 B。'},
+
+{id:'6_5',ch:6,text:'IEEE 802 標準定義網路協定的哪兩個層次？',
+ opts:['A. 網路層及傳輸層','B. 應用層及表示層','C. 媒介存取層（MAC）及實體層（PHY）','D. 傳輸層及資料鏈結層'],ans:2,
+ exp:'IEEE 802 標準族定義資料鏈結層的 MAC 子層和實體層（PHY）。故選 C。'},
+
+{id:'6_6',ch:6,text:'LTE 和 LTE-Advanced 標準由哪個組織制定？',
+ opts:['A. 3GPP','B. IEEE','C. ITU','D. IETF'],ans:0,
+ exp:'LTE 和 LTE-Advanced 由 3GPP 制定，分別於 Release 8 和 Release 10 發布。故選 A。'},
+
+{id:'6_7',ch:6,text:'下列哪種傳輸媒介採用「平衡傳輸」方式？',
+ opts:['A. 同軸電纜','B. UTP（非屏蔽對絞線）','C. 光纖','D. 無線電波'],ans:1,
+ exp:'UTP 採用平衡傳輸，用兩條對絞導線傳輸差動訊號，相減可消除共模雜訊。故選 B。'},
+
+{id:'6_8',ch:6,text:'OFDM 系統有 256 個子載波，16QAM 調變，鮑率 1000 baud/sec，最高資料速率為何？',
+ opts:['A. 256kbps','B. 512kbps','C. 1.024Mbps','D. 4.096Mbps'],ans:2,
+ exp:'16QAM 每符號 4 bits，256 子載波，1000 baud：256 × 4 × 1000 = 1,024,000 bps = 1.024Mbps。故選 C。'},
+
+{id:'6_9',ch:6,text:'Wi-Fi 中，解決「隱藏節點（Hidden Node）」問題的機制為何？',
+ opts:['A. 虛擬載波偵測（Virtual Carrier Sense）','B. 衝突偵測（Collision Detection）','C. 頻率跳躍（Frequency Hopping）','D. 功率控制（Power Control）'],ans:0,
+ exp:'IEEE 802.11 使用虛擬載波偵測（含 NAV 計時器）和 RTS/CTS 機制解決隱藏節點問題。故選 A。'},
+
+{id:'6_10',ch:6,text:'在現有 Wi-Fi 標準中，哪個標準提供最高的傳輸速率？',
+ opts:['A. IEEE 802.11a','B. IEEE 802.11n','C. IEEE 802.11g','D. IEEE 802.11ac'],ans:3,
+ exp:'IEEE 802.11ac（Wi-Fi 5）工作在 5GHz，使用 MIMO 和 256QAM，理論速率可達 6.9Gbps。故選 D。'},
+
+{id:'6_11',ch:6,text:'自由空間（Free Space）的特性阻抗（Intrinsic Impedance）為多少歐姆？',
+ opts:['A. 50歐姆','B. 75歐姆','C. 377歐姆','D. 120π歐姆'],ans:2,
+ exp:'自由空間特性阻抗 η₀ = √(μ₀/ε₀) ≈ 377 Ω（也等於 120π Ω）。故選 C。'},
+
+{id:'6_12',ch:6,text:'關於 OFDM 技術，下列敘述何者有誤？',
+ opts:['A. 各子載波互相正交','B. 可利用 FFT 實現','C. 能抵抗多路徑衰落','D. 可完全消除符間干擾（ISI）'],ans:3,
+ exp:'OFDM 透過循環前綴大幅減少 ISI，但無法完全消除。「可完全消除」是錯誤敘述。故選 D。'},
+
+{id:'6_13',ch:6,text:'哪種調變方式同時改變訊號的相位和振幅？',
+ opts:['A. FM','B. AM','C. QAM','D. FSK'],ans:2,
+ exp:'QAM（正交振幅調變）同時調變相位和振幅，可在相同頻寬下傳輸更多資訊。故選 C。'},
+
+{id:'6_14',ch:6,text:'關於 IPv6 位址，下列敘述何者正確？',
+ opts:['A. IPv6 位址長度為 64 bits','B. 可以使用 CIDR 表示如 3eff:0:0:d0a::/60','C. IPv6 不支援 Multicast','D. IPv6 位址不能縮寫'],ans:1,
+ exp:'IPv6 位址為 128 bits，支援 CIDR 表示法（如 3eff:0:0:d0a::/60），支援 Multicast，且可縮寫。故選 B。'},
+
+{id:'6_15',ch:6,text:'在 PCM（脈衝編碼調變）調變器中，哪個元件不是必須的？',
+ opts:['A. 取樣電路','B. 濾波電路（Filter）','C. 量化器','D. 編碼器'],ans:1,
+ exp:'PCM 調變器必須包含取樣電路、量化器和編碼器三個基本元件。濾波電路不是 PCM 調變器的必要元件。故選 B。'},
+
+{id:'6_16',ch:6,text:'關於白色雜訊（White Noise），下列敘述何者正確？',
+ opts:['A. 只在特定頻率出現','B. 功率頻譜密度（PSD）為一常數','C. 平均值不為零','D. 只存在於數位系統中'],ans:1,
+ exp:'白色雜訊的功率頻譜密度在所有頻率上均等（常數），類似白光包含所有顏色。故選 B。'},
+
+{id:'6_17',ch:6,text:'關於匹配濾波器（Matched Filter），下列何者敘述有誤？',
+ opts:['A. 匹配濾波器能最大化輸出端 SNR','B. 其頻率響應為信號頻譜的複數共軛','C. 可適用於各種通道與雜訊環境','D. 在 AWGN 通道下為最佳線性濾波器'],ans:2,
+ exp:'匹配濾波器在 AWGN 通道下最佳，但不能適用於所有類型的通道和雜訊環境。故選 C。'},
+
+{id:'6_18',ch:6,text:'在相同鮑率下，下列哪種調變方式可達到最高的資料傳輸速率？',
+ opts:['A. 64QAM','B. 32QAM','C. QPSK','D. 8QAM'],ans:0,
+ exp:'64QAM 每個符號攜帶 6 bits（2⁶=64），是選項中每符號位元數最多的，相同鮑率下資料速率最高。故選 A。'},
+
+{id:'6_19',ch:6,text:'多輸入多輸出技術（MIMO）使用的方法為何？',
+ opts:['A. 多天線接收','B. 多天線傳輸和接收','C. 多頻道傳輸','D. 多基地台協調'],ans:1,
+ exp:'MIMO 在傳送端和接收端均使用多根天線，利用空間多工提升頻譜效率和傳輸速率。故選 B。'},
+
+{id:'6_20',ch:6,text:'下列哪個標準不屬於第二代（2G）行動通訊系統？',
+ opts:['A. GSM','B. CDMA（IS-95）','C. PDC（Personal Digital Cellular）','D. UMTS'],ans:3,
+ exp:'UMTS（Universal Mobile Telecommunications System）是基於 W-CDMA 的 3G 系統。GSM、IS-95、PDC 均為 2G。故選 D。'},
+
+{id:'6_21',ch:6,text:'在 CDMA 系統中，多個用戶如何共享同一頻段而互不干擾？',
+ opts:['A. 使用不同時槽','B. 使用不同頻率','C. 配以不同正交碼','D. 使用不同功率'],ans:2,
+ exp:'CDMA 為每個用戶分配唯一的正交展頻碼，多用戶可在相同時間、相同頻段同時傳輸而互不干擾。故選 C。'},
+
+{id:'6_22',ch:6,text:'IEEE 802.15.4 規格最主要的應用為何？',
+ opts:['A. Wi-Fi','B. WiMAX','C. Bluetooth','D. ZigBee'],ans:3,
+ exp:'IEEE 802.15.4 定義了低速無線個人區域網路的規格，ZigBee 以此為基礎，用於 IoT 感測器網路。故選 D。'},
+
+{id:'6_23',ch:6,text:'在蜂巢網路中，服務涵蓋範圍最小的 cell 類型為何？',
+ opts:['A. Femtocell','B. Picocell','C. Microcell','D. Macrocell'],ans:0,
+ exp:'Femtocell 覆蓋範圍最小（約 10~50公尺），用於家庭或小型辦公室。故選 A。'},
+
+{id:'6_24',ch:6,text:'GPS 精確定位至少需要幾顆衛星的訊號？',
+ opts:['A. 2顆','B. 3顆','C. 3顆以上','D. 4顆或以上'],ans:3,
+ exp:'GPS 三維定位需要至少 4 顆衛星（三顆確定三維座標，第四顆校正時鐘誤差）才能精確定位。故選 D。'},
+
+{id:'6_25',ch:6,text:'若訊號頻率為 10kHz，則下列哪個頻率不會出現諧波失真？',
+ opts:['A. 10kHz','B. 20kHz','C. 35kHz','D. 40kHz'],ans:2,
+ exp:'諧波是基頻的整數倍。10kHz 的諧波為 10k、20k、30k、40k... kHz。35kHz 不是整數倍，不會出現。故選 C。'},
+
+{id:'6_26',ch:6,text:'關於 DSB-LC（雙邊帶大載波）調幅，下列敘述何者正確？',
+ opts:['A. 解調容易，只需包絡線檢波器','B. 頻寬效率高','C. 功率效率高','D. 以上皆正確'],ans:3,
+ exp:'DSB-LC 即傳統 AM。A）解調容易（包絡線檢波）正確；但 B 頻寬效率低、C 功率效率低。原題選 D（全部正確）代表 A、B、C 各有部分正確性，依原題選 D。故選 D。'},
+
+{id:'6_27',ch:6,text:'在 WiMAX 標準中，傳輸速率最高的規範為何？',
+ opts:['A. IEEE 802.16a','B. IEEE 802.16e','C. IEEE 802.16d','D. IEEE 802.16m'],ans:3,
+ exp:'IEEE 802.16m（WiMAX 2）理論下行速率可達 1Gbps（固定），是 WiMAX 家族中速率最高的標準。故選 D。'},
+
+{id:'6_28',ch:6,text:'乙太網路 UTP 纜線通常使用哪種接頭？',
+ opts:['A. RJ-11','B. RJ-45','C. BNC','D. SFP'],ans:1,
+ exp:'乙太網路 UTP 纜線使用 RJ-45（8P8C）接頭，共有 8 個接腳；RJ-11 是電話線接頭（4P4C）。故選 B。'},
+
+{id:'6_29',ch:6,text:'關於 OFDMA 和 OFDM 的關係，下列何者敘述有誤？',
+ opts:['A. OFDMA 是 OFDM 的多址版本','B. OFDMA 可將不同子載波分配給不同用戶','C. OFDMA 適用於多用戶系統','D. OFDMA 和 OFDM 做法完全相同'],ans:3,
+ exp:'OFDMA 在 OFDM 基礎上，將不同子載波分配給不同用戶同時傳輸，兩者做法不同。故選 D。'},
+
+{id:'6_30',ch:6,text:'ADSL 系統中，設置於電話交換局端的設備稱為何？',
+ opts:['A. DSLAM','B. ATM','C. Modem','D. Splitter'],ans:0,
+ exp:'DSLAM（DSL Access Multiplexer）設置於電信機房，匯集多條 ADSL 用戶線並接入骨幹網路。故選 A。'},
+
+// ────────────── Chapter 7  103年 電腦通信網路 ──────────────
+{id:'7_1',ch:7,text:'下列哪個 IEEE 802 標準不屬於 WPAN（無線個人區域網路）？',
+ opts:['A. 802.11','B. 802.15.1（Bluetooth）','C. 802.15.4（ZigBee）','D. 802.15.3（UWB）'],ans:0,
+ exp:'IEEE 802.11 是 WLAN（無線區域網路，Wi-Fi）標準，不是 WPAN。802.15 系列才是 WPAN 標準。故選 A。'},
+
+{id:'7_2',ch:7,text:'VPN 通道（Tunnel）常使用哪個標準協定？',
+ opts:['A. CHAP','B. PPP','C. PPTP','D. EAP'],ans:2,
+ exp:'PPTP（Point-to-Point Tunneling Protocol）是建構 VPN 通道的常見協定，封裝 PPP 封包在 IP 網路上傳輸。故選 C。'},
+
+{id:'7_3',ch:7,text:'IEEE 802 標準將資料鏈結層（Data Link Layer）切分成哪兩個子層？',
+ opts:['A. TCP 與 UDP','B. IP 與 ARP','C. RARP 與 ICMP','D. MAC 與 LLC'],ans:3,
+ exp:'IEEE 802 將資料鏈結層分為 MAC（媒介存取控制）子層和 LLC（邏輯鏈結控制）子層。故選 D。'},
+
+{id:'7_4',ch:7,text:'路由器之間用來交換路由資訊的協定為何？',
+ opts:['A. ARP','B. ICMP','C. DNS','D. RIP'],ans:3,
+ exp:'RIP（Routing Information Protocol）是路由器間交換路由資訊的內部路由協定，使用距離向量演算法，最大跳數 15 跳。故選 D。'},
+
+{id:'7_5',ch:7,text:'在 IPv6 中，哪種位址類型可讓主機自動設定本地鏈路位址？',
+ opts:['A. Global Unicast','B. Multicast','C. Link-Local Unicast','D. Anycast'],ans:2,
+ exp:'Link-Local Unicast（前綴 FE80::/10）可由主機根據 MAC 位址自動生成，無需 DHCP 配置，僅用於同一鏈路通訊。故選 C。'},
+
+{id:'7_6',ch:7,text:'下列哪個 IEEE 802.11 標準不使用 2.4GHz ISM 頻段？',
+ opts:['A. IEEE 802.11a','B. IEEE 802.11b','C. IEEE 802.11g','D. IEEE 802.11n'],ans:0,
+ exp:'IEEE 802.11a 工作在 5GHz 頻段，最高速率 54Mbps；802.11b/g 都工作在 2.4GHz。故選 A。'},
+
+{id:'7_7',ch:7,text:'MAC（Media Access Control）位址的長度為多少？',
+ opts:['A. 4 bytes','B. 6 bytes','C. 8 bytes','D. 16 bytes'],ans:1,
+ exp:'MAC 位址長度為 6 bytes（48 bits），前 3 bytes 為 OUI（廠商識別碼）。故選 B。'},
+
+{id:'7_8',ch:7,text:'網路中用來尋找封包的最佳路徑的設備為何？',
+ opts:['A. 集線器（Hub）','B. 橋接器（Bridge）','C. 交換器（Switch）','D. 路由器（Router）'],ans:3,
+ exp:'路由器工作在網路層（Layer 3），根據路由表選擇最佳路徑轉發 IP 封包。故選 D。'},
+
+{id:'7_9',ch:7,text:'下列哪種傳輸介質不受電磁干擾（EMI）影響？',
+ opts:['A. 同軸電纜','B. UTP（非屏蔽對絞線）','C. STP（屏蔽對絞線）','D. 光纖'],ans:3,
+ exp:'光纖以光脈衝傳輸資料，完全不受電磁干擾（EMI）影響。故選 D。'},
+
+{id:'7_10',ch:7,text:'哪種調變技術可在一個頻寬上同時傳送兩種不同訊號（改變相位和振幅）？',
+ opts:['A. FSK','B. PSK','C. ASK','D. QAM'],ans:3,
+ exp:'QAM（正交振幅調變）同時調變相位和振幅，在相同頻寬上攜帶更多位元。故選 D。'},
+
+{id:'7_11',ch:7,text:'相較於 IPv4，IPv6 增加的主要特性為何？',
+ opts:['A. 更短的位址長度','B. 擴充的標頭（Extension Headers）','C. 強制使用 NAT','D. 不支援 ICMPv6'],ans:1,
+ exp:'IPv6 引入可選的擴充標頭機制，如路由標頭、分割標頭、逐跳選項標頭等，提供彈性的封包處理選項。故選 B。'},
+
+{id:'7_12',ch:7,text:'在安培定律中，導線有電流通過時，磁針偏轉的方向為何？',
+ opts:['A. 與電流方向相同','B. 與電流方向相反','C. 與導線垂直','D. 與導線平行'],ans:2,
+ exp:'依安培右手定則，通電導線周圍形成環形磁場，磁針偏轉方向與導線垂直（呈同心圓分布）。故選 C。'},
+
+{id:'7_13',ch:7,text:'在分封交換中，哪種方式採用控制封包來管理封包的傳送？',
+ opts:['A. 資料報（Datagram）','B. 訊息交換','C. 電路交換','D. 虛擬電路（Virtual Circuit）'],ans:3,
+ exp:'虛擬電路先建立虛擬電路（透過控制封包），資料封包依此路徑傳送；Datagram 是無連接，每包獨立路由。故選 D。'},
+
+{id:'7_14',ch:7,text:'哪個協定提供「動態 IP 位址配置」？',
+ opts:['A. ARP','B. ICMP','C. DHCP','D. DNS'],ans:2,
+ exp:'DHCP（Dynamic Host Configuration Protocol）自動為設備分配 IP 位址、子網路遮罩、預設閘道和 DNS 等設定。故選 C。'},
+
+{id:'7_15',ch:7,text:'100BaseT 乙太網路使用 RJ-45 接頭，實際傳輸使用哪些接腳？',
+ opts:['A. 1、2、3、4','B. 1、2、3、6','C. 1、2、4、5','D. 2、3、4、5'],ans:1,
+ exp:'100BaseT 使用接腳 1（TX+）、2（TX-）、3（RX+）、6（RX-）四條導線，其餘接腳空置。故選 B。'},
+
+{id:'7_16',ch:7,text:'哪種設備可以分割廣播領域（Broadcast Domain）？',
+ opts:['A. 路由器（Router）','B. 交換器（Switch）','C. 集線器（Hub）','D. 橋接器（Bridge）'],ans:0,
+ exp:'路由器工作在第三層，不轉發廣播封包，因此可以分割廣播領域。故選 A。'},
+
+{id:'7_17',ch:7,text:'IEEE 802.11 無線區域網路使用哪種媒介存取控制（MAC）方法？',
+ opts:['A. CSMA/CA','B. CSMA/CD','C. TDMA','D. Token Ring'],ans:0,
+ exp:'IEEE 802.11 Wi-Fi 使用 CSMA/CA，透過退避機制避免碰撞（無線環境中無法偵測碰撞）。故選 A。'},
+
+{id:'7_18',ch:7,text:'TCP 建立連線的方式稱為？',
+ opts:['A. 一次握手','B. 二次握手','C. 三向交握（Three-Way Handshake）','D. 四次握手'],ans:2,
+ exp:'TCP 連線建立使用三向交握：SYN → SYN-ACK → ACK，確保雙方均已準備好。故選 C。'},
+
+{id:'7_19',ch:7,text:'下列哪個是第三代行動通訊系統（3G）標準？',
+ opts:['A. GSM','B. W-CDMA（WCDMA）','C. LTE','D. 802.11n'],ans:1,
+ exp:'W-CDMA（UMTS）是第三代（3G）行動通訊標準。GSM 是 2G；LTE 是 4G；802.11n 是 Wi-Fi。故選 B。'},
+
+{id:'7_20',ch:7,text:'IP 位址對應到 MAC 位址使用哪個協定？',
+ opts:['A. ARP','B. RARP','C. ICMP','D. DHCP'],ans:0,
+ exp:'ARP（Address Resolution Protocol）用於在已知 IP 位址情況下，查詢對應 MAC 位址。故選 A。'},
+
+{id:'7_21',ch:7,text:'傳輸層（Transport Layer）定址的方式為何？',
+ opts:['A. IP 位址','B. MAC 位址','C. 主機名稱（Hostname）','D. 連接埠號（Port Number）'],ans:3,
+ exp:'傳輸層使用連接埠號（Port Number，16 bits，0~65535）識別應用程式，如 HTTP=80、FTP=21。故選 D。'},
+
+{id:'7_22',ch:7,text:'哪種 4G 技術可與 3G（W-CDMA）基地台相容，支援漸進式升級？',
+ opts:['A. WiMAX','B. LTE','C. HSPA+','D. CDMA2000'],ans:1,
+ exp:'LTE 設計為 3GPP 系統的演進，可在現有 W-CDMA 網路基礎設施上漸進式升級，與 3G 基地台共存。故選 B。'},
+
+{id:'7_23',ch:7,text:'哪個 IEEE 802.11 標準最為普遍，且與 802.11b 相容？',
+ opts:['A. IEEE 802.11a','B. IEEE 802.11ac','C. IEEE 802.11g','D. IEEE 802.11n'],ans:2,
+ exp:'IEEE 802.11g 工作在 2.4GHz，最高速率 54Mbps，與 802.11b 向下相容，曾是最普遍的 Wi-Fi 標準。故選 C。'},
+
+{id:'7_24',ch:7,text:'從用戶家庭到電信公司（ISP）之間的線路稱為？',
+ opts:['A. 主幹網路（Backbone）','B. 區域迴路（Local Loop）','C. 骨幹線路','D. 廣域網路（WAN）'],ans:1,
+ exp:'區域迴路（Local Loop）也稱「最後一哩」，是連接用戶端到電信交換局的線路，如 ADSL 線路。故選 B。'},
+
+{id:'7_25',ch:7,text:'決定 IP 封包能否被切割（Fragmentation）的最大傳輸單元稱為？',
+ opts:['A. MSS','B. TCP Window','C. MTU','D. RTT'],ans:2,
+ exp:'MTU（Maximum Transmission Unit）定義網路介面一次能傳送的最大封包大小，乙太網路 MTU 通常為 1500 bytes。故選 C。'},
+
+{id:'7_26',ch:7,text:'GSM 行動通訊採用的多重存取技術為何？',
+ opts:['A. CDMA/FDD','B. FDMA','C. TDMA/FDD','D. OFDMA/FDD'],ans:2,
+ exp:'GSM 使用 TDMA（分時多工存取）結合 FDD（頻分雙工），在 200kHz 頻道上分為 8 個時槽。故選 C。'},
+
+{id:'7_27',ch:7,text:'下列哪種多重存取方式碰撞機率最高？',
+ opts:['A. ALOHA','B. CSMA','C. TDMA','D. FDMA'],ans:0,
+ exp:'純 ALOHA 任何時間均可傳送，不監聽通道，碰撞率最高（最大利用率僅約 18.4%）。故選 A。'},
+
+{id:'7_28',ch:7,text:'在 IEEE 802.11 無線標準中，哪個標準提供最快的傳輸速率？',
+ opts:['A. 802.11a','B. 802.11b','C. 802.11g','D. 802.11n'],ans:3,
+ exp:'IEEE 802.11n 使用 MIMO 和 40MHz 頻道，最高傳輸速率可達 600Mbps，是選項中最快的。故選 D。'},
+
+{id:'7_29',ch:7,text:'若訊號最高頻率為 4kHz，根據 Nyquist 定理，最小取樣速率為何？',
+ opts:['A. 4 Ksps','B. 6 Ksps','C. 8 Ksps','D. 16 Ksps'],ans:2,
+ exp:'Nyquist 取樣定理：取樣頻率 ≥ 2 × 最高頻率 = 2 × 4kHz = 8 kHz。故選 C。'},
+
+{id:'7_30',ch:7,text:'若一訊號的最高頻率為 100kHz，最低頻率為 1MHz，則此訊號的頻寬為多少？',
+ opts:['A. 100kHz','B. 900kHz','C. 1MHz','D. 1.1MHz'],ans:1,
+ exp:'頻寬 = 最高頻率 - 最低頻率 = 1000kHz - 100kHz = 900kHz。故選 B。'},
+
+// ────────────── Chapter 8  103年 行動網路系統 ──────────────
+{id:'8_1',ch:8,text:'LTE（4G）下行（Downlink）採用的多址技術為何？',
+ opts:['A. TDMA','B. CDMA','C. FDMA','D. OFDMA'],ans:3,
+ exp:'LTE 下行採用 OFDMA（正交分頻多址接入），上行採用 SC-FDMA。故選 D。'},
+
+{id:'8_2',ch:8,text:'下列哪個頻段不是我國（台灣）LTE 使用的頻段？',
+ opts:['A. 700MHz','B. 1800MHz','C. 2100MHz','D. 2600MHz'],ans:3,
+ exp:'台灣 LTE 主要使用 700MHz、900MHz、1800MHz、2100MHz 等頻段。2600MHz 非我國規劃使用頻段。故選 D。'},
+
+{id:'8_3',ch:8,text:'關於 LTE 的敘述，下列何者有誤？',
+ opts:['A. LTE 支援高達 100Mbps 以上的速率','B. LTE 採用全 IP 架構','C. LTE 向下相容 3G','D. LTE 部署後每位用戶單位成本大幅增加'],ans:3,
+ exp:'LTE 採用全 IP 扁平化架構，降低系統複雜度，每位用戶的單位成本反而降低。故選 D。'},
+
+{id:'8_4',ch:8,text:'關於 RFID 的敘述，下列何者有誤？',
+ opts:['A. RFID 使用無線電波識別標籤','B. RFID 可以非接觸式讀取','C. RFID 即為條碼（Barcode）','D. RFID 標籤分為主動式和被動式'],ans:2,
+ exp:'RFID 與條碼完全不同：RFID 使用無線電波，可非接觸讀取且距離更遠；條碼需光學掃描。故選 C。'},
+
+{id:'8_5',ch:8,text:'在 LTE、Wi-Fi、WiMAX、3G 中，傳輸速率最快的技術為何？',
+ opts:['A. LTE','B. Wi-Fi','C. WiMAX','D. 3G'],ans:0,
+ exp:'LTE（4G）理論下行速率可達 100Mbps~1Gbps（LTE-A），是選項中傳輸速率最快的行動通訊技術。故選 A。'},
+
+{id:'8_6',ch:8,text:'關於 Wi-Fi、WiMAX 和 3G 的比較，下列何者敘述有誤？',
+ opts:['A. WiMAX 傳輸距離比 Wi-Fi 遠','B. 3G 支援行動漫遊','C. Wi-Fi 傳輸距離最遠','D. Wi-Fi 傳輸速率高（室內短距）'],ans:2,
+ exp:'Wi-Fi 傳輸距離最短（約 100公尺），WiMAX 最遠（數十公里）。「Wi-Fi 傳輸距離最遠」是錯誤敘述。故選 C。'},
+
+{id:'8_7',ch:8,text:'關於藍芽（Bluetooth）和 NFC 的比較，下列何者有誤？',
+ opts:['A. 藍芽耗電比 NFC 低','B. NFC 傳輸距離比藍芽短','C. 藍芽速率比 NFC 高','D. NFC 主要用於近距離配對和支付'],ans:0,
+ exp:'NFC 比藍芽更省電（被動式 NFC 標籤不需電源）；藍芽需保持連線，耗電較多。「藍芽耗電比 NFC 低」是錯誤敘述。故選 A。'},
+
+{id:'8_8',ch:8,text:'下列哪項不屬於近距離無線通訊標準？',
+ opts:['A. NFC','B. WiMAX','C. Bluetooth','D. ZigBee'],ans:1,
+ exp:'WiMAX（IEEE 802.16）是城域無線寬頻技術，傳輸距離可達數十公里，不屬於近距離無線通訊。故選 B。'},
+
+{id:'8_9',ch:8,text:'下列哪項不是 RFID 的應用？',
+ opts:['A. 悠遊卡（電子票證）','B. 貨物追蹤','C. 門禁系統','D. GPS 衛星定位'],ans:3,
+ exp:'GPS 使用衛星訊號進行地理定位，與 RFID 的短距識別技術不同。悠遊卡、貨物追蹤、門禁均是 RFID 的典型應用。故選 D。'},
+
+{id:'8_10',ch:8,text:'關於 Mobile IP 的敘述，下列何者有誤？',
+ opts:['A. Mobile IP 允許設備在漫遊時保持相同 IP','B. Mobile IP 使用 Home Agent 和 Foreign Agent','C. Mobile IP 支援 IPv4 和 IPv6','D. Mobile IP 的 IP 位址格式與一般 IP 不同'],ans:3,
+ exp:'Mobile IP 的 IP 位址格式（32 bits IPv4 或 128 bits IPv6）與一般 IP 完全相同，只是透過通道機制轉送。故選 D。'},
+
+{id:'8_11',ch:8,text:'藍芽（Bluetooth）的理想傳輸距離為何？',
+ opts:['A. 10~100公尺','B. 1~10公尺','C. 100~1000公尺','D. 小於1公尺'],ans:0,
+ exp:'藍芽傳輸距離 Class 1（~100m）、Class 2（~10m）、Class 3（~1m），一般消費設備約 10~100公尺。故選 A。'},
+
+{id:'8_12',ch:8,text:'NFC 的理想最遠傳輸距離為何？',
+ opts:['A. 20公分以內','B. 1公尺','C. 10公尺','D. 100公尺'],ans:0,
+ exp:'NFC 工作頻率 13.56MHz，有效傳輸距離約 20公分以內，通常用於刷卡等接觸式應用。故選 A。'},
+
+{id:'8_13',ch:8,text:'關於 NFC，下列何者敘述有誤？',
+ opts:['A. NFC 適合一對一通訊','B. NFC 適合一對多多點通訊','C. NFC 工作頻率為 13.56MHz','D. NFC 常用於行動支付'],ans:1,
+ exp:'NFC 是短距一對一通訊技術，每次只能與一個設備通訊，不支援一對多多點通訊。故選 B。'},
+
+{id:'8_14',ch:8,text:'WiMAX 的理想最遠傳輸距離為何？',
+ opts:['A. 1KM','B. 10KM','C. 30KM','D. 50KM'],ans:3,
+ exp:'WiMAX（IEEE 802.16）的理論最大傳輸距離可達 50公里，實際部署通常在 10~30公里。故選 D。'},
+
+{id:'8_15',ch:8,text:'WCDMA 的理想最遠傳輸距離為何？',
+ opts:['A. 1KM','B. 10KM','C. 30KM','D. 50KM'],ans:1,
+ exp:'WCDMA（3G）基地台的覆蓋半徑通常為數公里到約 10KM，城區較小（1~3km），郊區可達 10km。故選 B。'},
+
+{id:'8_16',ch:8,text:'HSDPA 的最快傳輸速率為何？',
+ opts:['A. 7.2Mbps','B. 384kbps','C. 14Mbps','D. 21Mbps'],ans:2,
+ exp:'HSDPA（High Speed Downlink Packet Access）的最高下行速率為 14.4Mbps，是 3.5G 的主要速率目標。故選 C。'},
+
+{id:'8_17',ch:8,text:'WCDMA（3G）的最快傳輸速率為何？',
+ opts:['A. 384kbps','B. 2Mbps','C. 7.2Mbps','D. 14.4Mbps'],ans:1,
+ exp:'WCDMA（Release 99）定義最高速率：室內靜止 2Mbps、行人 384kbps、車速 144kbps。標準最高為 2Mbps。故選 B。'},
+
+{id:'8_18',ch:8,text:'藍芽（Bluetooth）的最快傳輸速率為何？',
+ opts:['A. 1Mbps','B. 3Mbps','C. 24Mbps','D. 480Mbps'],ans:0,
+ exp:'Bluetooth 1.x 基本速率為 1Mbps（GFSK 調變）；2.0 EDR 可達 3Mbps。傳統藍芽基本速率為 1Mbps。故選 A。'},
+
+{id:'8_19',ch:8,text:'下列哪項不是 GSM 行動通訊系統架構的元件？',
+ opts:['A. DNS（Domain Name System）','B. HLR（Home Location Register）','C. VLR（Visitor Location Register）','D. MSC（Mobile Switching Center）'],ans:0,
+ exp:'GSM 架構包含 BTS、BSC、MSC、HLR、VLR、AuC、EIR 等元件。DNS 是網際網路的域名解析系統，不屬於 GSM 架構。故選 A。'},
+
+{id:'8_20',ch:8,text:'下列哪項不是蜂巢網路（Cellular Network）基地台的主要元件？',
+ opts:['A. 天線','B. 收發器（Transceiver）','C. 功率放大器','D. 路由器'],ans:3,
+ exp:'基地台主要由天線、收發器和功率放大器組成。路由器是 IP 網路設備，不屬於基地台的核心元件。故選 D。'},
+
+{id:'8_21',ch:8,text:'蜂巢網路有效利用有限頻道的技術為何？',
+ opts:['A. 分時多工','B. 分頻多工','C. 分碼多工','D. 頻率再用（Frequency Reuse）'],ans:3,
+ exp:'頻率再用（Frequency Reuse）是蜂巢網路的核心概念：在相隔足夠距離的蜂巢中重複使用相同頻率。故選 D。'},
+
+{id:'8_22',ch:8,text:'讓特定頻率的電磁波通過，而阻止其他頻率通過的設備稱為何？',
+ opts:['A. 放大器','B. 天線','C. 混頻器','D. 濾波器'],ans:3,
+ exp:'濾波器（Filter）根據頻率選擇性地讓特定頻段通過或阻止，是無線通訊系統的基本元件。故選 D。'},
+
+{id:'8_23',ch:8,text:'下列哪項不是無線通訊網路的通訊協定？',
+ opts:['A. HSDZA','B. WCDMA','C. LTE','D. WiMAX'],ans:0,
+ exp:'HSDZA 不是任何標準的無線通訊協定（此標準不存在）；WCDMA、LTE、WiMAX 都是合法的技術標準。故選 A。'},
+
+{id:'8_24',ch:8,text:'能朝特定方向發射訊號，以克服地形障礙的天線種類為何？',
+ opts:['A. 全向天線（Omnidirectional Antenna）','B. 偶極天線（Dipole Antenna）','C. 定向天線（Directional Antenna）','D. 陣列天線（Array Antenna）'],ans:2,
+ exp:'定向天線將訊號集中在特定方向，可達到更遠的傳輸距離，用於點對點連線或克服地形障礙。故選 C。'},
+
+{id:'8_25',ch:8,text:'下列哪項不是行動無線通訊優於有線通訊的特質？',
+ opts:['A. 移動性','B. 佈建彈性','C. 緊急救援應用','D. 安全性'],ans:3,
+ exp:'有線通訊因傳輸介質封閉，安全性遠優於無線通訊；無線訊號在空中傳播，較易遭竊聽攔截。故選 D。'},
+
+{id:'8_26',ch:8,text:'根據行動設備與基地台的相對位置來定位的技術稱為何？',
+ opts:['A. AOA（Angle of Arrival）','B. TOA（Time of Arrival）','C. COO（Cell of Origin）','D. TDOA（Time Difference of Arrival）'],ans:2,
+ exp:'COO（Cell of Origin）是最簡單的定位技術，用行動設備目前連接的基地台位置來估計用戶位置。故選 C。'},
+
+{id:'8_27',ch:8,text:'使用三角測量（Triangulation）的定位技術為何？',
+ opts:['A. AOA（Angle of Arrival，到達角度）','B. TOA','C. COO','D. TDOA'],ans:0,
+ exp:'AOA（Angle of Arrival）利用訊號到達多個基地台的角度進行三角測量定位，需要多根指向天線。故選 A。'},
+
+{id:'8_28',ch:8,text:'下列何者不是 CDMA2000 的 PDSN（Packet Data Serving Node）的主要功能？',
+ opts:['A. 提供 IP 位址分配','B. 負責行動 IP 的 Foreign Agent','C. 管理無線資源','D. 連接 CDMA 網路至 Internet'],ans:2,
+ exp:'PDSN 負責封包數據服務（IP 分配、Foreign Agent、Internet 接入）；管理無線資源是 BSC/RNC 的職責，非 PDSN。故選 C。'},
+
+{id:'8_29',ch:8,text:'為企業量身打造的虛擬專用行動網路稱為何？',
+ opts:['A. VPN','B. WLAN','C. MVPN','D. MAN'],ans:2,
+ exp:'MVPN（Mobile Virtual Private Network）是針對企業行動用戶的虛擬專用網路，讓行動員工安全存取企業內部資源。故選 C。'},
+
+];
+const ESSAYS = [
+  { ch:1, title:'Ch1 100年 電腦通信網路 非選擇題',
+    questions:[
+      { q:'第一題：關於網路地址轉換(NAT ,Network Address Translation)，(一)請描述其運作原理，並列舉一實例說明。(二)說明其優點。(三)說明其缺點及限制。',
+        a:`<p><strong>(一) 運作原理：</strong></p>
+<p>NAT 是一種在網路中使用的協定，用於將私有網路中的 IP 地址轉換為公共網路上可路由的 IP 地址，從而實現多個設備共享單一公共 IP 地址的功能。NAT 的運作原理是在路由器或閘道器上建立轉換表，將內部設備的私有 IP 地址（內網）映射到公共 IP 地址（外網）。</p>
+<p><strong>實例：</strong>當家庭中多個設備（如手機、筆記型電腦、智能電視）通過一個共享的 Wi-Fi 路由器連接到互聯網時，NAT 將這些設備的私有 IP 地址轉換為單一公共 IP 地址，使它們能夠共享網路資源並與外部網路通信。</p>
+<p><strong>(二) 優點：</strong></p>
+<ol>
+<li>IP 地址節省：NAT 允許多個內部設備共享單一公共 IP 地址，節省了可用 IP 地址的需求，特別在 IPv4 地址不足的情況下更為重要。</li>
+<li>安全性提升：NAT 隱藏了內部網路的私有 IP 地址，對外部網路而言，只能看到 NAT 裝置的公共 IP 地址，增加了內部設備的安全性，使其更難受到直接攻擊。</li>
+<li>簡化網路配置：NAT 使得內部網路中的設備可以使用不重複的私有 IP 地址，並且不需要在公共網路上設置唯一的 IP 地址，簡化了網路配置和管理的工作負擔。</li>
+</ol>
+<p><strong>(三) 缺點及限制：</strong></p>
+<ol>
+<li>無法直接連接：由於 NAT 隱藏了內部設備的私有 IP 地址，外部網路無法直接連接到內部設備，導致一些應用和服務無法正常運作，如遠程訪問、視訊通話等。</li>
+<li>效能降低：NAT 轉換過程需要消耗計算資源，可能導致延遲增加和效能降低。</li>
+<li>對某些協議不適用：NAT 對於某些協議（如 IPSec）的運作可能會產生問題，需要進行額外的配置。</li>
+<li>限制 P2P 通信：NAT 限制了點對點（P2P）通信，因為內部設備無法直接通信，需要使用特殊技術（如穿越 NAT）才能實現 P2P 連接。</li>
+</ol>` },
+      { q:'第二題：(一)請解釋何謂無線傳輸中的隱藏終端問題(hidden terminal problem)。(二)請描述無線區域網路 IEEE 82.11b 中 DCF(Distributed Coordinated Function)的媒介存取機制 CSMA/CA 之運作。',
+        a:`<p><strong>(一) 隱藏終端問題：</strong></p>
+<p>在無線傳輸中，隱藏終端問題指的是當存在多個無線設備（終端）時，某些終端彼此之間無法感知彼此的存在，因而無法有效協調傳輸，導致碰撞發生，導致資料損壞和效能下降。例如：A 和 C 都在 B 的覆蓋範圍內，但 A 和 C 互相看不到對方，當 A 和 C 同時向 B 傳輸時就會發生碰撞。</p>
+<p><strong>(二) CSMA/CA 運作：</strong></p>
+<ol>
+<li><strong>載波感測（Carrier Sense）：</strong>當終端要傳輸時，首先檢查媒介是否閒置。如果媒介忙碌，則終端進入退避階段。</li>
+<li><strong>碰撞避免（Collision Avoidance）：</strong>在退避階段，終端等待一段隨機的退避時間，以避免與其他終端同時傳輸，減少碰撞發生的機會。</li>
+<li><strong>傳輸確認（Acknowledgment）：</strong>傳輸時，終端使用 RTS/CTS（Request to Send / Clear to Send）機制進行確認。它們是小型控制幀，用於通知其他終端自己正在進行傳輸，從而解決隱藏終端問題。</li>
+<li><strong>傳輸和等待（Transmission and Wait）：</strong>如果媒介閒置且沒有其他終端進行傳輸，終端開始傳送數據幀。其他終端收到 RTS/CTS 後，暫停傳輸，直到傳輸完成並收到確認幀（ACK）。</li>
+</ol>` },
+    ]
+  },
+  { ch:2, title:'Ch2 100年 網際網路概論 非選擇題',
+    questions:[
+      { q:'第一題：下圖是一個小自治系統中的路徑表初始化時的狀態，當使用 RIP 路徑選擇協定，請列出每一個路由器(路由器 A 到 E)的最後路徑表的狀態。',
+        a:`<p>使用 RIP 協定（Distance Vector Routing），路由器透過交換距離向量資訊，最終收斂結果如下表所示：</p>
+<table border="1" style="border-collapse:collapse;width:100%;font-size:12px">
+<tr><th colspan="3">路由 A</th><th colspan="3">路由 B</th><th colspan="3">路由 C</th><th colspan="3">路由 D</th><th colspan="3">路由 E</th></tr>
+<tr><td>NET</td><td>HOPS</td><td>NEXT</td><td>NET</td><td>HOPS</td><td>NEXT</td><td>NET</td><td>HOPS</td><td>NEXT</td><td>NET</td><td>HOPS</td><td>NEXT</td><td>NET</td><td>HOPS</td><td>NEXT</td></tr>
+<tr><td>11</td><td>1</td><td>-</td><td>11</td><td>2</td><td>A</td><td>11</td><td>1</td><td>-</td><td>11</td><td>3</td><td>B</td><td>11</td><td>2</td><td>C</td></tr>
+<tr><td>12</td><td>1</td><td>-</td><td>12</td><td>1</td><td>-</td><td>12</td><td>2</td><td>A</td><td>12</td><td>2</td><td>B</td><td>12</td><td>3</td><td>C</td></tr>
+<tr><td>13</td><td>2</td><td>B</td><td>13</td><td>1</td><td>-</td><td>13</td><td>3</td><td>A</td><td>13</td><td>1</td><td>-</td><td>13</td><td>4</td><td>C</td></tr>
+<tr><td>14</td><td>3</td><td>B</td><td>14</td><td>2</td><td>D</td><td>14</td><td>4</td><td>A</td><td>14</td><td>1</td><td>-</td><td>14</td><td>5</td><td>C</td></tr>
+<tr><td>15</td><td>3</td><td>C</td><td>15</td><td>4</td><td>A</td><td>15</td><td>2</td><td>E</td><td>15</td><td>5</td><td>B</td><td>15</td><td>1</td><td>-</td></tr>
+<tr><td>16</td><td>2</td><td>C</td><td>16</td><td>3</td><td>A</td><td>16</td><td>1</td><td>-</td><td>16</td><td>4</td><td>B</td><td>16</td><td>1</td><td>-</td></tr>
+<tr><td>17</td><td>2</td><td>C</td><td>17</td><td>3</td><td>A</td><td>17</td><td>1</td><td>-</td><td>17</td><td>4</td><td>B</td><td>17</td><td>2</td><td>C</td></tr>
+<tr><td>18</td><td>2</td><td>C</td><td>18</td><td>3</td><td>A</td><td>18</td><td>1</td><td>-</td><td>18</td><td>4</td><td>B</td><td>18</td><td>2</td><td>C</td></tr>
+</table>
+<p style="margin-top:10px">NET=網路地址；HOPS=中間路由器的跳數；NEXT=數據包應該轉發到的下一個路由器；「-」表示直接連接</p>` },
+    ]
+  },
+  { ch:3, title:'Ch3 100年 行動通信網路系統 非選擇題',
+    questions:[
+      { q:'第一題：假設一個固網公眾電話網路的用戶向其所接的交換機提出呼叫（撥打）一個行動電話用戶，請說明行動通訊系統中位置管理(Mobility Management)中的呼叫建立程序，請說明各個步驟的最重要任務。',
+        a:`<p><strong>呼叫（通話）建立程序：</strong></p>
+<p><strong>(一) 第一步：PSTN → HLR</strong></p>
+<p>PSTN（固網公眾電話網路）將呼叫請求傳送到 HLR（Home Location Register，家庭位置登記），以確定被呼叫的行動電話用戶所屬的 HLR。</p>
+<p><strong>(二) 第二步：HLR → VLR</strong></p>
+<p>HLR 將呼叫請求轉發到 VLR（Visitor Location Register，訪問位置登記），以找到被呼叫的行動電話用戶所在的 VLR。VLR 是在行動電話用戶所在的區域中負責管理移動性的位置登記。</p>
+<p><strong>(三) 第三步：VLR → HLR</strong></p>
+<p>VLR 向 HLR 進行登錄，以獲取被呼叫的行動電話用戶的資訊。這包括驗證用戶的訊息和確定用戶的位置。</p>
+<p><strong>(四) 第四步：HLR → PSTN</strong></p>
+<p>HLR 將與被呼叫的行動電話用戶相關的資訊傳送回 PSTN，以便確定將呼叫路由到正確的目的地。</p>
+<p><strong>(五) 第五步：PSTN → MSC → 行動電話用戶</strong></p>
+<p>PSTN 將呼叫路由到 MSC（Mobile Switching Center，行動交換中心），然後 MSC 將呼叫連接到被呼叫的行動電話用戶。MSC 負責處理行動電話的呼叫控制和連接管理。</p>` },
+    ]
+  },
+  { ch:4, title:'Ch4 101年 電腦通信網路 非選擇題',
+    questions:[
+      { q:'第一題：造成網路延遲之因素很多，請回答下列問題：(一)端對端延遲(end-to-end delay)包含哪些可能的延遲？(二)假設鏈路資料傳輸速率為 10⁹ bps、封包大小 8000 位元、單程傳播延遲 15 milliseconds，不考慮 ACK 封包及處理延遲，請問使用停止及等待(stop and wait)協定的鏈路利用率為多少？',
+        a:`<p><strong>(一) 端對端延遲的組成：</strong></p>
+<ol>
+<li><strong>傳輸延遲（Transmission delay）：</strong>數據從發送端傳送到傳輸介質的時間延遲。取決於數據的大小（bits）和傳輸速率（bps）。公式：L/R</li>
+<li><strong>傳播延遲（Propagation delay）：</strong>數據從發送端到達接收端的傳播時間。取決於傳輸介質的物理特性，例如傳播速度和距離。</li>
+<li><strong>緩衝延遲（Buffering delay）：</strong>在網路節點（如路由器）上，數據需要在緩衝區中等待傳輸的時間延遲。</li>
+<li><strong>處理延遲（Processing delay）：</strong>在網路節點上處理數據的時間延遲，包括檢查錯誤、解碼、轉換格式等操作。</li>
+<li><strong>排隊延遲（Queuing delay）：</strong>在網路節點的輸出鏈路上，數據需要等待佇列中其他數據傳輸完成的時間延遲。</li>
+</ol>
+<p><strong>(二) Stop and Wait 鏈路利用率計算：</strong></p>
+<p>傳輸時間 = 封包大小 ÷ 資料傳輸速率 = 8000 bits ÷ 10⁹ bps = 8 × 10⁻⁶ 秒（8 微秒）</p>
+<p>往返時間 RTT = 2 × 傳播延遲 = 2 × 15 ms = 30 ms = 30 × 10⁻³ 秒</p>
+<p>總傳輸時間 = 傳輸時間 + RTT = 8 × 10⁻⁶ + 30 × 10⁻³ = 0.030008 秒</p>
+<p>鏈路利用率 = 傳輸時間 ÷ 總傳輸時間 = 8 × 10⁻⁶ ÷ 0.030008 ≈ <strong>0.027%</strong></p>` },
+      { q:'第二題：IP 封包標頭（header）格式如下圖。若某 IP 封包標頭內容以 16 進位表示為：45000054 00031000 20060000 7C4E0382 B40E0F05，則：(一)整個封包之大小為何？(二)封包可再被轉送經幾個路由器？(三)封包之識別碼(identification number)為何？',
+        a:`<p><strong>(一) 整個封包大小：</strong></p>
+<p>因為 16 = 2⁴，每個十六進位數字代表 4 bit。<u>4 5 00 0054</u> 由左至右對應：Version、Header Length、TOS、Total Length。</p>
+<p>Total Length = 0054（16進位）= 5 × 16¹ + 4 × 16⁰ = <strong>84 bytes</strong></p>
+<p><strong>(二) 封包可再被轉送幾個路由器：</strong></p>
+<p><u>20 06 0000</u> 為 TTL、Protocol、Header Checksum。TTL 代表封包可再被轉送幾個路由器。</p>
+<p>TTL = 20（16進位）= 2 × 16¹ + 0 × 16⁰ = <strong>32 個路由器</strong></p>
+<p><strong>(三) 封包之識別碼：</strong></p>
+<p><u>0003</u> 1000 為 Identification、Flags+Fragment Offset。</p>
+<p>Identification = 0003（16進位）= 3 × 16⁰ = <strong>3</strong></p>` },
+    ]
+  },
+  { ch:5, title:'Ch5 101年 行動網路系統 非選擇題',
+    questions:[
+      { q:'第一題：請列舉並說明五項 WiMAX「網路參考模型(Network Reference Model)」中之 ASN(Access Service Network) 提供的功能。',
+        a:`<p>WiMAX ASN（接入服務網路）提供以下五項主要功能：</p>
+<ol>
+<li><strong>用戶註冊和管理：</strong>ASN 負責處理用戶的註冊和管理，包括用戶的身份驗證、註冊過程中的授權和認證，以及用戶帳號的管理。</li>
+<li><strong>頻寬管理：</strong>ASN 負責管理 WiMAX 網路中的頻寬分配和調度，以確保有效的頻譜利用和優化的網路性能。它可以動態分配頻寬給用戶，根據需求和網路條件進行優先級調整。</li>
+<li><strong>連接管理：</strong>ASN 負責建立、維護和終止用戶的連接。它管理用戶的連接狀態，監視連接的穩定性和效能，並在需要時重新建立或終止連接。</li>
+<li><strong>IP 地址管理：</strong>ASN 負責分配和管理 WiMAX 網路中的 IP 地址，確保每個用戶都獲得唯一的 IP 地址，並提供 IP 地址的管理和配置。</li>
+<li><strong>流量管理：</strong>ASN 負責管理用戶的數據流量，包括數據的傳送、接收和路由。它可以根據用戶的需求和網路條件進行流量優先級的調整，確保有效的數據傳輸和優化的網路性能。</li>
+</ol>` },
+      { q:'第二題：請列舉五項 WCDMA(Wideband Code Division Multiple Access)的特性。',
+        a:`<p>WCDMA（Wideband Code Division Multiple Access）是用於第三代行動通訊系統的無線通訊技術，具有以下五項特性：</p>
+<ol>
+<li><strong>寬頻傳輸：</strong>WCDMA 採用寬頻傳輸技術，具有大量的頻寬，能夠實現高速數據傳輸和高質量的語音通話。</li>
+<li><strong>碼分多址：</strong>WCDMA 使用碼分多址技術，將不同用戶的數據和語音通話通過不同的碼分配和解碼，實現多用戶同時使用同一頻段的能力。</li>
+<li><strong>動態功率控制：</strong>WCDMA 具有動態功率控制的能力，根據用戶的接收信號強度和通信品質調節發射功率，以確保有效的通信和節省電池能量。</li>
+<li><strong>語音和數據同時傳輸：</strong>WCDMA 能夠同時傳輸語音和數據，支援同時進行語音通話和數據下載的應用，提供多種服務的同時使用。</li>
+<li><strong>抗干擾能力強：</strong>WCDMA 採用了分碼多址和干擾取消等技術，具有較強的抗干擾能力，能夠在多路復用環境下提供穩定的通信品質。</li>
+</ol>` },
+    ]
+  },
+  { ch:6, title:'Ch6 102年 通信系統 非選擇題',
+    questions:[
+      { q:'第一題：(一)何謂「展頻(spread spectrum)」通訊？(二)何謂對絞線（如 UTP 等）之「近端干擾(near-end crosstalk, NEXT)」？(三)將數據資料 10001 做「曼徹斯特編碼(Manchester coding)」，請繪出編碼後的波形。',
+        a:`<p><strong>(一) 展頻通訊：</strong></p>
+<p>展頻（spread spectrum）通訊是一種技術，通過將訊號擴展到比原始頻寬更廣的頻帶來傳送數據。這樣做可以提高抗干擾能力，降低訊號被擷取的風險，並改善訊號的可靠性。就像把訊息放在更大的範圍上發送，即使有雜訊或干擾，仍能確保訊號被正確接收。這種技術常見於無線通訊和軍事應用中。</p>
+<p><strong>(二) 近端干擾（NEXT）：</strong></p>
+<p>對絞線（如 UTP）中的「近端干擾（NEXT）」是指在信號傳輸過程中，從同一條電纜的發射端（近端）發射的信號對其他線對的干擾。簡單來說，就是在電纜的發射端，信號會在相鄰的線對之間相互影響，導致干擾和信號品質降低。NEXT 是衡量電纜性能的一個指標，過高的 NEXT 會影響通訊的可靠性和速度。</p>
+<p><strong>(三) 曼徹斯特編碼波形（資料：10001）：</strong></p>
+<p>在曼徹斯特編碼中：</p>
+<ul>
+<li>「1」代表信號從高強度（1）跳到低強度（0）——高→低</li>
+<li>「0」代表信號從低強度（0）跳到高強度（1）——低→高</li>
+</ul>
+<p>資料 10001 的波形：</p>
+<pre style="font-family:monospace;background:#21262d;padding:10px;border-radius:6px;font-size:12px">
+位元:  1        0        0        0        1
+     ┌─┐     ┌─┐     ┌─┐     ┌─┐     ┌─┐
+ 1   │ │   ┌─┘ └─┐ ┌─┘ └─┐ ┌─┘ └─┐ │ │
+─────┘ └───┘       └┘       └┘       └─┘ └────
+ 0
+     高→低  低→高  低→高  低→高  高→低
+</pre>
+<p>每個位元週期的中間均有一次電位轉換，便於時鐘同步。</p>` },
+    ]
+  },
+  { ch:7, title:'Ch7 103年 電腦通信網路 非選擇題',
+    questions:[
+      { q:'第一題：請回答下列網路分割及子網路網路位址之相關問題：(一) 255.255.252.0 這個子網路遮罩最多可將 140.128.0.0 這個網路分割為幾個有效的子網路？每個子網路中最多可以有幾台主機？(二) 假設某台主機的 IP 位址為 192.160.8.134，子網路遮罩為 255.255.255.248，則該主機所在的子網路「網路位址」為何？',
+        a:`<p><strong>(一) 子網路分割計算：</strong></p>
+<p>題目 140.128.0.0 為 Class B 網路，子網路遮罩為 255.255.252.0，二進位表示為：11111111.11111111.<span style="color:var(--ac)">111111</span>00.00000000</p>
+<p>子網路遮罩中連續的 1 的數量為 6 位（第三個 octet 中），可以分割的子網路數量 = 2⁶ = <strong>64 個子網路</strong></p>
+<p>剩餘的 0 位數量為 10 位，因此每個子網路中最多可以有 2¹⁰ - 2 = <strong>1022 台主機</strong>（減去網路地址和廣播地址）。</p>
+<p><strong>(二) 網路位址計算：</strong></p>
+<p>主機 IP 192.160.8.134 進行 AND 運算：</p>
+<p>11000000.10100000.00001000.10000110 (192.160.8.134)</p>
+<p>AND</p>
+<p>11111111.11111111.11111111.11111000 (255.255.255.248)</p>
+<p>= 11000000.10100000.00001000.10000000</p>
+<p>因此，該主機所在的子網路網路位址為 <strong>192.160.8.128</strong></p>` },
+      { q:'第二題：請回答下列與傳輸相關之問題：(一) 請說明何謂平行傳輸(parallel transmission)？何謂序列傳輸(serial transmission)？(二) 請說明何謂基頻傳輸(baseband)？何謂寬頻傳輸(broadband)？',
+        a:`<p><strong>(一) 平行傳輸與序列傳輸：</strong></p>
+<p><strong>平行傳輸（Parallel Transmission）</strong>是一種資料傳輸的方式，其中多個位元或資料同時透過多條平行的通道傳送。每個位元在不同的通道上傳送，可以同時傳送多個位元，並且在接收端同步重新組合以還原原始資料。平行傳輸通常使用多條導線或電纜，每條導線對應著一個位元，並且在相同的時刻傳輸。</p>
+<p><strong>序列傳輸（Serial Transmission）</strong>則是另一種資料傳輸的方式，其中位元或資料依序透過單一的通道傳送。在序列傳輸中，位元按照順序逐個傳送，一次只傳輸一個位元。序列傳輸通常使用單條導線或通道，資料被轉換為連續的位元流進行傳輸。</p>
+<p><strong>主要區別：</strong>平行傳輸可以同時傳輸多個位元，傳輸速率相對較高，但需要較多的導線；序列傳輸則一次只傳輸一個位元，需要較少的導線，但傳輸速率相對較低。</p>
+<p><strong>(二) 基頻傳輸與寬頻傳輸：</strong></p>
+<p><strong>基頻傳輸（Baseband）</strong>是一種數位訊號的傳輸方式，它將原始的數位訊號直接傳送在通訊媒介上，不經過調變或頻率轉換。在基頻傳輸中，訊號的頻帶範圍與原始訊號的頻率相同，通常是低頻範圍。基頻傳輸適用於短距離傳輸，例如在計算機網路中的乙太網路中使用。</p>
+<p><strong>寬頻傳輸（Broadband）</strong>則是一種將數位或類比訊號進行調變，將其轉換成高頻信號進行傳輸的方式。在寬頻傳輸中，原始訊號的頻率被映射到較高的頻帶，以利於在傳輸過程中提供更高的傳輸速率和多路復用的能力。寬頻傳輸常用於長距離通訊，例如有線電視、光纖通訊和衛星通訊等。</p>` },
+    ]
+  },
+  { ch:8, title:'Ch8 103年 行動網路系統 非選擇題',
+    questions:[
+      { q:'第一題：請列舉四項在 LTE-Advanced 規範中可以達到頻寬擴展、擴展網路覆蓋範圍、改善用戶(UE)間信號干擾以及提高峰值頻譜效率的關鍵技術，並分別簡述每項技術產生之效益。',
+        a:`<p><strong>LTE-Advanced 四項關鍵技術及其效益：</strong></p>
+<ol>
+<li><strong>載波聚合（Carrier Aggregation）：</strong>載波聚合技術允許同一時間使用多個頻段進行數據傳輸，從而擴展了可用的頻寬。這種技術能夠提高傳輸速率和峰值頻譜效率，同時還可以提供更好的網路覆蓋範圍和連接可靠性。</li>
+<li><strong>中繼器（Relay）：</strong>中繼器是一種用於擴展網路覆蓋範圍的裝置，它能夠接收和轉發來自基站和用戶設備的信號。中繼器部署在現有基站範圍之外，可以有效地擴展網路覆蓋範圍，並改善邊緣區域的訊號強度和質量。</li>
+<li><strong>互動式多點傳輸和接收（CoMP, Coordinated Multi-Point Transmission and Reception）：</strong>CoMP 技術可以減少用戶設備之間的干擾，提高系統容量和覆蓋範圍。通過協調不同基站之間的信號傳輸和接收，CoMP 技術可以確保用戶在邊緣區域和高干擾環境中獲得更好的服務質量。</li>
+<li><strong>軟頻率重用（Soft Frequency Reuse）：</strong>軟頻率重用技術根據用戶設備的位置和信號強度，動態地調整頻率重用模式。這種技術可以減少用戶之間的干擾，提高系統的容量和效能。通過靈活地分配頻譜資源，軟頻率重用技術可以提供更好的服務質量和網路性能。</li>
+</ol>` },
+      { q:'第二題：請列舉五項 LTE 行動通訊優於 3G 行動通訊的特質。',
+        a:`<p><strong>LTE 優於 3G 的五項特質：</strong></p>
+<ol>
+<li><strong>更高的傳輸速率：</strong>LTE 提供了更高的傳輸速率，可以實現更快的下載和上傳速度。這使得用戶可以更快地瀏覽網頁、觀看串流視頻、下載大型文件等。</li>
+<li><strong>低延遲：</strong>LTE 具有較低的網路延遲，這意味著數據傳輸的響應時間更短。這對於即時通訊、在線遊戲、視頻通話等延遲敏感的應用非常重要，提供更好的用戶體驗。</li>
+<li><strong>更好的頻譜效率：</strong>LTE 使用了先進的多址接入技術，如 OFDMA（正交頻分多址）和 SC-FDMA（單載波頻分多址），以提供更高的頻譜效率。這意味著 LTE 能夠在相同的頻譜資源下傳輸更多的數據，支援更多的用戶連接。</li>
+<li><strong>較好的覆蓋範圍：</strong>LTE 的基站配置和天線技術改善了覆蓋範圍，使得用戶在更遠的距離和邊緣區域也可以獲得較好的信號質量和連接穩定性。</li>
+<li><strong>更高的容量：</strong>由於 LTE 具有更高的頻譜效率和更好的連接管理能力，它可以支援更多同時連接的用戶，提供更大的系統容量。這對於密集人口地區和高流量的環境非常重要，確保網路的穩定性和服務質量。</li>
+</ol>` },
+    ]
+  },
+];
+
+// ══════════════════════════════════════════════════════════════
+//  STORAGE
+// ══════════════════════════════════════════════════════════════
+const SK = 'quiz_net_v3';
+function load(){try{const r=localStorage.getItem(SK);return r?JSON.parse(r):{hist:[],wrong:{},stats:{ans:0,ok:0}}}catch{return{hist:[],wrong:{},stats:{ans:0,ok:0}}}}
+function save(d){try{localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+let store=load();
+
+// ══════════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════════
+let state={quiz:[],idx:0,answers:{},mode:'all',modeName:'',sOk:0,sTotal:0};
+
+// ══════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════
+function init(){renderChapters();updateHdr();updateStats()}
+
+function updateHdr(){
+  const acc=store.stats.ans>0?Math.round(store.stats.ok/store.stats.ans*100)+'%':'—';
+  document.getElementById('hdr-ans').textContent=store.stats.ans;
+  document.getElementById('hdr-acc').textContent=acc;
+}
+function updateStats(){
+  const acc=store.stats.ans>0?Math.round(store.stats.ok/store.stats.ans*100)+'%':'—';
+  document.getElementById('s-total').textContent=store.stats.ans;
+  document.getElementById('s-correct').textContent=store.stats.ok;
+  document.getElementById('s-acc').textContent=acc;
+}
+function renderChapters(){
+  document.getElementById('ch-grid').innerHTML=CHAPTERS.map(ch=>{
+    const qs=QB.filter(q=>q.ch===ch.id);
+    const done=qs.filter(q=>store.stats['q_'+q.id]).length;
+    const pct=qs.length?Math.round(done/qs.length*100):0;
+    const wc=qs.filter(q=>store.wrong[q.id]).length;
+    return`<div class="ch-card" onclick="startQuiz(${ch.id})">
+      <div class="ch-num">Chapter ${ch.id} · ${ch.year} 年</div>
+      <div class="ch-title">${ch.title}${wc>0?`<span class="err-badge">${wc} 錯題</span>`:''}</div>
+      <div class="ch-meta"><span>${qs.length} 題</span><span>已完成 ${done}</span></div>
+      <div class="ch-bar"><div class="ch-bar-fill" style="width:${pct}%"></div></div>
+    </div>`}).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════════════════════
+function tab(t){
+  ['mcq','essay','history','mistakes'].forEach((x,i)=>{
+    document.getElementById('t-'+x).style.display=x===t?'':'none';
+    document.querySelectorAll('.nav-tab')[i].classList.toggle('active',x===t);
+  });
+  if(t==='essay') renderEssay();
+  if(t==='history') renderHistory();
+  if(t==='mistakes') renderMistakes();
+}
+function renderEssay(){
+  document.getElementById('essay-content').innerHTML=ESSAYS.map(e=>`
+    <h3 style="font-size:14px;color:var(--ac);margin:20px 0 12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px">${e.title}</h3>
+    ${e.questions.map((q,i)=>`
+    <div class="essay-card">
+      <div class="essay-q"><strong>題目：</strong>${q.q}</div>
+      <div class="ans-title">參考答案</div>
+      <div class="essay-ans">${q.a}</div>
+    </div>`).join('')}`).join('');
+}
+function renderHistory(){
+  const el=document.getElementById('hist-list');
+  if(!store.hist.length){el.innerHTML='<div class="empty">尚無練習紀錄</div>';return;}
+  el.innerHTML=[...store.hist].reverse().slice(0,20).map(h=>{
+    const p=Math.round(h.ok/h.tot*100);
+    const c=p>=80?'var(--gr)':p>=60?'var(--yw)':'var(--rd)';
+    return`<div class="hist-item">
+      <div class="hist-pct" style="color:${c}">${p}%</div>
+      <div class="hist-info">
+        <div class="hist-title">${h.modeName} — ${h.ok}/${h.tot} 題正確</div>
+        <div class="hist-date">${new Date(h.time).toLocaleString('zh-TW')}</div>
+      </div></div>`}).join('');
+}
+function renderMistakes(){
+  const wqs=QB.filter(q=>store.wrong[q.id]);
+  const el=document.getElementById('mistakes-content');
+  if(!wqs.length){el.innerHTML='<div class="empty">🎉 目前沒有錯題！</div>';return;}
+  el.innerHTML=`<div style="margin-bottom:14px;color:var(--tm);font-size:13px">共 ${wqs.length} 道錯題</div>
+    <button class="btn-all" onclick="startMistakeQuiz()">📚 開始錯題複習（${wqs.length} 題）</button>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  QUIZ
+// ══════════════════════════════════════════════════════════════
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+
+function startQuiz(chOrAll){
+  let qs,lbl;
+  if(chOrAll==='all'){qs=shuffle(QB);lbl='全部題目隨機';document.getElementById('q-ch-lbl').textContent='ALL CHAPTERS';document.getElementById('q-sub').textContent='共'+QB.length+'題隨機排列';}
+  else{
+    qs=shuffle(QB.filter(q=>q.ch===chOrAll));
+    const ch=CHAPTERS.find(c=>c.id===chOrAll);
+    lbl=`Ch${chOrAll} ${ch.year}年 ${ch.title}`;
+    document.getElementById('q-ch-lbl').textContent=`CHAPTER ${chOrAll} · ${ch.year} 年`;
+    document.getElementById('q-sub').textContent=ch.title;
+  }
+  state={quiz:qs,idx:0,answers:{},mode:chOrAll,modeName:lbl,sOk:0,sTotal:0};
+  showPage('pg-quiz');renderQ();
+}
+function startMistakeQuiz(){
+  const qs=shuffle(QB.filter(q=>store.wrong[q.id]));
+  if(!qs.length)return;
+  state={quiz:qs,idx:0,answers:{},mode:'mistakes',modeName:'錯題複習',sOk:0,sTotal:0};
+  document.getElementById('q-ch-lbl').textContent='MISTAKE REVIEW';
+  document.getElementById('q-sub').textContent='錯題複習 — '+qs.length+' 題';
+  showPage('pg-quiz');renderQ();
+}
+
+function renderQ(){
+  const q=state.quiz[state.idx],tot=state.quiz.length,idx=state.idx;
+  document.getElementById('prog-txt').textContent=`第 ${idx+1} / ${tot} 題`;
+  document.getElementById('prog-sc').textContent=`本次：${state.sOk} 正確`;
+  document.getElementById('prog-fill').style.width=`${idx/tot*100}%`;
+  const keys=['A','B','C','D'];
+  document.getElementById('q-content').innerHTML=`<div class="q-card">
+    <div class="q-no">Q${idx+1} · Chapter ${q.ch} · ${CHAPTERS.find(c=>c.id===q.ch).year} 年</div>
+    <div class="q-txt">${q.text}</div>
+    <div class="opts" id="opts">${q.opts.map((o,i)=>`
+      <div class="opt" id="o${i}" onclick="pick(${i})">
+        <span class="opt-k">${keys[i]}</span><span>${o.replace(/^[ABCD]\.\s*/,'')}</span>
+      </div>`).join('')}</div>
+    <div class="exp" id="exp"><strong>解析：</strong>${q.exp}</div>
+  </div>`;
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('btn-hint').style.display='';
+  document.getElementById('btn-skip').disabled=false;
+}
+
+function pick(i){
+  const q=state.quiz[state.idx];
+  if(state.answers[state.idx]!==undefined)return;
+  state.answers[state.idx]=i;
+  const ok=i===q.ans;
+  state.sTotal++;if(ok)state.sOk++;
+  store.stats.ans++;if(ok)store.stats.ok++;
+  store.stats['q_'+q.id]=true;
+  if(!ok)store.wrong[q.id]=(store.wrong[q.id]||0)+1;
+  else delete store.wrong[q.id];
+  save(store);updateHdr();
+  for(let j=0;j<4;j++){
+    const el=document.getElementById('o'+j);
+    if(!el)continue;
+    el.classList.add('dis');
+    if(j===q.ans)el.classList.add('ok');
+    else if(j===i&&!ok)el.classList.add('ng');
+  }
+  document.getElementById('exp').classList.add('show');
+  document.getElementById('btn-next').disabled=false;
+  document.getElementById('btn-skip').disabled=true;
+  document.getElementById('prog-sc').textContent=`本次：${state.sOk} 正確`;
+}
+function showHint(){document.getElementById('exp')?.classList.add('show');}
+function skipQ(){
+  if(state.answers[state.idx]!==undefined)return;
+  state.idx++;
+  if(state.idx>=state.quiz.length)finish();
+  else renderQ();
+}
+function clearAllRecords(){
+  if(!confirm('確定要清除所有練習紀錄嗎？此操作無法復原。'))return;
+  store={hist:[],wrong:{},stats:{ans:0,ok:0}};
+  save(store);updateHdr();updateStats();renderChapters();
+  alert('已清除所有紀錄。');
+}
+function nextQ(){
+  state.idx++;
+  if(state.idx>=state.quiz.length)finish();
+  else renderQ();
+}
+function finish(){
+  const tot=state.quiz.length,ok=state.sOk,pct=Math.round(ok/tot*100);
+  store.hist.push({time:Date.now(),mode:state.mode,modeName:state.modeName,ok,tot,pct});
+  if(store.hist.length>50)store.hist=store.hist.slice(-50);
+  save(store);updateStats();renderChapters();
+  document.getElementById('r-score').textContent=pct+'%';
+  document.getElementById('r-lbl').textContent=pct===100?'🎉 全部答對！':pct>=80?'✅ 表現優秀！':pct>=60?'📖 繼續加油！':'💪 還需多練習！';
+  document.getElementById('r-ok').textContent=ok;
+  document.getElementById('r-ng').textContent=tot-ok;
+  document.getElementById('r-tot').textContent=tot;
+  showPage('pg-result');
+}
+function retryQuiz(){startQuiz(state.mode);}
+function goHome(){showPage('pg-home');updateStats();renderChapters();}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+init();
+</script>
+</body>
+</html>
