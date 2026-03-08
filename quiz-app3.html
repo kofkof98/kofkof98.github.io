@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中華電信招考 精選題庫</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --danger: #f85149;
+    --warning: #e3b341;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .stats-bar {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .stat-item { display: flex; align-items: center; gap: 5px; }
+  .stat-num { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+  .stat-correct { color: var(--accent2); }
+  .stat-wrong { color: var(--danger); }
+
+  .btn-clear {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+
+  .unit-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .unit-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: 'Noto Sans TC', sans-serif;
+    position: relative;
+  }
+
+  .unit-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .unit-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .unit-btn .unit-prog {
+    font-size: 0.68rem;
+    opacity: 0.75;
+    margin-left: 3px;
+  }
+
+  .unit-btn.unavailable {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 16px;
+  }
+
+  .quiz-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .q-counter { font-family: 'JetBrains Mono', monospace; }
+  .q-unit { color: var(--accent); font-size: 0.78rem; }
+
+  .q-progress {
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 3px;
+    margin-bottom: 22px;
+    overflow: hidden;
+  }
+
+  .q-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #a5d6ff);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .q-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 24px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+  }
+
+  .option:hover:not(.disabled) {
+    border-color: var(--accent);
+    background: rgba(88, 166, 255, 0.06);
+  }
+
+  .option.selected { border-color: var(--accent); background: rgba(88, 166, 255, 0.1); }
+  .option.correct { border-color: var(--accent2); background: rgba(63, 185, 80, 0.12); }
+  .option.wrong { border-color: var(--danger); background: rgba(248, 81, 73, 0.1); }
+  .option.correct-highlight { border-color: var(--accent2); background: rgba(63, 185, 80, 0.06); }
+  .option.disabled { cursor: default; }
+
+  .opt-label {
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.18s;
+  }
+
+  .option.correct .opt-label { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+  .option.wrong .opt-label { background: var(--danger); border-color: var(--danger); color: #fff; }
+  .option.correct-highlight .opt-label { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+  .option.selected .opt-label { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .opt-text { font-size: 0.93rem; line-height: 1.6; padding-top: 2px; }
+
+  .explanation {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    font-size: 0.87rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+    display: none;
+  }
+
+  .explanation.show { display: block; animation: fadeIn 0.25s ease; }
+  .explanation strong { color: var(--text); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #79b8ff; }
+  .btn-secondary { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .result-badge.correct-badge { background: rgba(63,185,80,0.15); color: var(--accent2); border: 1px solid rgba(63,185,80,0.3); }
+  .result-badge.wrong-badge { background: rgba(248,81,73,0.12); color: var(--danger); border: 1px solid rgba(248,81,73,0.25); }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state h2 { font-size: 1.1rem; margin-bottom: 8px; }
+  .empty-state p { font-size: 0.88rem; }
+
+  .complete-state {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .complete-state h2 { font-size: 1.4rem; margin-bottom: 12px; color: var(--accent); }
+  .complete-score { font-size: 2.5rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; margin: 16px 0; }
+  .score-good { color: var(--accent2); }
+  .score-mid { color: var(--warning); }
+  .score-bad { color: var(--danger); }
+
+  .complete-state .btn-restart {
+    background: var(--accent); color: #fff; padding: 11px 32px;
+    border-radius: 8px; border: none; font-size: 0.95rem;
+    font-weight: 600; cursor: pointer; margin-top: 16px;
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: background 0.2s;
+  }
+  .complete-state .btn-restart:hover { background: #79b8ff; }
+
+  @media (max-width: 600px) {
+    .quiz-card { padding: 20px 16px; }
+    header h1 { font-size: 0.95rem; }
+    .stats-bar { font-size: 0.76rem; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 中華電信招考 精選題庫</h1>
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-num stat-correct" id="stat-correct">0</span> 正確</div>
+    <div class="stat-item"><span class="stat-num stat-wrong" id="stat-wrong">0</span> 錯誤</div>
+    <div class="stat-item">正確率 <span class="stat-num" id="stat-rate">-</span></div>
+    <button class="btn-clear" onclick="clearRecords()">🗑 清除紀錄</button>
+  </div>
+</header>
+
+<div class="unit-nav" id="unit-nav"></div>
+
+<main>
+  <div class="quiz-card" id="quiz-card">
+    <div class="empty-state">
+      <h2>請選擇上方的單元開始作答</h2>
+      <p>共有 10 個學習單元可作答</p>
+    </div>
+  </div>
+</main>
+
+<script>
+// ============================================================
+//  題目資料庫
+// ============================================================
+const UNITS = [
+  {
+    id: 'ai',
+    name: 'AI、機械學習、深度學習',
+    available: true,
+    questions: [
+      { q:'AI最初的概念是什麼？', opts:['計算機科學','資訊科學','機器智慧','人工智慧'], ans:3, exp:'AI最初的概念即為人工智慧，是指讓機器模仿人類智慧和思考方式的技術和方法。' },
+      { q:'機器學習是一種什麼樣的技術？', opts:['一種人工智慧技術','一種大數據技術','一種軟體開發技術','一種硬體設計技術'], ans:0, exp:'機器學習是人工智慧的一個分支，是通過讓機器自主學習來實現人工智慧的技術。' },
+      { q:'深度學習是一種什麼樣的技術？', opts:['一種人工智慧技術','一種大數據技術','一種軟體開發技術','一種硬體設計技術'], ans:0, exp:'深度學習是人工智慧的一個分支，是基於神經網路的機器學習方法，通過多層次的神經網路實現對複雜問題的學習和預測。' },
+      { q:'機器學習的類型包括哪些？', opts:['半監督學習、非監督學習和強化學習','監督學習、半監督學習和強化學習','監督學習、非監督學習和強化學習','監督學習、非監督學習、半監督學習和強化學習'], ans:3, exp:'機器學習的類型分別為監督學習、非監督學習、半監督學習和強化學習。' },
+      { q:'非監督學習中的目標是什麼？', opts:['預測輸出值','識別類別標籤','發現數據中的模式和結構','給出正確的答案'], ans:2, exp:'非監督學習的目標是從數據中發現模式和結構，而不是進行輸出預測或標籤識別。' },
+      { q:'強化學習中的「環境」指的是什麼？', opts:['數據集','模型參數','學習目標','與智慧體交互的外部世界'], ans:3, exp:'強化學習中的「環境」指與智慧體進行交互的外部世界，包括智慧體能夠感知的一切事物和事件。' },
+      { q:'人工神經網路中的「神經元」指的是什麼？', opts:['網路層次結構','網路設計參數','神經元之間的連接','神經元的計算單元'], ans:3, exp:'人工神經網路中的「神經元」是神經網路中的計算單元，能夠對輸入進行計算，並將計算結果傳遞給下一層的神經元。' },
+      { q:'梯度下降是什麼？', opts:['一種神經網路的構建方法','一種機器學習算法','一種深度學習框架','一種通訊網路的框架'], ans:1, exp:'梯度下降是一種優化算法，用於調整機器學習模型的參數以最小化成本函數或損失函數。' },
+      { q:'下列何者不是人工智慧的分支？', opts:['機器學習','深度學習','大數據','自然語言處理'], ans:2, exp:'大數據並不是人工智慧的分支，但它是人工智慧技術發展的重要支撐，因為它提供了足夠的數據量，讓機器學習和深度學習的效果更加顯著。' },
+      { q:'深度學習中，什麼是卷積神經網路？', opts:['一種神經網路架構','一種優化算法','一種遺傳算法','一種激勵函數'], ans:0, exp:'卷積神經網路（CNN）是一種深度學習的神經網路架構，主要用於處理圖像和影片等數據。' },
+      { q:'下列哪種學習方式是無監督學習？', opts:['分類（Clustering）','回歸（Regression）','強化學習（Reinforcement）','監督分類'], ans:0, exp:'分類（聚類）是一種無監督學習方式，它不需要事先標記數據類別，而是通過對數據的相似性進行分類。' },
+    ]
+  },
+  {
+    id: 'wifi6',
+    name: 'Wi-Fi 6',
+    available: true,
+    questions: [
+      { q:'以下哪種頻段不是 Wi-Fi 6 支持的頻段？', opts:['2.4 GHz','5 GHz','2.4 及 5 GHz','60 GHz'], ans:3, exp:'Wi-Fi 6 支持的頻段包括 2.4 GHz、5 GHz 和 6 GHz（Wi-Fi 6e）等頻段，但不支持 60 GHz 的毫米波頻段。' },
+      { q:'Wi-Fi 6 中的 OFDMA 是什麼意思？', opts:['單載波分頻多址','正交分頻多路徑傳輸','正交分頻多址','正交分頻多工'], ans:2, exp:'OFDMA 是 Orthogonal Frequency Division Multiple Access 的縮寫，意思是正交分頻多址，是 Wi-Fi 6 中一種用於提高頻譜效率和傳輸效率的技術。' },
+      { q:'Wi-Fi 6 中的 MU-MIMO 是什麼意思？', opts:['多載波分頻多址','多點存取','多用戶多輸入多輸出','多點分發服務'], ans:2, exp:'MU-MIMO 是 Multi-User Multiple Input Multiple Output 的縮寫，意思是多用戶多輸入多輸出，是 Wi-Fi 6 中一種用於提高網路容量和傳輸效率的技術。' },
+      { q:'以下哪種技術不是 Wi-Fi 6 中用於提高速率和容量的技術？', opts:['1024-QAM','BSS Coloring','Beamforming','MIMO'], ans:1, exp:'BSS Coloring 是一種用於減少干擾和提高效率的技術，不是用於提高速率和容量的技術。Wi-Fi 6 中用於提高速率和容量的技術主要包括 1024-QAM、Beamforming 和 MIMO 等。' },
+      { q:'以下哪種技術不是 Wi-Fi 6 中用於提高安全性的技術？', opts:['WPA3','OWE','Enhanced Open','WPA2'], ans:3, exp:'WPA2 是一種舊的 Wi-Fi 安全標準，不是 Wi-Fi 6 中用於提高安全性的技術。Wi-Fi 6 中用於提高安全性的技術主要包括 WPA3、OWE 和 Enhanced Open 等。' },
+      { q:'Wi-Fi 6 中的 TPC 是什麼意思？', opts:['發射功率控制','通道選擇','動態頻道選擇','頻寬控制'], ans:0, exp:'TPC 是 Transmit Power Control 的縮寫，意思是發射功率控制，是 Wi-Fi 6 中用於減少干擾和提高效率的技術。' },
+      { q:'Wi-Fi 6 中的 TWT 是什麼意思？', opts:['通訊等待時間','目標喚醒時間','傳輸等待時間','無線傳輸時間'], ans:1, exp:'TWT 代表 "Target Wake Time"，即「目標喚醒時間」。這是 Wi-Fi 6 中的一項新功能，旨在提高無線設備的效能和節省能源。' },
+      { q:'Wi-Fi 6 中的 AX 是什麼意思？', opts:['802.11Ax 標準','高速無線存取技術','無線網路加速器','5G 技術'], ans:0, exp:'AX 是 802.11Ax 標準的簡稱，是 Wi-Fi 6 的技術標準。' },
+      { q:'Wi-Fi 6 中的空時區塊編碼（STBC）是什麼意思？', opts:['多載波分頻多址','多用戶通信技術','多點存取','空時分頻多工'], ans:3, exp:'STBC 是 Space Time Block Coding 的縮寫，意思是空時區塊編碼，是 Wi-Fi 6 中一種用於提高傳輸速率和可靠性的技術。' },
+      { q:'Wi-Fi 6 中的 AP 是什麼意思？', opts:['無線網路加速器','無線存取點','路由器','調變解調器'], ans:1, exp:'AP 是 Access Point 的縮寫，意思是存取點，是 Wi-Fi 6 中用於建立無線網路的設備，可以提供用戶存取網路的服務。' },
+    ]
+  },
+  {
+    id: '5g',
+    name: '5G',
+    available: true,
+    questions: [
+      { q:'以下哪種頻譜不屬於 5G 使用的頻段？', opts:['2.4 GHz','28 GHz','39 GHz','60 GHz'], ans:0, exp:'2.4 GHz 是 4G 及以下行動通訊網路使用的頻段，5G 使用的頻段較高，主要包括 28 GHz、39 GHz 和 60 GHz。' },
+      { q:'以下哪種技術不是 5G 中重要的技術之一？', opts:['MIMO','OFDM','CDMA','Massive MIMO'], ans:2, exp:'CDMA 是 3G 時代的一種技術，而 5G 中重要的技術主要包括 MIMO、OFDM 和 Massive MIMO 等。' },
+      { q:'以下哪種技術不是 5G 中用於增加頻譜效率的技術？', opts:['Beamforming','Carrier Aggregation','MU-MIMO','CDMA'], ans:3, exp:'CDMA 不是用於增加頻譜效率的技術，而是用於實現多用戶之間的干擾消除。' },
+      { q:'以下哪種技術不是 5G 中用於提高傳輸速率的技術？', opts:['Massive MIMO','Small Cell','Carrier Aggregation','Beamforming'], ans:1, exp:'Small Cell 則是一種基地台部署方式，它通常用於提高覆蓋面積，但不直接用於提高單個連接的傳輸速率。' },
+      { q:'以下哪種技術不是 5G 中用於降低延遲的技術？', opts:['Edge Computing（邊緣運算）','URLLC','MEC（多存取邊緣計算）','Massive MIMO'], ans:3, exp:'Massive MIMO 不是用於降低延遲的技術，而是用於提高頻譜效率和增加網路容量。' },
+      { q:'以下哪種頻段對於室內覆蓋更加重要？', opts:['28 GHz','39 GHz','60 GHz','2.4 GHz'], ans:3, exp:'2.4 GHz 對於室內覆蓋更加重要，因為它的穿透力較強，可以穿透建築物並提供更好的覆蓋。' },
+      { q:'以下哪種技術不是 5G 中用於提高頻譜效率的技術？', opts:['Massive MIMO','Beamforming','Carrier Aggregation','以上皆是提高頻譜效率的技術'], ans:3, exp:'Massive MIMO、Beamforming、Carrier Aggregation 皆是提高頻譜效率的技術，所以答案 D「以上皆是」本身即為錯誤敘述。選 D 為正確答案（題目問哪個「不是」，選 D 表示 D 的敘述是錯的，因為三者都是）。' },
+      { q:'以下哪種技術是 5G 中用於實現多重存取的技術？', opts:['FDMA','CDMA','TDMA','SDMA'], ans:3, exp:'SDMA（空間分割多址）是 5G 中用於實現多重存取的一種技術，通過使用不同的天線和波束成形技術，允許同一頻段上的不同用戶同時傳輸和接收數據。' },
+      { q:'以下哪種技術不是 5G 中用於實現低延遲的技術？', opts:['Edge Computing','Network Slicing','Coordinated Multipoint','Massive MIMO'], ans:3, exp:'Massive MIMO 是一種用於提高頻譜效率的技術，不是用於實現低延遲的技術。5G 中用於實現低延遲的技術主要包括 Edge Computing、Network Slicing 和 Coordinated Multipoint 等。' },
+      { q:'以下哪種技術不是 5G 中用於提高容量的技術？', opts:['mmWave','Carrier Aggregation','Virtualized RAN','MIMO'], ans:2, exp:'Virtualized RAN（虛擬化無線存取網路）主要是一種網路架構技術，用於提高網路管理的靈活性和效率，不直接用於增加容量。' },
+      { q:'5G NR 通訊系統中，下列哪個技術使其能夠在頻譜效率和傳輸速率方面比 4G LTE 更優秀？', opts:['Massive MIMO','Beamforming','Network Slicing','Virtualized RAN'], ans:0, exp:'5G NR 使用了大規模多入多出（Massive MIMO）技術，這種技術利用了大量的天線和智能算法，能夠有效地提高系統的頻譜效率和傳輸速率。' },
+      { q:'5G NR 通訊系統中，下列哪個特性使其能夠更好地支援大量設備和大量數據的傳輸？', opts:['Millimeter Wave (mmWave) Spectrum','Dual Connectivity','Network Slicing','Massive MIMO'], ans:2, exp:'5G NR 支援網路切片（Network Slicing）技術，能夠根據不同的應用場景和用戶需求，將整個網路切割成多個獨立的虛擬網路，以更好地支援大量設備和大量數據的傳輸。' },
+      { q:'5G NR 使用的 MIMO 天線技術比 4G LTE 更高效的原因是什麼？', opts:['5G NR 使用更多的天線','5G NR 使用更高頻率的信號','5G NR 使用更高效的信號處理算法','以上都是'], ans:3, exp:'5G NR 使用大規模多入多出（Massive MIMO）技術，比 4G LTE 使用更多的天線，能夠更好地利用多路徑傳播，提高頻譜效率和傳輸速率。此外，5G NR 使用更高頻率的信號和更高效的信號處理算法。' },
+      { q:'5G NR 通訊系統相較於 4G LTE，下列哪個敘述是錯誤的？', opts:['5G NR 支援更高的頻譜帶寬','5G NR 支援更低的通信延遲','5G NR 支援更高的最大下行傳輸速率','5G NR 支援更少的最大上行傳輸速率'], ans:3, exp:'5G NR 支援更高的最大上行傳輸速率，相較於 4G LTE 更有優勢。' },
+      { q:'5G NR 中，下列哪個技術對提高系統容量和頻譜效率非常重要？', opts:['多輸入多輸出（MIMO）技術','射頻前端技術','虛擬化無線存取技術','軟體定義網路技術'], ans:0, exp:'5G NR 中，MIMO 技術是一種關鍵的技術，能夠提高系統的容量和頻譜效率。MIMO 技術基於多個天線和信道之間的空間多樣性，利用多路徑傳播的信號，提高了系統的可靠性和效率。' },
+      { q:'以下哪種技術不是 5G 中用於實現高可靠低延遲通信（URLLC）的技術？', opts:['Network Slicing','Dynamic Spectrum Sharing','Time Sensitive Networking','Polar Coding'], ans:1, exp:'Dynamic Spectrum Sharing 是一種用於提高頻譜效率和網路容量的技術，不是用於實現 URLLC 的技術。5G 中用於實現 URLLC 的技術主要包括 Network Slicing、Time Sensitive Networking 和 Polar Coding 等。' },
+      { q:'以下哪種技術不是 5G 中用於實現虛擬現實（VR）和擴增現實（AR）的技術？', opts:['Beamforming','Edge Computing','Multi-Access Edge Computing','Haptic Feedback'], ans:3, exp:'Haptic Feedback 通常與觸覺回饋設備和技術相關，不是 5G 通信技術的一部分。' },
+    ]
+  },
+  {
+    id: 'bigdata',
+    name: '大數據',
+    available: true,
+    questions: [
+      { q:'大數據最主要的特點是什麼？', opts:['資料量大','資料種類多樣','資料處理速度快','資料分析準確度高'], ans:0, exp:'大數據的主要特點之一是資料量巨大，它包含了龐大的數據集，這些數據集可能超出了傳統數據處理工具的處理能力。大數據還具有資料種類多樣、處理速度快和資料分析精度高等特點，但資料量的大小是其最主要的特徵。' },
+      { q:'下列哪個不是大數據的主要技術？', opts:['Hadoop','Spark','Machine Learning','HTML'], ans:3, exp:'大數據的主要技術包括 Hadoop、Spark、Machine Learning 等，而 HTML 不是大數據的技術之一。HTML 是超文本標記語言，主要用於網頁設計。' },
+      { q:'大數據是指什麼？', opts:['數量極大的資料','數學中的一個概念','特定種類的軟體程式','一種網路安全技術'], ans:0, exp:'大數據是指數量巨大、多樣化、複雜度高的資料集合。大數據的最大特徵就是數量巨大，這些數據量已經超出了人類的感知範圍。' },
+      { q:'大數據的 4V 特點不包括哪一項？', opts:['巨量性（Volume）','時效性（Velocity）','多樣性（Variety）','可視性（Visibility）'], ans:3, exp:'大數據的 4V 特點為：巨量性（Volume）、時效性（Velocity）、多樣性（Variety）和真實性（Veracity）。加上價值性（Value）則為 5V。可視性（Visibility）並不在其中。' },
+    ]
+  },
+  {
+    id: 'metaverse',
+    name: '元宇宙',
+    available: true,
+    questions: [
+      { q:'元宇宙的應用最廣泛的是哪一個領域？', opts:['遊戲','金融','醫療','工業製造'], ans:0, exp:'元宇宙最早是在遊戲業中得到廣泛應用的，但隨著時間的推移，它已經擴展到其他領域，如金融、醫療、工業製造等。然而，最廣泛的應用仍然是在遊戲和虛擬世界的創建中。' },
+      { q:'元宇宙中的 NPC 是什麼意思？', opts:['新世代卡牌遊戲','無人機飛控器','非玩家角色','虛擬實境裝置'], ans:2, exp:'NPC 的全稱是 Non-Player Character，即非玩家角色。在元宇宙中，NPC 是由電腦程式控制的虛擬角色，與真實玩家角色協同完成各種任務和活動。' },
+      { q:'哪種技術將虛擬元素與現實世界相結合，並讓用戶可以看到和互動虛擬物體與現實環境的結合？', opts:['AR（擴增實境）','VR（虛擬實境）','MR（混合實境）','AI（人工智慧）'], ans:2, exp:'MR（混合實境）技術將虛擬元素和現實世界相結合，但與 AR 不同，它更強調虛擬物體和現實物體之間的互動和融合。用戶可以在混合實境中看到虛擬物體與現實物體互動，並進行更多的 3D 虛擬物體操作。' },
+    ]
+  },
+  {
+    id: 'blockchain',
+    name: '區塊鏈',
+    available: true,
+    questions: [
+      { q:'區塊鏈是什麼？', opts:['一種數位貨幣','一種去中心化的資料庫','一種加密技術','一種網際網路協議'], ans:1, exp:'區塊鏈是一種去中心化、公開、安全的資料庫，它可以讓多個參與者透過網路互相交換資料，而且不需要第三方機構進行驗證。在區塊鏈上，所有資料都被加密並存儲在分散的節點上，這些節點通過共識機制來確認交易的有效性。' },
+      { q:'區塊鏈的主要應用場景是什麼？', opts:['金融交易','物聯網','社交媒體','雲端計算'], ans:0, exp:'區塊鏈最初應用於比特幣等加密貨幣的金融交易中，由於其去中心化、透明、不可篡改等特性，現在也被廣泛應用於金融業務的其他方面。' },
+      { q:'區塊鏈的特點不包括以下哪個？', opts:['去中心化','可篡改','不可篡改','共識機制'], ans:1, exp:'區塊鏈的特點包括去中心化、不可篡改、共識機制等，其中最重要的特點之一就是不可篡改性，保證了區塊鏈上的資訊不會被篡改或刪除。' },
+      { q:'以下哪個不是區塊鏈的基礎原理？', opts:['非對稱加密','共識機制','去中心化','交易手續費'], ans:3, exp:'區塊鏈的基礎原理包括非對稱加密（用於保護數據的安全性）、共識機制（用於確定數據的一致性）和去中心化（不依賴單一中心機構）。交易手續費通常是與加密貨幣（如比特幣）相關的概念，不是區塊鏈的基礎原理。' },
+      { q:'在區塊鏈中，交易在被添加到區塊之前需要先經過什麼過程？', opts:['Hashing','Digital Signature','Mining','Verification'], ans:3, exp:'交易在被添加到區塊之前需要先經過驗證（Verification），驗證是確保交易的合法性和有效性，通常由節點或礦工進行。' },
+      { q:'區塊鏈的主要特點是？', opts:['雲端計算','物聯網','資料安全和信任','機器學習'], ans:2, exp:'區塊鏈的主要目的是建立一個去中心化、不可竄改的資料庫，提供資料安全和信任的保障。' },
+      { q:'區塊鏈的特點不包括以下哪個？', opts:['分散式','匿名性','去中心化','高速交易'], ans:3, exp:'區塊鏈的高安全性和可信度是建立在分散式、去中心化和匿名性等特點的基礎上，但區塊鏈技術並不支持高速交易。' },
+      { q:'在區塊鏈技術中，以下哪個過程是不需要使用加密算法的？', opts:['挖礦','簽名','證明','共識'], ans:3, exp:'共識過程是區塊鏈系統中的重要機制之一，它通過各個節點之間的協作和協調，確定區塊鏈上的交易和記錄是否有效和一致。共識機制並不需要使用加密算法，但需要節點之間的通信和計算。' },
+    ]
+  },
+  {
+    id: 'cloud',
+    name: '雲端計算',
+    available: true,
+    questions: [
+      { q:'雲端計算的優點是什麼？', opts:['可以提高資源利用率並節省成本','可以提高數據的安全性和隱私性','可以提高設備的運行速度和效率','可以降低應用程式的延遲時間'], ans:0, exp:'雲端計算可以通過提高資源的利用率來節省成本，因為用戶可以按需使用計算資源，而不必購買昂貴的硬體和軟體設備。' },
+      { q:'下列哪種技術被用於在雲端環境中部署和管理軟體應用程序？', opts:['虛擬化技術','資源管理技術','數據加密技術','軟體開發技術'], ans:0, exp:'虛擬化技術被用於在雲端環境中部署和管理軟體應用程序，因為虛擬化技術可以將物理資源虛擬為多個虛擬資源，並提供對虛擬資源的彈性管理和分配。' },
+      { q:'雲端計算的服務模式主要有哪些？', opts:['基礎設施即服務（IAAS）、軟體即服務（SAAS）和平台即服務（PAAS）','資料庫即服務（DAAS）、通信即服務（CAAS）和存儲即服務（StAAS）','計算即服務（CAAS）、網路即服務（NAAS）和安全即服務（SAAS）','記憶體即服務（MAAS）、應用程序即服務（AAAS）和管理即服務（MnSAAS）'], ans:0, exp:'雲端計算的服務模式主要有基礎設施即服務（IAAS）、軟體即服務（SAAS）和平台即服務（PAAS）。' },
+      { q:'下列何者不是雲端計算的服務模式？', opts:['IAAS','SAAS','PAAS','HAAS'], ans:3, exp:'雲端計算的服務模式有三種，分別是基礎架構即服務（IAAS）、平台即服務（PAAS）和軟體即服務（SAAS），而 HAAS 並不是雲端計算的服務模式，它是指硬體即服務。' },
+      { q:'下列何者不是雲端計算的部署模式？', opts:['公有雲','私有雲','混合雲','個人雲'], ans:3, exp:'雲端計算的部署模式有四種，分別是公有雲、私有雲、混合雲和社群雲，而個人雲不是一種公認的部署模式。' },
+      { q:'下列何者不是雲端計算的優勢？', opts:['提高資訊處理效能','提高資料傳輸速度','降低資訊技術維護成本','提高服務可用性和穩定性'], ans:1, exp:'雲端計算的優勢包括提高資訊處理效能、降低資訊技術維護成本、提高服務可用性和穩定性，但是並不是提高資料傳輸速度，這是取決於網路速度和資料量的大小。' },
+      { q:'雲端計算的優點是什麼？', opts:['資料安全性高','速度較快','需要的設備較少','需要較少的網路頻寬'], ans:2, exp:'雲端計算可以讓使用者在不需擁有高規格電腦或其他設備的情況下，透過網路即可使用雲端服務。因此需要的設備較少是雲端計算的一大優點。' },
+      { q:'關於雲端計算的定義，下列何者是錯誤的？', opts:['雲端計算可以提供不同的服務，如 IAAS、PAAS、SAAS 等','雲端計算是一種基於網路的運算模式','雲端計算是指在網路上提供可隨時隨地存取的共享資源','雲端計算只適用於商業用途，一般民眾無法使用'], ans:3, exp:'雲端計算適用於商業用途以及個人用途，一般民眾也可以使用雲端服務。' },
+      { q:'雲端計算的核心是什麼？', opts:['人工智慧','大數據','伺服器虛擬化','區塊鏈'], ans:2, exp:'雲端計算是一種通過網路提供服務的模式，其核心是通過虛擬化技術將多個物理伺服器整合成一個虛擬伺服器，提供給用戶使用。因此，伺服器虛擬化是雲端計算的核心。' },
+      { q:'下列哪種雲端服務模式最適合企業降低硬體設備的資本資出？', opts:['軟體即服務（SAAS）','平台即服務（PAAS）','基礎架構即服務（IAAS）','一般雲端存儲'], ans:2, exp:'基礎架構即服務（IAAS）是一種雲端服務模式，它提供了虛擬化的硬體基礎架構，包括虛擬機器、儲存和網路資源。企業可以使用這些虛擬化資源來運行應用程序，而不必購買和維護自己的物理硬體，有助於降低資本支出。' },
+      { q:'雲端計算的主要優勢是什麼？', opts:['高可用性和可靠性','更好的安全性','更低的成本','更快的執行速度'], ans:2, exp:'雲端計算可以幫助企業降低成本，因為它可以減少企業需要擁有和維護的硬體設施。' },
+    ]
+  },
+  {
+    id: 'edge',
+    name: '邊緣計算',
+    available: true,
+    questions: [
+      { q:'何謂邊緣計算？', opts:['邊緣計算是一種雲端計算模型，將所有計算過程集中在中央伺服器上。','邊緣計算是一種分散式計算模型，將計算過程分散到許多邊緣設備上。','邊緣計算是一種量子計算模型，運用量子位元進行計算。','邊緣計算是一種人工智慧模型，運用機器學習算法進行計算。'], ans:1, exp:'邊緣計算是一種計算模型，它將計算和資料處理運算分散到物理世界的邊緣設備上，而不是集中在遠程的中央伺服器或雲端。' },
+      { q:'邊緣計算的主要優勢是什麼？', opts:['提高運算速度和效率。','降低成本和能源消耗。','提高資料安全性。','以上皆是'], ans:3, exp:'邊緣計算的主要優勢包括提高運算速度和效率，降低成本和能源消耗，以及提高資料安全性。邊緣計算將計算和資料處理運算推向物理世界的邊緣，以縮短資料傳輸距離和時間，提高即時性，同時減少網路塞塞。由於邊緣設備通常不需要大型的數據中心設施，也可以降低成本和能源消耗。此外，敏感資料可以在本地處理，而無需傳輸到遠程伺服器。' },
+      { q:'邊緣計算的優點是什麼？', opts:['降低運營成本','提高資料安全性','優化數據處理速度','以上皆是'], ans:3, exp:'邊緣計算可以降低運營成本、提高資料安全性和優化數據處理速度，因此所有選項都是正確的。' },
+      { q:'在邊緣計算中，何種技術可用於減少數據傳輸量？', opts:['機器學習','模型壓縮','人工智慧','資料清理'], ans:1, exp:'邊緣計算中，模型壓縮可用於減少數據傳輸量，因為它可以將模型大小縮小到能夠在邊緣設備上運行的範圍。' },
+    ]
+  },
+  {
+    id: 'iot',
+    name: '物聯網 IoT',
+    available: true,
+    questions: [
+      { q:'以下何者是物聯網中的重要元件？', opts:['感測器','通訊協定','伺服器','以上皆是'], ans:3, exp:'物聯網系統需要感測器收集環境資訊、通訊協定規定設備之間的溝通方式、伺服器處理資料。' },
+      { q:'下列何者是物聯網的一種應用場景？', opts:['防火牆設定','自駕汽車技術','文字處理軟體','太陽能發電'], ans:1, exp:'自駕汽車技術是物聯網 IoT 的重要應用，車輛配備了多種感測器和連接性技術，使其能夠收集和分享數據，以實現自主駕駛和智能交通管理。' },
+      { q:'物聯網中的邊緣計算是指什麼？', opts:['在網路核心處理資料','在終端裝置處理資料','在感測器處理資料','在雲端處理資料'], ans:1, exp:'邊緣計算是指在終端裝置處理資料，透過分散式運算、資料篩選、分析、儲存，減少資料的傳輸與處理負擔，增加系統的效能與安全性。' },
+      { q:'物聯網是指將許多智慧裝置透過 ________ 連線起來，形成一個相互連接的網路。', opts:['藍牙','無線網路','有線網路','電源線'], ans:1, exp:'物聯網是指透過無線網路，將許多智慧裝置連接起來，形成一個相互連接的網路，讓這些裝置可以互相通訊、交換資訊，並透過雲端平台儲存和處理資料。' },
+      { q:'物聯網可以用於以下哪些應用？', opts:['智慧家居','智慧醫療','智慧製造','以上皆是'], ans:3, exp:'物聯網可以應用於各種領域，包括智慧家居、智慧醫療、智慧製造等等，讓許多智慧裝置可以互相連接、互相溝通，提升生活品質和工作效率。' },
+      { q:'物聯網中的 MQTT 是什麼？', opts:['一種資料傳輸協定','一種數據庫系統','一種網路安全協定','一種機器學習算法'], ans:0, exp:'MQTT 是一種為物聯網設計的輕量級資料傳輸協定，它可以在低帶寬、不可靠的網路環境中傳輸資料，並且保證資料的可靠性和安全性。' },
+      { q:'物聯網中的 RFID 是什麼？', opts:['一種無線傳輸協定','一種網路通信協定','一種物理傳輸介面','一種數據加密技術'], ans:0, exp:'RFID 是一種無線傳輸協定，可以通過無線信號識別和記錄物體的信息，廣泛應用於物聯網的場景中。' },
+      { q:'以下哪個是物聯網的核心技術？', opts:['人工智慧','區塊鏈','5G','傳感器'], ans:3, exp:'傳感器是物聯網的核心技術，它負責收集環境中的數據，是物聯網的基礎。' },
+      { q:'物聯網的安全問題不包括以下哪些？', opts:['身份認證','數據保護','網路防火牆','手機信號增強器'], ans:3, exp:'物聯網的安全問題主要涉及身份認證、數據保護和網路防火牆等方面，以確保連接的設備和數據的安全性。手機信號增強器與物聯網安全問題無關。' },
+      { q:'物聯網的基礎架構包含哪些？', opts:['感知層、基本層與應用層','感知層、網路層與基本層','基本層、網路層與應用層','感知層、網路層與應用層'], ans:3, exp:'感知層、網路層與應用層為物聯網三層架構。' },
+      { q:'在物聯網中，以下哪種通訊協議不適合於低功耗裝置？', opts:['ZigBee','Bluetooth Low Energy（BLE）','Wi-Fi','LoRaWAN'], ans:2, exp:'Wi-Fi 是一種高速、高功耗的通訊協議，不適合用於低功耗裝置。而 ZigBee、BLE 和 LoRaWAN 等通訊協議則較為適合。' },
+      { q:'以下哪個領域不屬於物聯網的應用範圍？', opts:['工業自動化','智慧城市','醫療保健','遊戲娛樂'], ans:3, exp:'物聯網的應用範圍非常廣泛，包括工業自動化、智慧城市、醫療保健等領域，但遊戲娛樂領域與物聯網的應用關聯不大。' },
+      { q:'物聯網中的邊緣運算指的是什麼？', opts:['在遠端伺服器上執行的運算','在本地裝置上執行的運算','在網路邊緣處理的運算','在雲端上執行的運算'], ans:2, exp:'物聯網中的邊緣運算指的是在網路邊緣處理的運算，通常是在雲端和本地裝置之間的一層，既可以減輕雲端的負擔，又可以提高資料處理的速度和效率。' },
+    ]
+  },
+  {
+    id: 'netcomm',
+    name: '通訊系統與電腦網路',
+    available: true,
+    questions: [
+      { q:'通信系統中，將訊息轉換成信號的過程稱為什麼？', opts:['調變','解調','編碼','解碼'], ans:0, exp:'調變是將訊息轉換成信號的過程，解調則是將接收到的信號轉換成訊息。' },
+      { q:'通信系統中，信號在傳輸過程中會經歷什麼？', opts:['衰減','干擾','延遲','以上皆是'], ans:3, exp:'信號在傳輸過程中會受到衰減、干擾和延遲等影響。' },
+      { q:'通信系統中，用來調變信號的參數是什麼？', opts:['頻率','振幅','相位','以上皆是'], ans:3, exp:'在通信系統中，可以使用頻率、振幅和相位等參數來調變信號。' },
+      { q:'在調變過程中，如果載波頻率和調變信號頻率相同，會發生什麼現象？', opts:['AM 調變','FM 調變','PM 調變','不會發生調變'], ans:3, exp:'如果載波頻率和調變信號頻率相同，將不會發生調變。' },
+      { q:'通信系統的基本組成部分是什麼？', opts:['發射器、接收器、傳輸通道','發射器、接收器、天線','發射器、接收器、中繼器','調變器、解調器、傳輸介質'], ans:0, exp:'通信系統的基本組成部分是發射器、接收器和傳輸通道。' },
+      { q:'以下何者不是通訊系統的重要組成部分？', opts:['發射端','傳輸介質','接收端','訊息記錄器'], ans:3, exp:'通訊系統的重要組成部分包括發射端、傳輸介質、接收端，訊息記錄器不屬於通訊系統的組成部分。' },
+      { q:'哪一種通訊系統是透過光纖來傳輸資料？', opts:['ADSL','FTTH','HFC','DSL'], ans:1, exp:'FTTH（FiBer To The Home）是一種通訊系統，可以將光纖網路存取到用戶家中，提供高速的寬頻網路連接。' },
+      { q:'哪種數位調變方式可以在有限的頻寬內傳輸更多的資料？', opts:['BPSK','QPSK','16QAM','64QAM'], ans:3, exp:'越多的位元可以被傳輸在一個訊號符號內，就可以在有限的頻寬內傳輸更多的資料。64QAM 可以傳輸比 16QAM 更多的資料，因此是一種更高效率的數位調變方式。' },
+      { q:'以下哪一種通訊系統可以提供最高的傳輸速度？', opts:['GPRS','EDGE','HSPA+','5G'], ans:3, exp:'5G 是當前可提供最高傳輸速度的通訊系統，可提供超過 1GBps 的下載速度和更快的上傳速度。' },
+      { q:'在通訊系統中，什麼是「半雙工」？', opts:['能夠在兩個設備之間同時進行雙向通訊','可以在一個頻帶上同時傳輸多個訊號','通訊雙方可以在任何時間進行通訊','能夠在兩個設備之間進行單向通訊'], ans:3, exp:'半雙工是指通訊雙方可以進行雙向通訊，但同一時間只能有一方發送資料，另一方只能接收資料，不能同時進行發送和接收。' },
+      { q:'哪種數位調變方式在高雜訊環境下有較好的表現？', opts:['BPSK','QPSK','16QAM','64QAM'], ans:0, exp:'BPSK（BinAry PhAse Shift Keying）是一種基本的二進位數位調變方式，只有兩種可能的相位狀態，較不容易受到雜訊的影響，因此在高雜訊比的環境下有較好的表現。' },
+      { q:'假設有一個 1000 Hz 的正弦波透過一個理想低通濾波器，截止頻率為 200 Hz，則輸出信號的頻率為？', opts:['1000 Hz','200 Hz','800 Hz','400 Hz'], ans:1, exp:'理想低通濾波器只能通過截止頻率以下的信號，因此只會通過 200 Hz 以下的訊號，而此題輸入信號的頻率為 1000 Hz，因此輸出信號的頻率為 200 Hz。' },
+      { q:'在數位通信中，調變的目的是將基頻信號轉換為？', opts:['高頻信號','脈衝信號','數位信號','頻率信號'], ans:0, exp:'通信中的常見步驟，將信息信號（基頻信號）被調製到載波信號上，以便在傳輸過程中能夠有效地傳輸和接收信息。調變涉及改變載波信號的一些特性（如頻率、相位、幅度），以將信息嵌入到載波信號中，從而允許它以高頻信號的形式進行傳輸。' },
+      { q:'在一個二元制的數位通信系統中，每個符號所攜帶的信息量稱為？', opts:['碼元','帶寬','符元','編碼率'], ans:2, exp:'在二元制的數位通信系統中，每個符號只有兩種可能的取值，如 0 或 1，因此每個符號所攜帶的信息量可以用一個比特（Bit）來表示。而在通信中，為了提高信號的傳輸效率，常常將多個比特組合成一個符號，此時每個符號所攜帶的信息量稱為符元。' },
+      { q:'以下哪種調變技術可以讓訊號抵抗多重路徑干擾和抵抗多種干擾源的影響？', opts:['頻率調變','振幅調變','相位調變','正交振幅調變'], ans:3, exp:'正交振幅調變（QAM）是一種複合調變技術，它同時使用振幅調變和相位調變來將原始訊號轉換為符合調變訊號的格式，使其能夠抵抗多重路徑干擾和抵抗多種干擾源的影響。' },
+      { q:'通信系統中，資料傳輸的方式可以分為下列哪些？', opts:['類比傳輸、數位傳輸','密碼傳輸、解碼傳輸','聲音傳輸、影像傳輸','無線傳輸、有線傳輸'], ans:0, exp:'資料傳輸的方式可以大致分為類比傳輸和數位傳輸兩種，其中類比傳輸使用的是連續變化的信號，而數位傳輸則使用的是離散的信號。' },
+      { q:'在通信系統中，帶通濾波器的作用是什麼？', opts:['分離特定頻帶的信號','壓縮信號的帶寬','減少信號的噪聲','提高信號的信噪比'], ans:0, exp:'帶通濾波器通常用於過濾特定頻帶的信號，只允許這些頻帶的信號通過，而阻止其他頻帶的信號通過。' },
+      { q:'通信系統中的增益控制是什麼？', opts:['控制傳輸速率','控制信號功率','控制接收靈敏度','控制信噪比'], ans:1, exp:'增益控制用於調整信號的功率水平，以確保在通信過程中具有適當的信號功率。這有助於確保信號在傳輸過程中能夠有效地傳輸和接收，同時減小了過度放大或減小信號的可能性。' },
+      { q:'以下哪一種是數位通訊的調變方式？', opts:['PSK','AM','FM','SSB'], ans:0, exp:'PSK 代表相位偏移調變，屬於數位通訊的一種常見調變方式，常用於數位語音和數據傳輸等。' },
+      { q:'以下哪一種不是類比通訊的調變方式？', opts:['PSK','AM','FM','SSB'], ans:0, exp:'BCD 屬於類比通訊的一種常見調變方式，PSK 屬於數位通訊的調變方式。' },
+      { q:'在通信系統中，下列哪個是指信號的傳輸速率？', opts:['帶寬','訊號強度','資料容量','傳輸延遲'], ans:2, exp:'資料容量指的是系統能夠傳輸的最大位元數量，通常用單位比特/秒（Bps）表示。' },
+      { q:'通信系統中用於調變的參數不包括？', opts:['幅度','相位','頻率','光強度'], ans:3, exp:'通信系統中，調變是指將載波的某些參數（如幅度、相位、頻率等）按照調變信號的變化來改變，而光強度並非載波的參數，因此不屬於調變的參數。' },
+      { q:'下列哪種調變方式最常用於數位通信系統中？', opts:['AM','FM','PM','ASK'], ans:3, exp:'數位通信系統中最常用的調變方式是 ASK（AmplituDe Shift Keying），即利用載波的幅度來傳輸數位信號。' },
+      { q:'通信系統中的功率放大器的主要作用是？', opts:['放大調變信號','降低噪聲','調整載波的幅度','控制載波的頻率'], ans:0, exp:'功率放大器的主要作用是放大調變信號，使其能夠在通信媒介中傳輸。' },
+      { q:'下列哪個項目不屬於通信系統的基本組成部分？', opts:['調變器','解調器','收發器','電腦'], ans:3, exp:'通信系統的基本組成部分包括調變器、解調器、收發器等，但電腦並非通信系統的基本組成部分。' },
+      { q:'下列哪個項目不屬於數位通信系統中的調變方式？', opts:['BPSK','QAM','PSK','FM'], ans:3, exp:'數位通信系統中的調變方式包括 BPSK、QAM、PSK 等，但 FM 不屬於數位通信系統中的調變方式。' },
+      { q:'在調幅（AM）信號中，載波和調變信號之間的關係是？', opts:['載波的幅度與調變信號的幅度成正比，頻率不變','載波的頻率與調變信號的幅度成正比，幅度不變','載波的頻率與調變信號的幅度成正比，幅度也隨之變化','載波的頻率與調變信號的頻率成正比，幅度不變'], ans:0, exp:'在 AM 調幅信號中，載波的幅度隨調變信號的幅度成正比變化，而載波頻率保持不變。' },
+      { q:'下列哪種通信方式屬於點對多點通信？', opts:['廣播','對講機','電話','電報'], ans:0, exp:'廣播屬於點對多點通信，即一個發送端可以同時向多個接收端傳輸信息。' },
+      { q:'下列哪種調變方式常用於有線電視信號的傳輸？', opts:['AM','FM','QAM','PSK'], ans:2, exp:'有線電視信號的傳輸常用 QAM（Quadrature Amplitude Modulation）調變方式，它可以同時利用載波的相位和幅度來傳輸數字信號。' },
+      { q:'在數位通信系統中，下列哪種調變方式可以有效地提高傳輸速率？', opts:['BPSK','QAM','PSK','AM'], ans:1, exp:'在數位通信系統中，QAM 調變方式可以有效地提高傳輸速率，因為它可以同時利用載波的相位和幅度來傳輸數字信號。' },
+      { q:'在數位通信系統中，下列哪個項目不屬於數據傳輸的主要性能指標？', opts:['傳輸速率','傳輸距離','傳輸可靠性','傳輸延遲'], ans:1, exp:'數據傳輸的主要性能指標包括傳輸速率、傳輸可靠性和傳輸延遲。' },
+      { q:'在數位通信系統中，下列哪種技術可以有效地提高頻寬利用率？', opts:['調頻技術','頻分多重存取技術','時分多重存取技術','無線電信號壓縮技術'], ans:1, exp:'頻分多重存取技術可以將一個頻帶分成多個子頻帶，每個子頻帶都被用來傳輸不同的信號，因此可以有效地提高頻寬利用率。' },
+      { q:'下列哪個項目不屬於通信調變的主要種類？', opts:['AM','FM','PM','PCM'], ans:3, exp:'調變的主要種類包括 AM、FM 和 PM 等，但 PCM 不屬於調變的主要種類，它是一種數位編碼方式。' },
+      { q:'下列哪種通信方式常用於基地台與行動用戶端之間的通信？', opts:['蜂窩通信','衛星通信','藍牙通信','Wi-Fi 通信'], ans:0, exp:'蜂窩通信是基地台與行動用戶端之間的通信常用的方式，它利用多個蜂窩組成一個蜂巢網路來實現通信。' },
+      { q:'在通信系統中，下列哪個項目不屬於調變過程中的基頻信號？', opts:['語音信號','數字信號','載波信號','雜訊信號'], ans:2, exp:'調變過程中的基頻信號包括語音信號、數字信號和雜訊信號等，但載波信號不屬於調變過程中的基頻信號，它是調變過程中需要加入的一種信號。' },
+      { q:'下列哪個項目不屬於通信系統中的傳輸媒介？', opts:['光纖','銅線','無線電波','石英晶體'], ans:3, exp:'通信系統中的傳輸媒介包括光纖、銅線、無線電波等，但石英晶體不屬於通信系統中的傳輸媒介，它主要用於振盪器等電子元件中。' },
+      { q:'下列哪個項目屬於調變過程中的線性調變？', opts:['AM','FM','PM','VSB'], ans:3, exp:'非線性調變包括 AM、FM 和 PM 等，VSB 屬於線性調變。' },
+      { q:'下列哪個項目不屬於通信系統中的調變器？', opts:['載波振盪器','線性運算器','調幅器','調頻器'], ans:1, exp:'通信系統中的調變器包括載波振盪器、調幅器、調頻器等，線性運算器不屬於調變器的種類。' },
+      { q:'在通信系統中，下列哪個項目不屬於通道編碼技術？', opts:['同位元編碼','CRC 迴旋碼','壓縮檔','漢明碼'], ans:2, exp:'通道編碼技術包括同位元檢測、CRC 迴旋碼、漢明碼等。壓縮檔壓縮是用於減少數據的大小節省帶寬或存儲空間，不是通道編碼技術。' },
+      { q:'在通信系統中，下列哪個項目不屬於調變過程中的載波頻率？', opts:['基頻信號','射頻信號','載波信號','中頻信號'], ans:0, exp:'調變過程中的載波頻率通常為射頻信號或中頻信號，基頻信號是原始信號，不屬於調變過程中的載波頻率。' },
+      { q:'在通信系統中，下列哪個項目不屬數位調變方式？', opts:['ASK','PSK','FSK','AM'], ans:3, exp:'ASK、PSK 和 FSK 都是數位調變方式，AM 是一種類比調變方式。' },
+      { q:'下列哪個項目不屬於調變指數？', opts:['頻率偏移量','振幅偏移量','載波頻率','調變信號幅度'], ans:2, exp:'調變指數（Modulation Index）是調變信號中基波成分幅度與載波信號幅度的比值，用來衡量調變程度的大小。頻率偏移量、振幅偏移量和調變信號幅度都與調變指數有關，載波頻率與調變指數無關。' },
+      { q:'在通信系統中，傳輸速率指的是什麼？', opts:['訊號傳輸的距離','傳輸單位時間內所能傳輸的資料量','訊號在傳輸過程中所需的時間','訊號的頻寬大小'], ans:1, exp:'傳輸速率是指單位時間內所能傳輸的資料量，通常以 Bits per second（Bps）來表示。' },
+      { q:'以下哪一項不是通信系統的基本組成部分？', opts:['發射端','傳輸媒介','接收端','訊號處理器'], ans:3, exp:'通信系統的基本組成部分包括發射端、傳輸媒介、接收端。訊號處理器雖然是通信系統中常見的元件，但它不是基本組成部分。' },
+      { q:'以下哪一種傳輸媒介的傳輸速率最高？', opts:['光纖','同軸電纜','電線','無線'], ans:0, exp:'光纖的傳輸速率最高，可以達到每秒數十 TBps 的傳輸速率，是目前最快的傳輸媒介。' },
+      { q:'在通信系統中，雜訊比（SNR）越大代表什麼？', opts:['訊號的強度越強','雜訊的強度越強','訊號和雜訊的強度相等','訊號的強度比雜訊大'], ans:3, exp:'訊號的強度比雜訊大。抗雜訊比是指訊號的強度和雜訊的強度之比，用於描述在通訊過程中訊號的強度相對於雜訊的強度有多大。' },
+      { q:'以下何者不是無線通訊系統的缺點？', opts:['訊號容易受到干擾','傳輸距離受限制','訊號易受到竊聽','需要使用較複雜的設備'], ans:3, exp:'無線通訊系統的缺點包括訊號容易受到干擾、傳輸距離受限制、訊號易受到竊聽，但無線通訊系統並不需要使用較複雜的設備。' },
+      { q:'以下何者不是調變的一種？', opts:['AM','FM','ASK','ADSL'], ans:3, exp:'調變的種類包括 AM（幅度調變）、FM（頻率調變）和 ASK（振幅調變），而 ADSL（非對稱數位用戶線路）並不是調變的一種。' },
+      { q:'以下何者是一種基於網際網路的通訊協議？', opts:['TCP','IPX/SPX','NetBEUI','Apple talk'], ans:0, exp:'TCP（傳輸控制協議）是一種基於網際網路的通訊協議，它提供可靠的數據傳輸和錯誤恢復機制。' },
+      { q:'以下何者是一種用於無線網路加密和認證機制的協議？', opts:['SMTP','FTP','DHCP','WPA2'], ans:3, exp:'WPA2（Wi-Fi Protected Access II）是一種用於無線網路的協議，它提供加密和認證機制以保護無線網路的安全。' },
+      { q:'以下何者是一種用於數據壓縮的算法？', opts:['SHA-256','RSA','Huffman 編碼','DES'], ans:2, exp:'Huffman 編碼是一種用於數據壓縮的算法，它通過將出現頻率較高的字符用較短的編碼表示，從而實現數據壓縮。' },
+      { q:'以下何者不是一種用於資料加密的算法？', opts:['SHA-256','RSA','Huffman 編碼','DES'], ans:2, exp:'Huffman 編碼是一種用於資料壓縮的算法，它通常用於減少數據的大小，而不是加密數據。' },
+      { q:'以下何者是一種用於網路安全的協議？', opts:['TCP','IP','SSL/TLS','ICMP'], ans:2, exp:'SSL/TLS 是一種用於網路安全的協議，它提供加密和認證機制以保護數據的安全。' },
+      { q:'哪個協定用於發送電子郵件？', opts:['SMTP','POP3','IMAP','HTTP'], ans:0, exp:'SMTP（簡單郵件傳輸協議）是一種基於網際網路的電子郵件協議，它用於發送郵件。' },
+      { q:'以下何者是一種基於網際網路的檔案傳輸協議？', opts:['FTP','SNMP','HTTP','DNS'], ans:0, exp:'FTP（檔案傳輸協議）是一種基於網際網路的文件傳輸協議，它用於在網路上進行文件傳輸。' },
+      { q:'以下何者是一種用於無線網路的安全協議？', opts:['WEP','SSL/TLS','SSH','IPsec'], ans:0, exp:'WEP（有線等效性協議）是一種用於無線網路的安全協議，它提供加密機制以保護無線網路的安全。' },
+      { q:'下列何者不是 DNS（Domain Name System）的作用？', opts:['將域名轉換成 IP 地址','儲存 DNS 紀錄','轉發電子郵件','提供請求者所需的 DNS 資訊'], ans:2, exp:'DNS（Domain Name System）主要用於將域名轉換成 IP 地址，以便於在網際網路上進行通信。它也負責儲存 DNS 紀錄、提供請求者所需的 DNS 資訊，但不涉及轉發電子郵件的工作。' },
+      { q:'下列何者不是 DHCP（Dynamic Host Configuration Protocol）的功能？', opts:['分配 IP 地址','分配子網路遮罩','分配預設閘道器','分配電子郵件地址'], ans:3, exp:'DHCP（Dynamic Host Configuration Protocol）是一種用於自動分配 IP 地址、子網路遮罩、預設閘道器等網路配置資訊的協議，但不涉及分配電子郵件地址的工作。' },
+      { q:'下列何者是 OSI 模型的傳輸層協議？', opts:['TCP','SMTP','FTP','HTTP'], ans:0, exp:'OSI 模型的傳輸層協議主要用於提供端到端的可靠傳輸，包括 TCP（傳輸控制協議）、UDP（用戶數據報協議）等。' },
+      { q:'下列何者不是 TCP（傳輸控制協議）的特點？', opts:['擁塞控制','可靠傳輸','無連接','流量控制'], ans:2, exp:'TCP 是一種可靠傳輸、具有流量控制和擁塞控制等特點的傳輸層協議，但不是無連接的協議。' },
+      { q:'下列何者是 HTTPS（超文本傳輸安全協議）的特點？', opts:['使用 TCP 協議傳輸','使用 UDP 協議傳輸','使用 SMTP 協議傳輸','使用 TLS/SSL 加密傳輸'], ans:3, exp:'HTTPS 是一種基於 TLS/SSL 加密傳輸的應用層協議，用於保護在網際網路上傳輸的敏感資訊，如個人信息、銀行卡號、密碼等。' },
+      { q:'下列哪個協議不是用於網路安全？', opts:['SSL','IPsec','ICMP','TLS'], ans:2, exp:'SSL 和 TLS 是用於加密通訊的安全協議，IPsec 是用於虛擬私有網路的安全協議，而 ICMP 是用於網路診斷和報錯的協議。' },
+      { q:'下列哪種類型的攻擊不是針對網路通訊？', opts:['DoS/DDoS','SQL Injection','Phishing','Man-in-the-Middle'], ans:1, exp:'DoS/DDoS、Phishing 和 Man-in-the-Middle 是針對網路通訊的攻擊，而 SQL Injection 則是針對資料庫的攻擊。' },
+      { q:'下列哪個不是無線網路的加密方式？', opts:['WEP','WPA','SSL','WPA2'], ans:2, exp:'WEP、WPA 和 WPA2 都是無線網路的加密方式，而 SSL 是用於網頁加密通訊的安全協議。' },
+      { q:'在數位通信中，下列哪種編碼方式可以實現錯誤檢測和更正？', opts:['珂德編碼','漢明編碼','奇偶校驗','置換編碼'], ans:1, exp:'漢明編碼是一種常用的錯誤檢測和更正編碼方式。珂德編碼、奇偶校驗和置換編碼都只能檢測差錯，不能更正差錯。' },
+      { q:'通信系統中，接收器的作用是什麼？', opts:['從傳輸介質中接收信號','將信號從高頻轉換為低頻','將信號從類比訊號轉換為數字信號'], ans:0, exp:'接收器的主要作用是接收從傳輸介質中傳輸過來的信號。' },
+      { q:'在通訊系統中，以下哪種訊號最容易受到干擾而失真？', opts:['頻率調變訊號','相位調變訊號','脈衝訊號'], ans:2, exp:'脈衝訊號是一種非常短暫、高幅度的訊號，其傳輸過程中易受到干擾影響而失真。在通訊系統中，通常會使用調變技術將原始訊號轉換成其他形式的訊號，以減少失真的影響，但如果直接傳送脈衝訊號則容易失真。' },
+      { q:'以下哪個是通信系統中常用的數位訊號編碼方式？（多選）', opts:['奇偶校驗碼','程序式交換碼','非歸零編碼','誤碼率編碼'], autoCorrect:true, exp:'通信系統中常用的數位訊號編碼方式有多種，其中奇偶校驗碼、非歸零編碼和誤碼率編碼等較為常見。（本題為多選題，選任一選項均計為正確。）' },
+      { q:'下列哪個項目不屬於調變解調的基本過程？（本題所有選項皆為調變解調的一部分）', opts:['選擇截波','調變訊號','截波解調','解調訊號'], autoCorrect:true, exp:'調變解調的基本過程包括：A 選擇截波、B 調變訊號、C 截波解調、D 解調訊號。所有選項都屬於調變解調基本過程，沒有一個項目不屬於其中。（本題無正確錯誤選項之分，選任一均計為正確。）' },
+      { q:'以下何者是一種基於無線電頻段的通訊技術？（多選）', opts:['NFC','RFID','ZigBee','Bluetooth'], autoCorrect:true, exp:'NFC、RFID、ZigBee、Bluetooth 都是一種基於無線電頻段的通訊技術。（本題為多選題，選任一選項均計為正確。）' },
+      { q:'下列何者是 OSI 模型的應用層協議？（多選）', opts:['TCP','FTP','DNS','HTTP'], autoCorrect:true, exp:'OSI 模型的應用層協議主要用於應用程序之間的通信，包括 HTTP（超文本傳輸協議）、FTP（檔案傳輸協議）、DNS（域名系統）等。TCP 屬於傳輸層。（本題為多選題，選任一選項均計為正確。）' },
+      { q:'下列哪個是無線通訊中常見的頻段？（多選）', opts:['2.4 GHz','5 GHz','10 GHz','20 GHz'], autoCorrect:true, exp:'2.4 GHz 和 5 GHz 都是無線通訊中常見的頻段，其中 2.4 GHz 的傳輸距離較遠，但速度較慢，而 5 GHz 的傳輸距離較短，但速度較快。（本題為多選題，選任一選項均計為正確。）' },
+    ]
+  },
+  {
+    id: 'compintro',
+    name: '計算機概論（含 SDN）',
+    available: true,
+    questions: [
+      { q:'以下何者不是計算機的組成部分？', opts:['CPU','主機板','記憶體','電源供應器'], ans:3, exp:'電源供應器並非計算機的組成部分，而是用來提供電力給計算機其他組成部分的裝置。' },
+      { q:'計算機中的記憶體分為主記憶體和輔助記憶體。以下何者是主記憶體？', opts:['硬碟','光碟','快閃記憶體','DRAM'], ans:3, exp:'DRAM 是主記憶體的一種，而硬碟、光碟、快閃記憶體等則屬於輔助記憶體。' },
+      { q:'計算機的速度通常以何種單位表示？', opts:['GHz','MB','GB','TB'], ans:0, exp:'計算機的速度通常以 GHz（千兆赫）為單位表示，代表每秒可以處理的指令數。' },
+      { q:'下列何者不是計算機的輸入設備？', opts:['鍵盤','滑鼠','螢幕','麥克風'], ans:2, exp:'螢幕是計算機的輸出設備，而鍵盤、滑鼠、麥克風等則是輸入設備。' },
+      { q:'以下何者不是計算機的輸出設備？', opts:['鍵盤','螢幕','印表機','揚聲器'], ans:0, exp:'鍵盤是計算機的輸入設備，而螢幕、印表機、揚聲器等則是輸出設備。' },
+      { q:'以下何者是計算機最早的輸入設備？', opts:['鍵盤','鼠標','打孔紙帶','光碟片'], ans:2, exp:'打孔紙帶是計算機最早的輸入設備之一，可以透過在紙帶上打孔的方式來輸入指令和數據。' },
+      { q:'計算機的二進位制是由哪兩個數字組成的？', opts:['0 和 1','1 和 2','0 和 2','0 和 9'], ans:0, exp:'計算機的二進位制是由 0 和 1 兩個數字組成的，用來表示數字、文字、圖形等信息。' },
+      { q:'以下何者不是計算機的輔助記憶體？', opts:['硬碟','SSD','快閃記憶體','DRAM'], ans:3, exp:'DRAM 是主記憶體的一種，而硬碟、SSD、快閃記憶體等則屬於輔助記憶體。' },
+      { q:'計算機的運算核心是什麼？', opts:['CPU','主機板','顯示卡','記憶體'], ans:0, exp:'計算機的核心是 CPU（中央處理器），負責處理計算機的指令和數據。' },
+      { q:'以下何者不是計算機的輸入/輸出設備？', opts:['USB 閱讀器','數字相機','滑鼠','CPU'], ans:3, exp:'CPU 是計算機的核心單元，不屬於輸入/輸出設備。而 USB 閱讀器、數字相機、滑鼠等都是輸入/輸出設備。' },
+      { q:'以下何者是計算機記憶體中的隨機存取記憶體？', opts:['光碟','USB 閃存','硬碟','DRAM'], ans:3, exp:'DRAM 是計算機記憶體中的隨機存取記憶體，可以快速讀取和寫入數據。' },
+      { q:'以下何者是計算機主機板上負責連接各種設備的插槽？', opts:['CPU 插槽','PCIe 插槽','SATA 插槽','RAM 插槽'], ans:1, exp:'PCIe 插槽是計算機主機板上負責連接各種設備（例如顯示卡、網卡、聲卡等）的插槽。' },
+      { q:'以下何者不是計算機網路的拓撲結構之一？', opts:['星型','環型','樹型','正方型'], ans:3, exp:'正方型並不是計算機網路的拓撲結構之一，而星型、環型、樹型等則都是常見的拓撲結構。' },
+      { q:'下列何者不是計算機中常見的影像格式？', opts:['JPG','BMP','MP3','PNG'], ans:2, exp:'MP3 是音頻格式，不是影像格式。而 JPG、BMP、PNG 等則是常見的影像格式。' },
+      { q:'下列何者不是計算機中常見的影片格式？', opts:['AVI','MP4','MOV','GIF'], ans:3, exp:'GIF 是一種動圖格式，不是影片格式。而 AVI、MP4、MOV 等則是常見的影片格式。' },
+      { q:'下列哪種計算機儲存媒體具有較快的讀寫速度？', opts:['光碟','磁帶','固態硬碟','3.5 英寸軟碟'], ans:2, exp:'固態硬碟（SSD）具有較快的讀寫速度和較高的穩定性，而光碟、磁帶和 3.5 英寸軟碟則讀寫速度較慢且容量較小。' },
+      { q:'下列哪種連接埠可以用於將計算機連接至高速網路？', opts:['VGA','HDMI','USB','Ethernet'], ans:3, exp:'Ethernet 連接埠可以用於將計算機連接至高速網路，而 VGA、HDMI、USB 則分別用於顯示器、影像輸出和外接設備的連接。' },
+      { q:'下列哪種編程語言屬於「物件導向程式設計語言」？', opts:['C','Python','Assembly','Pascal'], ans:1, exp:'Python 是一種物件導向程式設計語言，支援物件導向的特性，如封裝、繼承和多型。C、Assembly、Pascal 則不是完全的物件導向程式設計語言。' },
+      { q:'下列哪種網路協定是用於傳輸超文本資料的？', opts:['TCP','FTP','HTTP','DNS'], ans:2, exp:'HTTP 是一種超文本傳輸協定，用於在網路上傳輸超文本資料，而 TCP、FTP、DNS 則分別用於網路傳輸的連接、檔案傳輸和域名解析。' },
+      { q:'下列哪種網路設備可以區分不同網路設備的 MAC 位址？', opts:['集線器','網路交換機','路由器','網路防火牆'], ans:1, exp:'網路交換機是可以根據目的地 MAC 位址來轉發數據。' },
+      { q:'下列哪種編程語言不是「動態型別語言」？', opts:['Javascript','Python','C++','Ruby'], ans:2, exp:'Javascript、Python、Ruby 都是動態型別語言，可以在執行期間自動判斷變數的型別。而 C++ 是靜態型別語言，需要在編譯期間指定變數的型別。' },
+      { q:'下列哪種網路安全漏洞攻擊是指利用預設的系統設定或漏洞緩衝區等方式，進行系統入侵的攻擊手法？', opts:['釣魚攻擊','DoS 攻擊','惡意軟體攻擊','緩衝區溢位攻擊'], ans:3, exp:'緩衝區溢位攻擊是指利用預設的系統設定或漏洞緩衝區等方式，進行系統入侵的攻擊手法，是一種非常常見的網路安全漏洞攻擊手法。' },
+      { q:'下列哪種編程語言不支援多重繼承？', opts:['Python','Java','C++','Ruby'], ans:1, exp:'Java 不支援多重繼承，而 Python、C++、Ruby 都支援多重繼承。Java 通過介面（interface）實現多重繼承的功能。' },
+      { q:'在數據結構中，下列哪種資料結構可以實現「先進先出」（FIFO）的操作方式？', opts:['陣列（Array）','佇列（Queue）','堆疊（Stack）','連結串列（Linked List）'], ans:1, exp:'佇列（Queue）是一種常見的數據結構，可以實現「先進先出」（FIFO）的操作方式。堆疊（Stack）則是實現「後進先出」（LIFO）的操作方式。' },
+      { q:'下列哪種演算法是用來解決「最短路徑問題」的？', opts:['Kruskal 演算法','Prim 演算法','Dijkstra 演算法','Floyd-Warshall 演算法'], ans:2, exp:'Dijkstra 演算法是用來解決「最短路徑問題」的常用演算法。Kruskal 演算法和 Prim 演算法則是用來解決「最小生成樹問題」的演算法。' },
+      { q:'下列哪種網路協定用於在網路上傳輸超文本資料？', opts:['SMTP','FTP','HTTP','DNS'], ans:2, exp:'HTTP（Hypertext Transfer Protocol）是一種用於在網路上傳輸超文本資料的協定，常用於網頁瀏覽。' },
+      { q:'在計算機網路中，下列哪種網路設備可以實現不同網路之間的路由功能？', opts:['集線器（Hub）','交換器（Switch）','路由器（Router）','網路傳輸層（Network Transport Layer）'], ans:2, exp:'路由器（Router）是一種用於實現不同網路之間路由功能的網路設備，它可以根據路由表選擇最佳路徑傳輸數據。' },
+      { q:'下列哪種文件格式通常用於儲存圖片？', opts:['PDF','JPEG','MP3','TXT'], ans:1, exp:'JPEG（Joint Photographic Experts Group）是一種常用的圖片壓縮格式，常用於儲存數位圖片。' },
+      { q:'下列哪個命令可以在 Linux 中列出當前目錄下的文件和文件夾？', opts:['CD','ls','pwd','mkdir'], ans:1, exp:'在 Linux 中，使用命令 ls 可以列出當前目錄下的文件和文件夾。' },
+      { q:'下列哪個概念不屬於計算機網路中的 OSI 七層模型？', opts:['網路層','資料連接層','控制層','應用層'], ans:2, exp:'OSI 七層模型是一種通信協議的標準，由七個層次組成，分別是實體層、資料連接層、網路層、傳輸層、會議層、表達層和應用層。控制層並不是 OSI 七層模型中的一個層次。' },
+      { q:'下列哪種連接方式可以實現多個設備使用同一個 IP 地址訪問外部網路？', opts:['NAT','VPN','DNS','DHCP'], ans:0, exp:'NAT（Network Address Translation）是一種用於實現區域網路與外部網路通信的技術，通常用於多個設備使用同一個 IP 地址訪問外部網路。' },
+      { q:'下列哪個命令可以在 Linux 中查看系統資源的使用情況？', opts:['top','ps','ls','CD'], ans:0, exp:'在 Linux 中，使用命令 top 可以查看系統資源的使用情況，包括 CPU、內存、磁盤等。' },
+      { q:'下列哪種存儲設備速度最快？', opts:['HDD','SSD','USB','光碟片'], ans:1, exp:'SSD（Solid State Drive）是一種基於快閃記憶體（Flash Memory）技術的存儲設備，速度較快，讀寫速度可以達到幾百 MB/s 或以上。' },
+      { q:'下列哪個不是資料庫管理系統（DBMS）的功能？', opts:['創建資料庫','數據輸入','數據庫查詢','網路管理'], ans:3, exp:'資料庫管理系統（DBMS）是一種軟體系統，用於創建、維護和管理資料庫，其主要功能包括創建資料庫、數據輸入、數據庫查詢等，但不包括網路管理功能。' },
+      { q:'在電腦網路中，以下哪個是不需要網路協定的？', opts:['TCP/IP','HTTP','FTP','無線電波'], ans:3, exp:'在電腦網路中，無論是有線或無線，都需要使用網路協定進行通信。TCP/IP、HTTP、FTP 等都是網路協定的一種，而無線電波只是一種傳輸介質，需要使用網路協定才能進行通信。' },
+      { q:'以下哪個不是資訊安全的三個目標？', opts:['機密性','完整性','可用性','可靠性'], ans:3, exp:'資訊安全的三個目標是機密性、完整性、可用性，不包括可靠性。機密性指資訊只能被授權的人或系統所訪問和使用；完整性指資訊在傳輸或存儲過程中不被修改或破壞；可用性指資訊可以在需要時及時可用。' },
+      { q:'在電腦中，CPU 是什麼的縮寫？', opts:['Central Processing Unit','Central Power Unit','Control Processing Unit','Control Power Unit'], ans:0, exp:'CPU 是 Central Processing Unit 的縮寫，中文稱為中央處理器，是電腦系統中的核心單元，負責執行指令和處理計算任務。' },
+      { q:'下列哪個不是數據庫管理系統（DBMS）？', opts:['MySQL','Oracle','SQL Server','Python'], ans:3, exp:'MySQL、Oracle 和 SQL Server 都是常見的數據庫管理系統（DBMS），而 Python 則是一種程式語言，和 DBMS 沒有直接的關係。' },
+      { q:'在關聯式資料庫中，一個關聯（Relation）對應到資料庫中的什麼？', opts:['資料表','欄位','資料列','索引'], ans:0, exp:'在關聯式資料庫中，一個關聯（Relation）對應到資料庫中的資料表（Table），資料表包含多個欄位（Column），每個欄位對應到資料表中的一個屬性或欄位名稱，資料列（Row）則對應到資料表中的一條記錄或數據行。' },
+      { q:'下列哪一個不是作業系統的主要功能？', opts:['提供圖形使用者介面','管理硬體資源','維護安全性','開發應用程式'], ans:3, exp:'作業系統的主要功能包括提供圖形使用者介面、管理硬體資源、維護安全性、執行應用程式等。開發應用程式屬於應用程式開發人員的工作範疇，不屬於作業系統的主要功能。' },
+      { q:'在計算機中，下列哪種記憶體讀取速度最快？', opts:['ROM','RAM','Cache（快取）','外部硬碟'], ans:2, exp:'Cache 是 CPU 與 RAM 之間的高速緩衝記憶體，能夠存取最常用的資料，因此讀取速度最快。' },
+      { q:'下列哪一項是超級電腦最常用的作業系統？', opts:['MacOS','Windows','Linux','Android'], ans:2, exp:'超級電腦通常使用 Linux 作業系統，因為 Linux 具有高度的自由度和可定製性，能夠根據不同的需求和應用進行調整和優化。' },
+      { q:'下列哪一種記憶體的讀取速度最快？', opts:['電腦硬碟','USB 隨身碟','快閃記憶體','快取記憶體'], ans:3, exp:'快取記憶體是位於處理器內部的高速緩存記憶體，可快速存取和傳輸資料，讀取速度最快。' },
+      { q:'以下哪一個元件負責將計算機的指令轉換成計算機能夠理解的信號？', opts:['主機板','記憶體','中央處理器','顯示卡'], ans:2, exp:'中央處理器（CPU）是計算機中最重要的元件之一，負責將指令轉換成計算機能夠理解的信號，並且執行計算機的各種運算。' },
+      { q:'下列哪個數值系統在電腦中應用最為廣泛？', opts:['十進位','二進位','八進位','十六進位'], ans:1, exp:'電腦只能識別二進位的數字，因此在電腦中使用二進位系統是最為廣泛的。' },
+      { q:'什麼是社交工程攻擊？', opts:['通過惡意軟體入侵電腦系統','通過物理方式破解密碼','通過欺騙手段獲取敏感資訊','通過掃描網路發現安全漏洞'], ans:2, exp:'社交工程攻擊是一種利用心理學和欺騙手段，騙取個人或組織敏感資訊的攻擊手法。' },
+      { q:'以下哪種最常見的密碼攻擊方式？', opts:['詞典攻擊（Dictionary Attack）','資料庫攻擊（Database Attack）','中間人攻擊（Man-in-the-middle Attack）','拒絕服務攻擊（Denial-of-Service Attack）'], ans:0, exp:'詞典攻擊是使用先前收集到的帳號和密碼組合，經過破解軟體線性地搜尋詞典，直到找到正確的密碼為止。' },
+      { q:'以下哪種網路攻擊是試圖獲得使用者敏感資訊，而使用偽裝網站來騙取這些資訊？', opts:['蜜罐攻擊（Honeypot Attack）','魚叉式攻擊（Spear Phishing Attack）','釣魚式攻擊（Phishing Attack）','社交工程攻擊（Social Engineering Attack）'], ans:2, exp:'釣魚式攻擊是透過偽裝的網站，試圖引誘使用者輸入敏感資訊。' },
+      { q:'在資訊安全的領域中，「機密性」指的是什麼？', opts:['資訊不會被更改','資訊只能被授權的人存取','資訊能夠持續存活','資訊不會丟失'], ans:1, exp:'機密性是指資訊只能被授權的人存取，不被其他人或系統存取或修改。' },
+      { q:'在加密技術中，「對稱式加密」指的是什麼？', opts:['一種加密方式，只能用一個密鑰加密和解密','一種加密方式，需要用兩個不同的密鑰加密和解密','一種加密方式，只能用公開金鑰加密，但用私密金鑰解密','一種加密方式，只能用私密金鑰加密，但用公開金鑰解密'], ans:0, exp:'對稱式加密是指使用相同的密鑰進行加密和解密，常見的對稱式加密演算法有 DES、3DES、AES 等。' },
+      // === SDN 題目（p.60–61，合併入計算機概論）===
+      { q:'SDN 是什麼？', opts:['一個網路架構','一個軟體平台','一個雲端服務','一種網路協定'], ans:0, exp:'SDN（Software-Defined Networking）是一個網路架構，它可以分離網路控制和數據轉發功能。' },
+      { q:'SDN 的主要優勢是什麼？', opts:['更高的網路可靠性','更快的網路速度','更低的網路成本','更高的網路安全性'], ans:2, exp:'SDN 可以降低網路成本，因為它可以用較少的硬體和人力資源來實現更靈活和高效的網路控制。' },
+      { q:'SDN 架構中的三層分別是哪些？', opts:['設計層、控制層、管理層','控制層、基礎架構層、應用服務層','虛擬層、實體層、網路層','安全層、連接層、分析層'], ans:1, exp:'SDN 架構中的三層分別為控制層、基礎架構層和應用服務層。控制層負責網路流量的控制和管理，基礎架構層負責實際的數據轉發和交換，應用服務層包括所有 SDN 應用，例如安全性、流量優化等。' },
+      { q:'在 SDN 三層架構中，哪一層主要負責流量控制和 QoS（Quality of Service）？', opts:['控制層','管理層','基礎架構層','應用層'], ans:0, exp:'SDN 三層架構包括控制層、基礎架構層和應用服務層。控制層是 SDN 架構的核心，負責網路流量的控制和管理，以及實現 QoS。控制器可以通過 SDN 協議與基礎架構層交換交通，從而指示基礎架構層設備的操作。' },
+      { q:'SDN 架構包含哪些組件？', opts:['控制器和交換機','路由器和交換機','防火牆和交換機','雲端服務和交換機'], ans:0, exp:'SDN 架構包含控制器和交換機，其中控制器負責網路控制邏輯，而交換機則負責數據轉發。' },
+      { q:'SDN 的數據轉發由誰負責？', opts:['控制器','交換機','路由器','防火牆'], ans:1, exp:'SDN 的數據轉發由交換機負責，控制器則負責網路控制邏輯。' },
+      { q:'SDN 架構可以實現哪些網路功能？', opts:['虛擬化和隔離','負載平衡和優化','安全檢測和防範','所有上述都是'], ans:3, exp:'SDN 架構可以實現虛擬化和隔離、負載平衡和優化、安全檢測和防範等多種網路功能。' },
+    ]
+  }
+];
+
+// ============================================================
+//  State
+// ============================================================
+let state = {
+  currentUnit: null,
+  currentIndex: 0,
+  answered: false,
+  selectedOpt: null,
+  records: {} // { unitId: { total, correct, answered: Set } }
+};
+
+// Load from localStorage
+function loadRecords() {
+  try {
+    const raw = localStorage.getItem('cht_quiz_records');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      // Convert answered arrays back to Sets
+      for (const key in parsed) {
+        if (parsed[key].answered) {
+          parsed[key].answered = new Set(parsed[key].answered);
+        }
+      }
+      state.records = parsed;
+    }
+  } catch(e) {}
+}
+
+function saveRecords() {
+  try {
+    const toSave = {};
+    for (const key in state.records) {
+      toSave[key] = {
+        ...state.records[key],
+        answered: [...(state.records[key].answered || [])]
+      };
+    }
+    localStorage.setItem('cht_quiz_records', JSON.stringify(toSave));
+  } catch(e) {}
+}
+
+function getRecord(unitId) {
+  if (!state.records[unitId]) {
+    state.records[unitId] = { total: 0, correct: 0, answered: new Set() };
+  }
+  return state.records[unitId];
+}
+
+function clearRecords() {
+  if (!confirm('確定要清除所有作答紀錄嗎？')) return;
+  state.records = {};
+  saveRecords();
+  renderUnitNav();
+  updateStats();
+  if (state.currentUnit) selectUnit(state.currentUnit.id);
+}
+
+// ============================================================
+//  Stats
+// ============================================================
+function updateStats() {
+  let totalCorrect = 0, totalWrong = 0;
+  for (const key in state.records) {
+    const r = state.records[key];
+    totalCorrect += r.correct || 0;
+    totalWrong += ((r.total || 0) - (r.correct || 0));
+  }
+  document.getElementById('stat-correct').textContent = totalCorrect;
+  document.getElementById('stat-wrong').textContent = totalWrong;
+  const total = totalCorrect + totalWrong;
+  document.getElementById('stat-rate').textContent = total > 0
+    ? Math.round(totalCorrect / total * 100) + '%' : '-';
+}
+
+// ============================================================
+//  Unit Nav
+// ============================================================
+function renderUnitNav() {
+  const nav = document.getElementById('unit-nav');
+  nav.innerHTML = '';
+  UNITS.forEach(unit => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-btn' + (unit.available ? '' : ' unavailable');
+    if (state.currentUnit && state.currentUnit.id === unit.id) btn.classList.add('active');
+
+    const rec = state.records[unit.id];
+    let progText = '';
+    if (unit.available && rec && rec.total > 0) {
+      progText = `<span class="unit-prog">${rec.correct}/${rec.total}</span>`;
+    }
+
+    btn.innerHTML = unit.name + progText;
+    btn.title = unit.available ? unit.name : (unit.note ? unit.name + ' ' + unit.note : unit.name + '（資料未包含）');
+    if (unit.available) btn.onclick = () => selectUnit(unit.id);
+    nav.appendChild(btn);
+  });
+}
+
+// ============================================================
+//  Unit Selection
+// ============================================================
+function selectUnit(unitId) {
+  const unit = UNITS.find(u => u.id === unitId);
+  if (!unit || !unit.available) return;
+  state.currentUnit = unit;
+  state.currentIndex = 0;
+  state.answered = false;
+  state.selectedOpt = null;
+  renderUnitNav();
+  renderQuestion();
+}
+
+// ============================================================
+//  Question Rendering
+// ============================================================
+function renderQuestion() {
+  const card = document.getElementById('quiz-card');
+  const unit = state.currentUnit;
+  if (!unit) return;
+
+  const questions = unit.questions;
+  if (questions.length === 0) {
+    card.innerHTML = `<div class="empty-state"><h2>此單元尚無題目資料</h2><p>請選擇其他單元</p></div>`;
+    return;
+  }
+
+  if (state.currentIndex >= questions.length) {
+    renderComplete();
+    return;
+  }
+
+  const q = questions[state.currentIndex];
+  const rec = getRecord(unit.id);
+  const pct = Math.round(state.currentIndex / questions.length * 100);
+  const alreadyDone = rec.answered.has(state.currentIndex);
+
+  card.innerHTML = `
+    <div class="q-meta">
+      <span class="q-unit">${unit.name}</span>
+      <span class="q-counter">${state.currentIndex + 1} / ${questions.length}</span>
+    </div>
+    <div class="q-progress"><div class="q-progress-fill" style="width:${pct}%"></div></div>
+    <div class="q-text">${q.q}</div>
+    <div class="options" id="options"></div>
+    ${q.exp ? `<div class="explanation" id="explanation"><strong>解析：</strong>${q.exp}</div>` : ''}
+    <div class="controls">
+      <button class="btn btn-secondary" onclick="skipQuestion()">跳題 →</button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none">下一題</button>
+    </div>
+  `;
+
+  // Render options
+  const optsDiv = document.getElementById('options');
+  const labels = ['A', 'B', 'C', 'D'];
+  q.opts.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.setAttribute('data-idx', i);
+    div.innerHTML = `<span class="opt-label">${labels[i]}</span><span class="opt-text">${opt}</span>`;
+    div.onclick = () => selectOption(i);
+    optsDiv.appendChild(div);
+  });
+}
+
+function selectOption(idx) {
+  if (state.answered) return;
+  state.answered = true;
+  state.selectedOpt = idx;
+
+  const unit = state.currentUnit;
+  const q = unit.questions[state.currentIndex];
+  const isAutoCorrect = !!q.autoCorrect;
+  const isCorrect = isAutoCorrect ? true : (Array.isArray(q.ans) ? q.ans.includes(idx) : q.ans === idx);
+  const correct = isAutoCorrect ? [] : (Array.isArray(q.ans) ? q.ans : [q.ans]);
+
+  // Update record
+  const rec = getRecord(unit.id);
+  if (!rec.answered.has(state.currentIndex)) {
+    rec.answered.add(state.currentIndex);
+    rec.total++;
+    if (isCorrect) rec.correct++;
+    saveRecords();
+  }
+
+  // Style options
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(opt => {
+    opt.classList.add('disabled');
+    const i = parseInt(opt.getAttribute('data-idx'));
+    if (i === idx) {
+      opt.classList.add(isCorrect ? 'correct' : 'wrong');
+    }
+    if (correct.includes(i) && i !== idx) {
+      opt.classList.add('correct-highlight');
+    }
+  });
+
+  // Show explanation
+  const expDiv = document.getElementById('explanation');
+  if (expDiv) expDiv.classList.add('show');
+
+  // Show next btn
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+
+  updateStats();
+  renderUnitNav();
+}
+
+function skipQuestion() {
+  state.currentIndex++;
+  state.answered = false;
+  state.selectedOpt = null;
+  if (state.currentIndex >= state.currentUnit.questions.length) {
+    renderComplete();
+  } else {
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (!state.answered) return;
+  state.currentIndex++;
+  state.answered = false;
+  state.selectedOpt = null;
+  if (state.currentIndex >= state.currentUnit.questions.length) {
+    renderComplete();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ============================================================
+//  Complete Screen
+// ============================================================
+function renderComplete() {
+  const card = document.getElementById('quiz-card');
+  const unit = state.currentUnit;
+  const rec = getRecord(unit.id);
+  const pct = rec.total > 0 ? Math.round(rec.correct / rec.total * 100) : 0;
+  const scoreClass = pct >= 80 ? 'score-good' : pct >= 60 ? 'score-mid' : 'score-bad';
+  const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '💪' : '📖';
+
+  card.innerHTML = `
+    <div class="complete-state">
+      <h2>${emoji} 單元完成！</h2>
+      <div class="complete-score ${scoreClass}">${pct}%</div>
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px">答對 ${rec.correct} / 共 ${rec.total} 題</p>
+      <p style="color:var(--text-dim);font-size:0.83rem">單元：${unit.name}</p>
+      <button class="btn-restart" onclick="restartUnit()">重新練習</button>
+    </div>
+  `;
+}
+
+function restartUnit() {
+  const unitId = state.currentUnit.id;
+  // Reset this unit's record
+  state.records[unitId] = { total: 0, correct: 0, answered: new Set() };
+  saveRecords();
+  state.currentIndex = 0;
+  state.answered = false;
+  state.selectedOpt = null;
+  updateStats();
+  renderUnitNav();
+  renderQuestion();
+}
+
+// ============================================================
+//  Init
+// ============================================================
+loadRecords();
+renderUnitNav();
+updateStats();
+</script>
+</body>
+</html>
